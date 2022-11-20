@@ -1,5 +1,5 @@
 import os
-import disk_manager as dm
+import disk_util as dm
 
 #print(dm.drives)
 

@@ -1,5 +1,5 @@
 import shutil
-import disk_manager as dm
+import disk_util as dm
 
 disk = dm.drives
 disks_data = {}
