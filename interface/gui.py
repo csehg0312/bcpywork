@@ -1,8 +1,6 @@
 import PySimpleGUI as psg
 
 
-
-
 win_x = 1280
 win_y = 720
 ts_x = 35

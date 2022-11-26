@@ -10,16 +10,6 @@ dl = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 drives = ['%s:' % d for d in dl if os.path.exists('%s:' % d)]
 
-notyetchecked = ['%s:' % d for d in dl if os.path.exists('%s:' % d)]
-
-kul = diferencia(drives, notyetchecked)
-if kul:
-    print('New drive introduced')
-    
-kul = diferencia(notyetchecked, drives)
-if kul:
-    print('Drive disconnected')
-
 
 
 if __name__ == '__main__':

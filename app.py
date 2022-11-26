@@ -1,18 +1,18 @@
 import interface.gui as gui
-import data.disk_util as ddm
+import interface.notifications as noti
+import data.disk_manager as ddm
 import PySimpleGUI as psg
 import PySimpleGUIQt as psqt
 import os
 
+
+
 window = gui.create_ablak()
-plusser = 0
 
 while True:
-    event, values = window.read()
-    print(event)
-    #psg.SystemTray.notify('New drive is introduced', str(ddm.drives))
-    
+    event, values = window.read(timeout = 100)
     if event == psg.WIN_CLOSED:
         break
+    #psg.SystemTray.notify('New drive is introduced', str(ddm.drives))
 
 window.close()
