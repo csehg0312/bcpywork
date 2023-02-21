@@ -1,5 +1,5 @@
 import shutil
-import disk_util as dm
+import data.disk_util as dm
 
 disk = dm.drives
 disks_data = {}
@@ -10,7 +10,7 @@ def popper(arg):
     data.update({"disk": disk})
     return data
 
-def getter(arg):
+def getter(arg:str):
     disk = arg
    
     dtotal, dused, dfree = shutil.disk_usage(disk)
@@ -20,12 +20,14 @@ def getter(arg):
     data = {'total': dtotal, 'used':dused, 'free':dfree}
     return data
 
+
 for item in range(len(disk)):
        data = popper(disk[item])
        disks_data.update({disk[item]:data})
+       #print(data)
 
 if __name__ == '__main__':
-   ''' for item in range(len(disk)):
+   for item in range(len(disk)):
        data = getter(disk[item])
-       print(str(data)) '''
+       print(str(data))
    
