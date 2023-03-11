@@ -1,17 +1,23 @@
+from dataclasses import dataclass
 import os
-import disk_util as dm
 
-#print(dm.drives)
-
-
-for item in dm.drives:
-    onprint = os.listdir(item)
-    #print(onprint)
-    #print('-----------')
-    onprint = ""
-
-''' onprint = os.listdir(path)
-print(onprint) '''
-
-if __name__ == '__main__':
-    splitter()
+@dataclass
+class Jelen_EleresiUt:
+    szulo:str 
+    
+    def Atiras(self):
+        if os.getcwd() != self.szulo:
+            self.szulo = os.getcwd()
+    
+    def SzuloUtvonal(self):
+        self.nagyszulo, _ = os.path.split(self.szulo)
+        os.chdir(self.nagyszulo)
+        
+    def JelenlegiDiszk(self):
+        self.diszk = self.szulo[0] + self.szulo[1] + self.szulo[2]
+        return self.diszk
+    
+    def Frissites(self, csatolt):
+        self.csatolt = csatolt
+        self.szulo = self.csatolt
+        os.chdir(self.szulo)
