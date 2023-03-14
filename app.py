@@ -1,6 +1,6 @@
 import os
 import interface.controller as c
-import interface.gui as gui
+import gui as gui
 import data.disk_manager as ddm
 import PySimpleGUI as psg
 import keyboard
@@ -18,6 +18,8 @@ while True:
         break
     com = values['-COMBO-']
     
+    
+    
     if event == 'Writer' and writerup == False:
         writerup = True
         window2 = gui.make_second_window()
@@ -29,6 +31,7 @@ while True:
                 #logging.warning(f'The Writer has been closed, Event: {event2}')
                 break
         window2.close()
+        writerup=False
         
         
     com = values['-COMBO-']
