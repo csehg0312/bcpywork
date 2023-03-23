@@ -21,15 +21,23 @@ class Drive:
         self.Foglalt: int = field(default_factory=calculateSize(self.FoglaltBit))
         self.Szabad: int = field(default_factory=calculateSize(self.SzabadBit))
 
-def diferencia(ls1,ls2):
-    ls_diferencia = [item for item in ls1 if item not in ls2]
-    return ls_diferencia
+# def diferencia(ls1,ls2):
+#     ls_diferencia = [item for item in ls1 if item not in ls2]
+#     if len(ls1) != len(ls_diferencia): 
+#         return True
+#     else:
+#         return False
 
-dl = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
-drives = ['%s:' % d for d in dl if os.path.exists('%s:' % d)]
+# drives_saved = []
 
 def kinyeres():
+    dl = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    drives = ['%s:' % d for d in dl if os.path.exists('%s:' % d)]
+    # if diferencia(drives_saved, drives):
+    #     drives_saved.extend(drives)
+    # elif diferencia(drives_saved, drives):
+    #     ...
     d_nev:deque = deque([])
     d_teljes:deque = deque([])
     d_foglalt:deque = deque([])

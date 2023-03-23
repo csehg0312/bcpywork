@@ -1,6 +1,6 @@
 import os
 import interface.controller as c
-import data.dataclass_drive_manager
+from data.file_folder_managing import create_twoD_list
 from gui import create_ablak, create_search_window, make_second_window, create_disk_window
 from data.disk_manager import kinyeres
 import PySimpleGUI as psg
@@ -18,12 +18,19 @@ window = create_ablak()
 window.set_icon(icon="icon/icov1.ico")
 
 while True:
-    event, values = window.read()
+    event, values = window.read(timeout=5000)
+    
     if event == psg.WIN_CLOSED:
         break
     com = values['-COMBO-']
+    vals:list = create_twoD_list(os.getcwd())
+    window['-TABLE01-'].Update(values=vals)
     
-    
+    if event == '-Organize-' and is_pressed('enter') and os.path.exists(values['-Organize-']):
+        os.chdir(values['-Organize-'])
+        vals.clear()
+        vals:list = create_twoD_list(os.getcwd())
+        window['-TABLE01-'].Update(values=vals)
     
     
     if event == 'Writer' and writerup == False:

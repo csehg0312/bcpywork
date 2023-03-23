@@ -1,7 +1,7 @@
 import os
 from collections import deque
-from dataclass_file_manager import File
-from dataclass_folder_manager import Folder
+from data.dataclass_file_manager import File
+from data.dataclass_folder_manager import Folder
 
 def simple_data(ut:str):
     try:

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 @dataclass
 class EventHandler:
     bejovo: str
+    ablak:str
     
     def compare(self):
         if self.bejovo == 'Back':

@@ -11,6 +11,8 @@ egyszeru_jobb_kattintas:list
 egyszeru_jobb_kattintas = ['Egyszeru',['&Writer', '&Uj', '&A mappa tulajdonsagai::Properties']]
 file_rightl_click:list
 file_rightl_click = []
+disk_right_click = []
+disk_right_click = ['Disk', ['&Megnyitas asztalon', ['&Asztal 1::-INT01-', '&Asztal 2::-INT02-']]]
 folder_right_click:list
 folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...', 'Rename', 'Remove', 'Remove tree...', 'Open in new tab', 'Properties']]
 #a meretek igy [0]appwinx, [1]appwiny, [2]tablex, [3]tabley, [4]secondWindowx, [5]secondWindowy, [6]multilinex, [7]multilineY, [8]searchWinX, [9]searchWinY, [10]searchListX, [11]searchListY , [12]Disk selectorX, [13] Disk selectorY
@@ -24,7 +26,12 @@ def create_layout():
     prelayout = [[psg.ProgressBar(250)]]
     psg.theme('SystemDefault')
     layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,psg.Input(os.getcwd(), enable_events=True, key="-Organize-"), psg.Button('Kereses ablak', enable_events=True, key='-SEARCH-')],
-              [psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), key='-TABLE01-'),
+              [psg.Table(vals,
+                         headings=fejlec, 
+                         size=(meretek[2],meretek[3]), 
+                         auto_size_columns=True,
+                         expand_x=True,
+                         key='-TABLE01-'),
                psg.Combo(default_value='Minden elem', values=('Minden elem','Csak mappak', 'Csak fajlok'), key='-COMBO-'),
                psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), key='-TABLE02-'), 
                psg.Button('Writer')]
@@ -61,9 +68,8 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
     
     for i in range(number):
         K:str = f'-DISK_WIN{i}-'
-        print(K)
         window4.extend_layout(window4['-TAROLOK-'], [[psg.T(diszk_lista[i])],
-                                                     [psg.ProgressBar(max_value=diszk_info[i], key=K, size=(50,15), right_click_menu=folder_right_click)]])
+                                                     [psg.ProgressBar(max_value=diszk_info[i], key=K, size=(50,15), right_click_menu=disk_right_click)]])
         K:str = ''
     
     return window4
