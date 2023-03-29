@@ -18,3 +18,16 @@ class EventHandler:
         else:
             ...
             
+        match self.bejovo:
+            
+            case 'c':
+                ...
+            case 'z':
+                ...
+            case 'x':
+                ...
+            case other:
+                ...
+                
+            
+            

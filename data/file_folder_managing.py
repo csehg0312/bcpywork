@@ -20,6 +20,15 @@ def simple_data(ut:str):
         return filebase
     except (OSError, PermissionError):
         return {}
+    
+def kereses(ut:str):
+    bazis:dict = {}
+    keresessor:deque = deque([])
+    bazis = simple_data(ut)
+    keresessor = bazis.get('Folders')
+    keresessor.extend(bazis.get('Files'))
+    return list(keresessor)
+    
 
 def mappa_osztaly(ut:str):
     bazis:dict
@@ -70,8 +79,8 @@ def create_twoD_list(ut:str):
     
     mappaMap = list(mappaMap)
     fajlMap = list(fajlMap)
-    print(type(mappaMap))
-    print(type(fajlMap))
+    # print(type(mappaMap))
+    # print(type(fajlMap))
     
     mappasor = deque([x for x in mappaMap])
     fajlsor = deque([x for x in fajlMap])
@@ -86,8 +95,9 @@ def create_twoD_list(ut:str):
 
     
 if __name__ == '__main__':
-    utv = os.getcwd()
-    create_twoD_list(utv)
+    keres:list = []
+    keres = kereses(os.getcwd())
+    print(keres)
 #     S = mappa_osztaly(utv)
 #     print(S)
 #     print(sys.getsizeof(S))

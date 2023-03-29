@@ -1,5 +1,6 @@
 import os
 import PySimpleGUI as psg
+#from data.file_folder_managing import create_twoD_list
 
 fejlec:list = []*4
 fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret']
@@ -16,24 +17,27 @@ disk_right_click = ['Disk', ['&Megnyitas asztalon', ['&Asztal 1::-INT01-', '&Asz
 folder_right_click:list
 folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...', 'Rename', 'Remove', 'Remove tree...', 'Open in new tab', 'Properties']]
 #a meretek igy [0]appwinx, [1]appwiny, [2]tablex, [3]tabley, [4]secondWindowx, [5]secondWindowy, [6]multilinex, [7]multilineY, [8]searchWinX, [9]searchWinY, [10]searchListX, [11]searchListY , [12]Disk selectorX, [13] Disk selectorY
-meretek:list = [1280,720,35,36,600,500,45,25, 400, 700, 50, 50, 300, 300]
+meretek:list = [1280,720,300,36,600,500,45,25, 400, 700, 50, 50, 300, 300]
 
 vals:list = []
+# vals = create_twoD_list(os.getcwd())
 
 
 
 def create_layout():
-    prelayout = [[psg.ProgressBar(250)]]
     psg.theme('SystemDefault')
     layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,psg.Input(os.getcwd(), enable_events=True, key="-Organize-"), psg.Button('Kereses ablak', enable_events=True, key='-SEARCH-')],
               [psg.Table(vals,
                          headings=fejlec, 
                          size=(meretek[2],meretek[3]), 
-                         auto_size_columns=True,
                          expand_x=True,
+                         expand_y=True,
                          key='-TABLE01-'),
                psg.Combo(default_value='Minden elem', values=('Minden elem','Csak mappak', 'Csak fajlok'), key='-COMBO-'),
-               psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), key='-TABLE02-'), 
+               psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
+                         key='-TABLE02-',
+                         expand_x=True,
+                         expand_y=True), 
                psg.Button('Writer')]
               ]
     
@@ -43,7 +47,9 @@ def create_ablak():
     window = psg.Window('Py File Manager', create_layout(), 
                         size=(meretek[0],meretek[1]), 
                         right_click_menu_tearoff=True,
-                        resizable=True
+                        resizable=True, 
+                        return_keyboard_events=True, 
+                        location=(0,0)
                         )
     return window
 
@@ -79,7 +85,7 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
 def create_search_layout():
     psg.theme('SystemDefault')
     search_layout = [[psg.Input('', key='-SEARCHING-', expand_x=True)],
-                     [psg.Listbox([], default_values=any, size=(meretek[10], meretek[11]), enable_events=True, right_click_menu=[], key='-FOUND-')]
+                     [psg.Listbox([], default_values=any, size=(meretek[10], meretek[11]), right_click_menu=[], key='-FOUND-', highlight_background_color="#7AA874", change_submits=False)]
                      ]
     return search_layout
 
@@ -88,7 +94,8 @@ def create_search_window():
                         size=(meretek[8],meretek[9]),  
                         use_custom_titlebar=True,
                         resizable=True, 
-                        alpha_channel=0.8
+                        alpha_channel=1, 
+                        return_keyboard_events=True
                         )
     return window3
 
