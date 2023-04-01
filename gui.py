@@ -13,11 +13,11 @@ egyszeru_jobb_kattintas = ['Egyszeru',['&Writer', '&Uj', '&A mappa tulajdonsagai
 file_rightl_click:list
 file_rightl_click = []
 disk_right_click = []
-disk_right_click = ['Disk', ['&Megnyitas asztalon', ['&Asztal 1::-INT01-', '&Asztal 2::-INT02-']]]
+disk_click = ['Disk', ['Megnyitas asztalon', ['Asztal1::-INT1-', 'Asztal2::-INT2-']]]
 folder_right_click:list
 folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...', 'Rename', 'Remove', 'Remove tree...', 'Open in new tab', 'Properties']]
 #a meretek igy [0]appwinx, [1]appwiny, [2]tablex, [3]tabley, [4]secondWindowx, [5]secondWindowy, [6]multilinex, [7]multilineY, [8]searchWinX, [9]searchWinY, [10]searchListX, [11]searchListY , [12]Disk selectorX, [13] Disk selectorY
-meretek:list = [1280,720,300,36,600,500,45,25, 400, 700, 50, 50, 300, 300]
+meretek:list = [1280,720,300,36,600,500,45,25, 400, 700, 50, 50, 400, 400]
 
 vals:list = []
 # vals = create_twoD_list(os.getcwd())
@@ -25,19 +25,39 @@ vals:list = []
 
 
 def create_layout():
+    back_arrow = "C:/Users/csehg/pywork/bcpywork/back-arrow.png"
     psg.theme('SystemDefault')
-    layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,psg.Input(os.getcwd(), enable_events=True, key="-Organize-"), psg.Button('Kereses ablak', enable_events=True, key='-SEARCH-')],
+    layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,
+               psg.Input(os.getcwd(), enable_events=True, key="-Organize01-"), 
+               psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
+               psg.Push(),
+               psg.Input(os.getcwd(), enable_events=True, key="-Organize02-"), 
+               psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
+               psg.Push()],
+              [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+                          image_filename=back_arrow, size=(10,10), key='Back',
+                          image_subsample=2, border_width=0,
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+               psg.Push(),
+               psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+                          image_filename=back_arrow, size=(10,10), key='Back',
+                          image_subsample=2, border_width=0,
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+               psg.Push()
+               ],
               [psg.Table(vals,
                          headings=fejlec, 
                          size=(meretek[2],meretek[3]), 
                          expand_x=True,
                          expand_y=True,
-                         key='-TABLE01-'),
+                         key='-TABLE01-', 
+                         enable_events=True),
                psg.Combo(default_value='Minden elem', values=('Minden elem','Csak mappak', 'Csak fajlok'), key='-COMBO-'),
                psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
                          key='-TABLE02-',
                          expand_x=True,
-                         expand_y=True), 
+                         expand_y=True,
+                         enable_events=True), 
                psg.Button('Writer')]
               ]
     
@@ -69,14 +89,20 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
                              [psg.Frame('', [[psg.T('Csatlakozott diszkek', key='-TAROLOK-')]])]
                              ],
                          size=(meretek[12],meretek[13]),  
-                         use_custom_titlebar=True
+                         use_custom_titlebar=True,
+                         return_keyboard_events=True,
+                         keep_on_top=True
                          )
     
     for i in range(number):
         K:str = f'-DISK_WIN{i}-'
-        window4.extend_layout(window4['-TAROLOK-'], [[psg.T(diszk_lista[i])],
-                                                     [psg.ProgressBar(max_value=diszk_info[i], key=K, size=(50,15), right_click_menu=disk_right_click)]])
+        V:str = f'-BM{i}-'
+        tval:str = f'-TX{i}-'
+        window4.extend_layout(window4['-TAROLOK-'], [[psg.T(f'{diszk_lista[i]}', key=tval), psg.Push(), psg.ButtonMenu('Műveletek', menu_def=disk_click, key=V)],
+                                                     [psg.ProgressBar(max_value=diszk_info[i], key=K, size=(50,15))]])
         K:str = ''
+        V:str = ''
+        tval:str = ''
     
     return window4
         
@@ -95,7 +121,8 @@ def create_search_window():
                         use_custom_titlebar=True,
                         resizable=True, 
                         alpha_channel=1, 
-                        return_keyboard_events=True
+                        return_keyboard_events=True,
+                        keep_on_top=True
                         )
     return window3
 
@@ -112,7 +139,8 @@ def make_second_window():
     window02 = psg.Window('Writer', 
                           create_writer(), 
                           size=(meretek[4],meretek[5]),
-                          no_titlebar=True
+                          no_titlebar=True,
+                          keep_on_top=True
                           )
     return window02
 
