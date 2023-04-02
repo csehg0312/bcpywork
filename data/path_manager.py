@@ -11,7 +11,8 @@ class Jelen_EleresiUt:
     
     def SzuloUtvonal(self):
         self.nagyszulo, _ = os.path.split(self.szulo)
-        os.chdir(self.nagyszulo)
+        self.szulo = self.nagyszulo
+        os.chdir(self.szulo)
         
     def JelenlegiDiszk(self):
         self.diszk = self.szulo[0] + self.szulo[1] + self.szulo[2]
@@ -19,5 +20,13 @@ class Jelen_EleresiUt:
     
     def Frissites(self, csatolt):
         self.csatolt = csatolt
-        self.szulo = self.csatolt
-        os.chdir(self.szulo)
+        if os.path.exists(self.csatolt) and type(os.listdir not in (PermissionError, FileNotFoundError)):
+            try:
+                self.szulo = self.csatolt
+                os.chdir(self.szulo)
+            except (PermissionError, FileNotFoundError):
+                nsz, _ = os.path.split(self.szulo)
+                self.szulo = nsz
+                os.chdir(self.szulo)
+        else:
+            os.chdir(self.szulo)

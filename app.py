@@ -1,5 +1,4 @@
 import os
-import interface.controller as c
 from data.file_folder_managing import create_twoD_list, kereses
 from gui import create_ablak, create_search_window, make_second_window, create_disk_window
 from data.disk_manager import kinyeres
@@ -7,11 +6,22 @@ import PySimpleGUI as psg
 from keyboard import is_pressed
 from collections import deque
 from data.binaris_search import binaris_atvitel
+from data.path_manager import Jelen_EleresiUt
 #from event_handler import EventHandler
 import logging
+file_right_click:list
+file_right_click = ['Fajl', ['Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes','---' ,'Tulajdonsagok']]
+folder_right_click:list
+folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...', 'Rename', 'Remove', 'Remove tree...', 'Open in new tab', 'Properties']]
 writerup:bool = False
 search_up:bool = False
 disk_selectorup:bool = False
+van_kijelolt_tabla1:bool = False
+van_kijelolt_tabla2:bool = False
+window_minimized:bool = False
+
+kijelolt01:str
+kijelolt02:str
 
 os.chdir(os.path.expanduser('~'))
 
@@ -19,6 +29,7 @@ os.chdir(os.path.expanduser('~'))
 window = create_ablak()
 window.set_icon(icon="icon/icov1.ico")
 eventlist:deque = deque([])
+ #--------------------------A program-----------------------------------------------------
 while True:
     event, values = window.read()
     
@@ -26,20 +37,8 @@ while True:
         break
     
     if event == 'Control_L:17':
+        eventlist.clear()
         eventlist.append(17)
-        
-    
-    
-    # if event == '__TIMEOUT__':
-    #     event, values = window.read()
-    
-    
-    # com = values['-COMBO-']
-    # print(os.getcwd())
-    vals:list = create_twoD_list(os.getcwd())
-    window['-TABLE01-'].Update(values=vals)
-    
-   
     
     
     if (event == 'Writer' and writerup == False) or (event == 'w' and eventlist[0] == 17 and writerup == False ):
@@ -55,6 +54,8 @@ while True:
                 break
         writer_window.close()
         writerup=False
+    
+    #---------------------------------Kereses ablak----------------------------------------------
         
     if (event == '-SEARCH01-' and search_up == False) or (event == 's' and eventlist[0] == 17 and search_up == False ):
         eventlist.clear()
@@ -75,6 +76,8 @@ while True:
                 
         search_window.close()
         search_up=False
+        
+     #--------------------------------Meghajto kivalszto ablak-----------------------------------------------    
     
     if (event == '-DISK_WIN-' and disk_selectorup == False) or (event == 'd' and eventlist[0] == 17 and disk_selectorup == False ):
         eventlist.clear()
@@ -90,6 +93,8 @@ while True:
             for d in range(len(disk_nev)):
                disk_window[f'-DISK_WIN{d}-'].update_bar(disk_foglalt[d])
                
+    #-----------------------------Meghajto kivalasztasanal betolti a kivant asztalra--------------------------------------------------
+               
             if disk_event.rfind('-BM') != -1:
                
                 match disk_event:
@@ -100,11 +105,15 @@ while True:
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE01-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize01-').update(os.getcwd())
+                                t1_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                             case 'Asztal2::-INT2-':
                                 val:str = disk_window['-TX0-'].get()
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE02-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize02-').update(os.getcwd())
+                                t2_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                     case '-BM1-':
                         match disk_values['-BM1-']:
                             case 'Asztal1::-INT1-':
@@ -112,11 +121,15 @@ while True:
                                  vales:list = create_twoD_list(f'{val}/')
                                  window['-TABLE01-'].update(vales)
                                  os.chdir(f'{val}/')
+                                 window.find_element('-Organize01-').update(os.getcwd())
+                                 t1_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                             case 'Asztal2::-INT2-':
                                 val:str = disk_window['-TX1-'].get()
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE02-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize02-').update(os.getcwd())
+                                t2_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                     case '-BM2-':
                         match disk_values['-BM2-']:
                             case 'Asztal1::-INT1-':
@@ -124,11 +137,15 @@ while True:
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE01-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize01-').update(os.getcwd())
+                                t1_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                             case 'Asztal2::-INT2-':
                                 val:str = disk_window['-TX2-'].get()
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE02-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize02-').update(os.getcwd())
+                                t2_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                     case '-BM3-':
                         match disk_values['-BM3-']:
                             case 'Asztal1::-INT1-':
@@ -136,11 +153,15 @@ while True:
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE01-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize01-').update(os.getcwd())
+                                t1_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                             case 'Asztal2::-INT2-':
                                 val:str = disk_window['-TX3-'].get()
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE02-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize02-').update(os.getcwd())
+                                t2_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                     case '-BM4-':
                         match disk_values['-BM4-']:
                             case 'Asztal1::-INT1-':
@@ -148,25 +169,94 @@ while True:
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE01-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize01-').update(os.getcwd())
+                                t1_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                             case 'Asztal2::-INT2-':
                                 val:str = disk_window['-TX4-'].get()
                                 vales:list = create_twoD_list(f'{val}/')
                                 window['-TABLE02-'].update(vales)
                                 os.chdir(f'{val}/')
+                                window.find_element('-Organize02-').update(os.getcwd())
+                                t2_ut: Jelen_EleresiUt = Jelen_EleresiUt(os.getcwd())
                     case other:
                         continue        
         disk_window.close()
         disk_selectorup = False
-            
+        
+    #-------------------------------Az asztalon kijelolt elemekkel kezelese-------------------------------------------------
+                
     if event in ('-TABLE01-', '-TABLE02-'):
-        if is_pressed('enter') == True:
-            print('pressed')
-        print(event)
+        match event:
+            case '-TABLE01-':
+            
+                tmp:list = window['-TABLE01-'].get().copy()
+                try:
+                    kijelolt_sor = [tmp [row] for row in values[event]].pop()
+                except IndexError:
+                    ...
+                if (kijelolt_sor[1] == 'Mappa') or (kijelolt_sor[1] == ''):
+                    if is_pressed('enter'):
+                        
+                        if os.path.exists(t1_ut.szulo) == True:
+                            window['-TABLE01-'].set_right_click_menu(folder_right_click)
+                            window['-TABLE01-'].set_tooltip('Az enter lenyomasaval megnyithato')
+                            t1_ut.Frissites(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
+                            window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
+                            window.find_element('-Organize01-').update(t1_ut.szulo)
+                            tmp.clear()
+                            
+                        else:
+                            t1_ut.SzuloUtvonal()
+                            tmp.clear()
+                else:
+                    window['-TABLE01-'].set_right_click_menu(file_right_click)
+                    window['-TABLE01-'].set_tooltip('Jobb klikkel a lehetosegpanel')
+                    tmp.clear()
+            case '-TABLE02-':
+                tmp:list = window['-TABLE02-'].get().copy()
+                try:
+                    kijelolt_sor = [tmp [row] for row in values[event]].pop()
+                except IndexError:
+                    pass
+                if (kijelolt_sor[1] == 'Mappa') or (kijelolt_sor[1] == ''):
+                    window['-TABLE02-'].set_right_click_menu(folder_right_click)
+                    window['-TABLE02-'].set_tooltip('Az enter lenyomasaval megnyithato')
+                    if is_pressed('enter'):
+                        if os.path.exists(t2_ut.szulo) == True:
+                            t2_ut.Frissites(os.path.join(t2_ut.szulo, kijelolt_sor[0]))
+                            window['-TABLE02-'].Update(values=create_twoD_list(t2_ut.szulo))
+                            window['-TABLE02-'].SetFocus()
+                            window.find_element('-Organize02-').update(t2_ut.szulo)
+                            tmp.clear()
+                        else:
+                            t2_ut.SzuloUtvonal()
+                            tmp.clear()
+                else:
+                    window['-TABLE02-'].set_right_click_menu(file_right_click)
+                    window['-TABLE02-'].set_tooltip('Jobb klikkel a lehetosegpanel')
+                    tmp.clear()
+                    
+    #---------------------------Az asztalon valo visszalepes kezelese---------------------------------------------------------- 
+        
+    if event in ('Back01', 'Back02'):
+        match event:
+            case 'Back01':
+                t1_ut.SzuloUtvonal()
+                window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
+                window.find_element('-Organize01-').update(t1_ut.szulo)
+            case 'Back02':
+                t2_ut.SzuloUtvonal()
+                window['-TABLE02-'].Update(values=create_twoD_list(t2_ut.szulo))
+                window.find_element('-Organize02-').update(t2_ut.szulo)
+                
+                
+    if event in ('Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes', 'Tulajdonsagok') and window['-TABLE02-'].fo:
+        ...
         
     if (event == 'r') and (eventlist[0] == 17):
         ...
     
-        
+    
     com = values['-COMBO-']
     #print(f'{event} and Combo val: {com}')
 window.close()

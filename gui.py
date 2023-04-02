@@ -10,8 +10,6 @@ fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret']
 
 egyszeru_jobb_kattintas:list
 egyszeru_jobb_kattintas = ['Egyszeru',['&Writer', '&Uj', '&A mappa tulajdonsagai::Properties']]
-file_rightl_click:list
-file_rightl_click = []
 disk_right_click = []
 disk_click = ['Disk', ['Megnyitas asztalon', ['Asztal1::-INT1-', 'Asztal2::-INT2-']]]
 folder_right_click:list
@@ -35,12 +33,12 @@ def create_layout():
                psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
                psg.Push()],
               [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
-                          image_filename=back_arrow, size=(10,10), key='Back',
+                          image_filename=back_arrow, size=(10,10), key='Back01',
                           image_subsample=2, border_width=0,
                           mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
                psg.Push(),
                psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
-                          image_filename=back_arrow, size=(10,10), key='Back',
+                          image_filename=back_arrow, size=(10,10), key='Back02',
                           image_subsample=2, border_width=0,
                           mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
                psg.Push()
@@ -51,13 +49,16 @@ def create_layout():
                          expand_x=True,
                          expand_y=True,
                          key='-TABLE01-', 
-                         enable_events=True),
+                         enable_events=True,
+                         bind_return_key=True
+                         ),
                psg.Combo(default_value='Minden elem', values=('Minden elem','Csak mappak', 'Csak fajlok'), key='-COMBO-'),
                psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
                          key='-TABLE02-',
                          expand_x=True,
                          expand_y=True,
-                         enable_events=True), 
+                         enable_events=True,
+                         bind_return_key=True), 
                psg.Button('Writer')]
               ]
     
@@ -66,10 +67,11 @@ def create_layout():
 def create_ablak():
     window = psg.Window('Py File Manager', create_layout(), 
                         size=(meretek[0],meretek[1]), 
-                        right_click_menu_tearoff=True,
+                        right_click_menu=[],
                         resizable=True, 
                         return_keyboard_events=True, 
-                        location=(0,0)
+                        location=(0,0),
+                        disable_minimize=False
                         )
     return window
 
@@ -143,6 +145,25 @@ def make_second_window():
                           keep_on_top=True
                           )
     return window02
+
+def file_properties_lay(utv:str, meret: int):
+    szulo, fajl = os.path.split(utv)
+    nev, bov = os.path.splitext(fajl)
+    layout = [[psg.Input(nev, enable_events=True)],
+              [psg.Text('Bovitmeny:'), psg.Text(bov)],
+              [psg.Text('Hely:'), psg.Text(szulo)],
+              [psg.HorizontalSeparator()],
+              [psg.Text('Meret:'), psg.Text(round(meret/1024, 2))],
+              ]
+    
+    return layout
+
+def file_properties_win(utv:str, meret:int):
+    prop_window = psg.Window('Tulajdonsagok', 
+                             file_properties_lay(utv, meret), 
+                             disable_minimize=True, 
+                             use_custom_titlebar=True)
+    return prop_window
 
     
 if __name__ == '__main__':
