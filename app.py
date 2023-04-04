@@ -276,8 +276,7 @@ while True:
         
     if (event == 'r') and (eventlist[0] == 17):
         ...
+        
     
-    
-    com = values['-COMBO-']
     #print(f'{event} and Combo val: {com}')
 window.close()

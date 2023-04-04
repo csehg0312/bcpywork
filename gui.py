@@ -53,14 +53,14 @@ def create_layout():
                          enable_events=True,
                          bind_return_key=True
                          ),
-               psg.Combo(default_value='Minden elem', values=('Minden elem','Csak mappak', 'Csak fajlok'), key='-COMBO-'),
+               psg.Button('Writer'),
                psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
                          key='-TABLE02-',
                          expand_x=True,
                          expand_y=True,
                          enable_events=True,
                          bind_return_key=True), 
-               psg.Button('Writer')]
+               ]
               ]
     
     return layout
