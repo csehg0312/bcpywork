@@ -1,13 +1,13 @@
 import os
 from data.file_folder_managing import create_twoD_list, kereses
-from gui import create_ablak, create_search_window, make_second_window, create_disk_window
+from gui import create_ablak, make_second_window, create_disk_window
 from data.disk_manager import kinyeres
 import PySimpleGUI as psg
 from keyboard import is_pressed
 from collections import deque
 from data.binaris_search import binaris_atvitel
 from data.path_manager import Jelen_EleresiUt
-#from event_handler import EventHandler
+from event_handler import EventHandler
 import logging
 file_right_click:list
 file_right_click = ['Fajl', ['Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes','---' ,'Tulajdonsagok']]
@@ -57,25 +57,26 @@ while True:
     
     #---------------------------------Kereses ablak----------------------------------------------
         
-    if (event == '-SEARCH01-' and search_up == False) or (event == 's' and eventlist[0] == 17 and search_up == False ):
-        eventlist.clear()
-        search_up = True
-        search_window = create_search_window()
-        while True:
-            search_window['-SEARCHING-'].set_focus=True
-            search_event,search_values = search_window.read()
-            if (search_event == psg.WIN_CLOSED) or (search_event == 'Escape:27') or (event == None):
-                break
+    # if (event == '-SEARCH01-' and search_up == False) or (event == 's' and eventlist[0] == 17 and search_up == False ):
+    #     eventlist.clear()
+    #     search_up = True
+    #     search_window = create_search_window()
+    #     while True:
+    #         search_event,search_values = search_window.read()
+    #         search_window['-SEARCHING-'].set_focus=True
+    #         search_event,search_values = search_window.read()
+    #         if (search_event == psg.WIN_CLOSED) or (search_event == 'Escape:27') or (event == None):
+    #             break
             
-            if search_values['-SEARCHING-'] != "":
-                search_window['-FOUND-'].update(binaris_atvitel(sorted(os.listdir(os.getcwd())), search_values['-SEARCHING-']))
+    #         if search_values['-SEARCHING-'] != "":
+    #             search_window['-FOUND-'].update(binaris_atvitel(sorted(os.listdir(search_values['-DRIVE-'])), search_values['-SEARCHING-']))
             
-            else:
-                search_window['-FOUND-'].update(os.listdir(os.getcwd()))
+    #         else:
+    #             search_window['-FOUND-'].update(os.listdir(os.getcwd()))
                 
                 
-        search_window.close()
-        search_up=False
+    #     search_window.close()
+    #     search_up=False
         
      #--------------------------------Meghajto kivalszto ablak-----------------------------------------------    
     
@@ -194,16 +195,22 @@ while True:
                     kijelolt_sor = [tmp [row] for row in values[event]].pop()
                 except IndexError:
                     ...
-                if (kijelolt_sor[1] == 'Mappa') or (kijelolt_sor[1] == ''):
+                if (kijelolt_sor[1] == 'Mappa'):
                     if is_pressed('enter'):
                         
                         if os.path.exists(t1_ut.szulo) == True:
                             window['-TABLE01-'].set_right_click_menu(folder_right_click)
                             window['-TABLE01-'].set_tooltip('Az enter lenyomasaval megnyithato')
                             t1_ut.Frissites(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
-                            window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
-                            window.find_element('-Organize01-').update(t1_ut.szulo)
-                            tmp.clear()
+                            try:
+                                window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
+                                window.find_element('-Organize01-').update(t1_ut.szulo)
+                                tmp.clear()
+                            except (PermissionError, FileNotFoundError, WindowsError):
+                                t1_ut.SzuloUtvonal()
+                                window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
+                                window.find_element('-Organize01-').update(t1_ut.szulo)
+                                tmp.clear()
                             
                         else:
                             t1_ut.SzuloUtvonal()
@@ -211,6 +218,12 @@ while True:
                 else:
                     window['-TABLE01-'].set_right_click_menu(file_right_click)
                     window['-TABLE01-'].set_tooltip('Jobb klikkel a lehetosegpanel')
+                    eventT1, valuesT1 = window.read()
+                    if event == 'Control_L:17':
+                         eventlist.clear()
+                         eventlist.append(17)
+                    eventT1, valuesT1 = window.read()
+                    event_handlingT1:EventHandler = EventHandler(eventT1, {'fo':t1_ut.szulo, 'jelolt':kijelolt_sor[0], 'bovitmenye':kijelolt_sor[1]}, eventlist[0] if len(eventlist) > 0 else 0).compare()
                     tmp.clear()
             case '-TABLE02-':
                 tmp:list = window['-TABLE02-'].get().copy()
@@ -218,7 +231,7 @@ while True:
                     kijelolt_sor = [tmp [row] for row in values[event]].pop()
                 except IndexError:
                     pass
-                if (kijelolt_sor[1] == 'Mappa') or (kijelolt_sor[1] == ''):
+                if (kijelolt_sor[1] == 'Mappa'):
                     window['-TABLE02-'].set_right_click_menu(folder_right_click)
                     window['-TABLE02-'].set_tooltip('Az enter lenyomasaval megnyithato')
                     if is_pressed('enter'):
@@ -234,6 +247,13 @@ while True:
                 else:
                     window['-TABLE02-'].set_right_click_menu(file_right_click)
                     window['-TABLE02-'].set_tooltip('Jobb klikkel a lehetosegpanel')
+                    eventT2, valuesT2 = window.read()
+                    if event == 'Control_L:17':
+                         eventlist.clear()
+                         eventlist.append(17)
+                    eventT2, valuesT2 = window.read()
+                    event_handlingT2:EventHandler = EventHandler(eventT2, {'fo':t2_ut.szulo, 'jelolt':kijelolt_sor[0]}, eventlist[0] if len(eventlist) > 0 else 0).compare()
+                        
                     tmp.clear()
                     
     #---------------------------Az asztalon valo visszalepes kezelese---------------------------------------------------------- 
@@ -250,7 +270,8 @@ while True:
                 window.find_element('-Organize02-').update(t2_ut.szulo)
                 
                 
-    if event in ('Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes', 'Tulajdonsagok') and window['-TABLE02-'].fo:
+                
+    if event in ('Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes', 'Tulajdonsagok'):
         ...
         
     if (event == 'r') and (eventlist[0] == 17):

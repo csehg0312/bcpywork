@@ -1,6 +1,7 @@
 import os
 import PySimpleGUI as psg
 #from data.file_folder_managing import create_twoD_list
+from data.disk_manager import kinyeres
 
 fejlec:list = []*4
 fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret']
@@ -26,11 +27,11 @@ def create_layout():
     back_arrow = "C:/Users/csehg/pywork/bcpywork/back-arrow.png"
     psg.theme('SystemDefault')
     layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,
-               psg.Input(os.getcwd(), enable_events=True, key="-Organize01-"), 
-               psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
+               psg.Input(os.getcwd(), enable_events=True, key="-Organize01-", ), 
+            #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
                psg.Push(),
                psg.Input(os.getcwd(), enable_events=True, key="-Organize02-"), 
-               psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
+            #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
                psg.Push()],
               [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
                           image_filename=back_arrow, size=(10,10), key='Back01',
@@ -110,23 +111,25 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
         
         
 
-def create_search_layout():
-    psg.theme('SystemDefault')
-    search_layout = [[psg.Input('', key='-SEARCHING-', expand_x=True)],
-                     [psg.Listbox([], default_values=any, size=(meretek[10], meretek[11]), right_click_menu=[], key='-FOUND-', highlight_background_color="#7AA874", change_submits=False)]
-                     ]
-    return search_layout
+# def create_search_layout():
+#     psg.theme('SystemDefault')
+#     disk_nev, _, _ = kinyeres()
+#     a_keresendo = map(os.path.abspath, disk_nev)
+#     search_layout = [[psg.Input('', key='-SEARCHING-', expand_x=True), psg.Combo(values=[x for x in a_keresendo], default_value=os.path.expanduser('~'), key='-DRIVE-', expand_x=True)],
+#                      [psg.Listbox([], default_values=any, size=(meretek[10], meretek[11]), right_click_menu=[], key='-FOUND-', highlight_background_color="#7AA874", change_submits=False)]
+#                      ]
+#     return search_layout
 
-def create_search_window():
-    window3 = psg.Window('SearchBar', create_search_layout(), 
-                        size=(meretek[8],meretek[9]),  
-                        use_custom_titlebar=True,
-                        resizable=True, 
-                        alpha_channel=1, 
-                        return_keyboard_events=True,
-                        keep_on_top=True
-                        )
-    return window3
+# def create_search_window():
+#     window3 = psg.Window('SearchBar', create_search_layout(), 
+#                         size=(meretek[8],meretek[9]),  
+#                         use_custom_titlebar=True,
+#                         resizable=True, 
+#                         alpha_channel=1, 
+#                         return_keyboard_events=True,
+#                         keep_on_top=True
+#                         )
+#     return window3
 
 
 

@@ -93,6 +93,23 @@ def create_twoD_list(ut:str):
     
     return tomb
 
+def removing_file():
+    ...
+    
+def removing_tree():
+    ...
+
+def creating_file():
+    ...
+    
+def creating_folder():
+    ...
+    
+def renaming():
+    ...
+    
+
+
     
 if __name__ == '__main__':
     keres:list = []
