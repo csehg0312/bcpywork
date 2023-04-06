@@ -2,6 +2,7 @@ import os
 from collections import deque
 from data.dataclass_file_manager import File
 from data.dataclass_folder_manager import Folder
+# import magic
 
 def simple_data(ut:str):
     try:
@@ -93,28 +94,100 @@ def create_twoD_list(ut:str):
     
     return tomb
 
+
 def removing_file():
     ...
     
 def removing_tree():
     ...
+    
+# def open_the_file(current_place):
+#     with open(current_place, 'rb') as reader:
+#         not_encoded = reader.read()
+#         m = magic.Magic(mime_encoding=True)
+#         encoded = m.from_buffer(not_encoded)
+#         print(type(encoded))
+#     return encoded
 
-def creating_file():
+def remove_file(current_path) -> str:
+    try:
+        os.remove(current_path)
+        return 'File removed!'
+    except OSError as e:
+        return f'Exception happened {e}'
+
+def remove_folder(current_path):
+    try:
+        os.rmdir(current_path)
+        return 'Folder removed!'
+    except OSError as e:
+        return 'Exception happened {e}'
+    
+def remove_tree(current_path):
     ...
     
-def creating_folder():
-    ...
+
+        
+
+def creating_file_without_value(current_folder, file_to_create, encoded:str) -> str:
+    file_created = os.path.join(current_folder, file_to_create)
+    encodes = ['utf-8', 'utf-16', 'ansi']
+    if encoded in encodes:
+        # print('its all good')
+        with open(file_created, 'w', encoding=encoded) as f_write:
+            pass
+        return 'A fajl elmentve tartalom nelkul!'
+    else:
+        return 'A fajl kodolasa nem megfelelo!'
     
-def renaming():
-    ...
+def creating_file_with_value(current_folder, file_to_create, encoded:str, value_in:str) -> str:
+    file_created = os.path.join(current_folder, file_to_create)
+    encodes = ['utf-8', 'utf-16', 'ansi']
+    if encoded in encodes:
+        # print('its all good')
+        with open(file_created, 'w', encoding=encoded) as f_write:
+            f_write.write(value_in)
+        return 'A fajl elmentve!'
+    else:
+        return 'A fajl kodolasa nem megfelelo!'
+
+def create_file(current_folder, file_to_create, encoded:str, value_in:str) -> str:
+    if value_in == '':
+        message:str
+        message = creating_file_without_value(current_folder, file_to_create, encoded)
+        return message
+    else:
+        message:str
+        message = creating_file_with_value(current_folder, file_to_create, encoded, value_in)
+        return message
+    
+def creating_folder(current_folder, folder_to_create) -> str:
+    if os.path.exists(current_folder) and os.path.exists(os.path.join(current_folder, folder_to_create) == False):
+        
+        folder_created = os.path.join(current_folder, folder_to_create)
+        os.mkdir(folder_created)
+        return 'Path has been created!'
+    else:
+        return 'Current path does not exist!'
+    
+def create_path_or_folder(file_or_folder:str, current_folder, folder_to_create, file_to_create, encoded:str, value_in:str):
+    match file_or_folder:
+        case 'folder':
+            message:str = creating_folder(current_folder, folder_to_create)
+            return message
+        case 'file':
+            create_file(current_folder, file_to_create, encoded, value_in)
+            return message
+      
+def renaming(from_file, to_file:str):
+    os.rename(from_file,to_file)
     
 
 
     
 if __name__ == '__main__':
-    keres:list = []
-    keres = kereses(os.getcwd())
-    print(keres)
+    ...
+    # open_the_file("C:/Users/csehg/pytry/2d_list_one.py")
 #     S = mappa_osztaly(utv)
 #     print(S)
 #     print(sys.getsizeof(S))

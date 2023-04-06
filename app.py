@@ -5,14 +5,15 @@ from data.disk_manager import kinyeres
 import PySimpleGUI as psg
 from keyboard import is_pressed
 from collections import deque
+import pyperclip
 from data.binaris_search import binaris_atvitel
 from data.path_manager import Jelen_EleresiUt
 from event_handler import EventHandler
 import logging
 file_right_click:list
-file_right_click = ['Fajl', ['Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes','---' ,'Tulajdonsagok']]
+file_right_click = ['Fajl', ['Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes','---' ,'Tulajdonsagok']]
 folder_right_click:list
-folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...', 'Rename', 'Remove', 'Remove tree...', 'Open in new tab', 'Properties']]
+folder_right_click = ['Folder', ['Masolas', '&Utvonal masolasa...', 'Athelyezes', 'Athelyezes megadott mappaba...', 'Atnevezes', 'Eltavolitas', 'Directory fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
 writerup:bool = False
 search_up:bool = False
 disk_selectorup:bool = False
@@ -47,11 +48,37 @@ while True:
         writer_window = make_second_window()
         while True:
             writer_event,writer_values = writer_window.read(timeout=100)
-            
             if writer_event in ('X', psg.WIN_CLOSED) or (event == None):
                 #logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
                 #logging.warning(f'The Writer has been closed, Event: {writer_event}')
                 break
+            if writer_event == 'Control_L:17':
+                    key_event, _ = writer_window.read(100)
+                    if key_event == 'z':
+                        want_to_close:str = psg.popup_yes_no('Are you sure want to quit?') 
+                        if want_to_close == 'Yes':
+                            
+                            break
+                        else:
+                            pass
+                    if key_event == 's':
+                        print('saving')
+                    if key_event == 'v':
+                        pyperclip.paste()
+                    if key_event == 'c':
+                        pyperclip.copy()
+            if writer_event == 'Megnyitas':
+                ...
+            
+            match writer_event:
+                case 'Beillesztes':
+                    w_val = writer_values['-MULTI-']
+                    writer_window['-MULTI-'].update(f'{w_val} {pyperclip.paste()}')
+                    w_val = ''
+                case 'Masolas':
+                    pyperclip.copy(writer_values['-MULTI-'])
+            
+            
         writer_window.close()
         writerup=False
     
@@ -196,16 +223,17 @@ while True:
                 except IndexError:
                     ...
                 if (kijelolt_sor[1] == 'Mappa'):
+                    window['-TABLE01-'].set_right_click_menu(folder_right_click)
+                    window['-TABLE01-'].set_tooltip('Az enter lenyomasaval megnyithato')
                     if is_pressed('enter'):
-                        
+                            
                         if os.path.exists(t1_ut.szulo) == True:
-                            window['-TABLE01-'].set_right_click_menu(folder_right_click)
-                            window['-TABLE01-'].set_tooltip('Az enter lenyomasaval megnyithato')
                             t1_ut.Frissites(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
                             try:
                                 window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
                                 window.find_element('-Organize01-').update(t1_ut.szulo)
                                 tmp.clear()
+                                
                             except (PermissionError, FileNotFoundError, WindowsError):
                                 t1_ut.SzuloUtvonal()
                                 window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
@@ -230,7 +258,7 @@ while True:
                 try:
                     kijelolt_sor = [tmp [row] for row in values[event]].pop()
                 except IndexError:
-                    pass
+                    ...
                 if (kijelolt_sor[1] == 'Mappa'):
                     window['-TABLE02-'].set_right_click_menu(folder_right_click)
                     window['-TABLE02-'].set_tooltip('Az enter lenyomasaval megnyithato')

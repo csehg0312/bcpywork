@@ -9,14 +9,14 @@ fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret']
 
 
 
-egyszeru_jobb_kattintas:list
-egyszeru_jobb_kattintas = ['Egyszeru',['&Writer', '&Uj', '&A mappa tulajdonsagai::Properties']]
+writer_menu:list
+writer_menu = ['Fajl', ['Mentes', 'Mentes maskent', 'Megnyitas']], ['Szerkeszt', ['Masolas', 'Beillesztes']]
 disk_right_click = []
 disk_click = ['Disk', ['Megnyitas asztalon', ['Asztal1::-INT1-', 'Asztal2::-INT2-']]]
 folder_right_click:list
 folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...', 'Rename', 'Remove', 'Remove tree...', 'Open in new tab', 'Properties']]
 #a meretek igy [0]appwinx, [1]appwiny, [2]tablex, [3]tabley, [4]secondWindowx, [5]secondWindowy, [6]multilinex, [7]multilineY, [8]searchWinX, [9]searchWinY, [10]searchListX, [11]searchListY , [12]Disk selectorX, [13] Disk selectorY
-meretek:list = [1280,720,300,36,600,500,45,25, 400, 700, 50, 50, 400, 400]
+meretek:list = [1280,720,300,36,700,800,65,45, 400, 700, 50, 50, 400, 400]
 
 vals:list = []
 # vals = create_twoD_list(os.getcwd())
@@ -135,8 +135,9 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
 
 def create_writer():
     layout2 = [[psg.Text('Writer'),psg.Push(), psg.Text('X', enable_events=True)],
-              [psg.Multiline('', key='-MULTI-', size=(meretek[6],meretek[7]))],
-              [psg.Ok(), psg.Button('Exit')]
+               [psg.Menu(menu_definition=writer_menu, visible=True)],
+               [psg.Multiline('', key='-MULTI-', size=(meretek[6],meretek[7])), psg.Text('Kodolas:'), 
+               psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8')]
                ]
     return layout2
 
@@ -145,7 +146,7 @@ def make_second_window():
                           create_writer(), 
                           size=(meretek[4],meretek[5]),
                           no_titlebar=True,
-                          keep_on_top=True
+                          return_keyboard_events=True
                           )
     return window02
 
