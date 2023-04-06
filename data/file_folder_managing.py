@@ -126,7 +126,16 @@ def remove_folder(current_path):
 def remove_tree(current_path):
     ...
     
-
+def remove_folder_or_file(file_or_folder:int, current_path) -> str:
+    match file_or_folder:
+        case 0:
+            message = remove_folder(current_path)
+            return message
+        case 2:
+            message = remove_file(current_path)
+            return message
+        case other:
+            return 'No path added'
         
 
 def creating_file_without_value(current_folder, file_to_create, encoded:str) -> str:
@@ -170,12 +179,12 @@ def creating_folder(current_folder, folder_to_create) -> str:
     else:
         return 'Current path does not exist!'
     
-def create_path_or_folder(file_or_folder:str, current_folder, folder_to_create, file_to_create, encoded:str, value_in:str):
+def create_path_or_folder(file_or_folder:int, current_folder, folder_to_create, file_to_create, encoded:str, value_in:str):
     match file_or_folder:
-        case 'folder':
+        case 0:
             message:str = creating_folder(current_folder, folder_to_create)
             return message
-        case 'file':
+        case 1:
             create_file(current_folder, file_to_create, encoded, value_in)
             return message
       

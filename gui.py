@@ -150,7 +150,7 @@ def make_second_window():
                           )
     return window02
 
-def file_properties_lay(utv:str, meret: int):
+def file_properties_lay(utv:str, meret: int) -> list:
     szulo, fajl = os.path.split(utv)
     nev, bov = os.path.splitext(fajl)
     layout = [[psg.Input(nev, enable_events=True)],
@@ -169,6 +169,21 @@ def file_properties_win(utv:str, meret:int):
                              use_custom_titlebar=True)
     return prop_window
 
+def folder_properties_layout(utv:str):
+    szulo, mappa = os.path.split(utv)
+    layout = [[psg.Input(mappa, enable_events=True)],
+              [psg.Text('Hely:'), psg.Text(szulo)]
+              ]
+    
+    return layout
+
+def folder_properties_window(utv:str):
+    prop_window = psg.Window('Tulajdonsagok', 
+                             file_properties_lay(utv), 
+                             disable_minimize=True, 
+                             use_custom_titlebar=True)
+    return prop_window
     
 if __name__ == '__main__':
-    create_ablak()
+    window = file_properties_win('C:/Users/csehg/pytry/2d_one_file.py', 23510)
+    
