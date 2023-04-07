@@ -1,6 +1,6 @@
 import os
 from data.file_folder_managing import create_twoD_list, kereses
-from gui import create_ablak, make_second_window, create_disk_window
+from gui import create_ablak, make_second_window, create_disk_window, file_or_folder_szita
 from data.disk_manager import kinyeres
 import PySimpleGUI as psg
 from keyboard import is_pressed
@@ -11,9 +11,9 @@ from data.path_manager import Jelen_EleresiUt
 from event_handler import EventHandler
 import logging
 file_right_click:list
-file_right_click = ['Fajl', ['Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes','---' ,'Tulajdonsagok']]
+file_right_click = ['Fajl', ['Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 folder_right_click:list
-folder_right_click = ['Folder', ['Masolas', '&Utvonal masolasa...', 'Athelyezes', 'Athelyezes megadott mappaba...', 'Atnevezes', 'Eltavolitas', 'Directory fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
+folder_right_click = ['Folder', ['Utvonal masolasa...', 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Directory fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
 writerup:bool = False
 search_up:bool = False
 disk_selectorup:bool = False
@@ -247,11 +247,10 @@ while True:
                     window['-TABLE01-'].set_right_click_menu(file_right_click)
                     window['-TABLE01-'].set_tooltip('Jobb klikkel a lehetosegpanel')
                     eventT1, valuesT1 = window.read()
-                    if event == 'Control_L:17':
-                         eventlist.clear()
-                         eventlist.append(17)
-                    eventT1, valuesT1 = window.read()
-                    event_handlingT1:EventHandler = EventHandler(eventT1, {'fo':t1_ut.szulo, 'jelolt':kijelolt_sor[0], 'bovitmenye':kijelolt_sor[1]}, eventlist[0] if len(eventlist) > 0 else 0).compare()
+                    handler: EventHandler 
+                    handler = EventHandler(eventT1, {'fo': t1_ut.szulo, 'jelolt': kijelolt_sor[0], 'bovitmenye': kijelolt_sor[1]}).compare()
+                    print(type(handler))
+                    
                     tmp.clear()
             case '-TABLE02-':
                 tmp:list = window['-TABLE02-'].get().copy()
@@ -275,12 +274,9 @@ while True:
                 else:
                     window['-TABLE02-'].set_right_click_menu(file_right_click)
                     window['-TABLE02-'].set_tooltip('Jobb klikkel a lehetosegpanel')
-                    eventT2, valuesT2 = window.read()
-                    if event == 'Control_L:17':
-                         eventlist.clear()
-                         eventlist.append(17)
-                    eventT2, valuesT2 = window.read()
-                    event_handlingT2:EventHandler = EventHandler(eventT2, {'fo':t2_ut.szulo, 'jelolt':kijelolt_sor[0]}, eventlist[0] if len(eventlist) > 0 else 0).compare()
+                    eventT2, valuesT2 = window.read(timeout = 100)
+                    
+                         
                         
                     tmp.clear()
                     
@@ -299,9 +295,16 @@ while True:
                 
                 
                 
-    if event in ('Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Kivagas', 'Atnevezes', 'Tulajdonsagok'):
-        ...
+    # if event in ('Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Athelyezes::-FILE-', 'Atnevezes::-FILE-'):
+    #     match event:
+    #         case 'Megnyitas':
+    #             ...
         
+    # if event in ('Masolas', '&Utvonal masolasa...', 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Directory fa eltavolitasa...' ,'Megnyitas a masik asztalon'):
+    #     ...
+        
+    # if event == 'Tulajdonsagok':
+    #     ...
     if (event == 'r') and (eventlist[0] == 17):
         ...
         

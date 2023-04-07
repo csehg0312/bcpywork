@@ -183,6 +183,19 @@ def folder_properties_window(utv:str):
                              disable_minimize=True, 
                              use_custom_titlebar=True)
     return prop_window
+
+
+def file_or_folder_szita(utv:str, meret:int = 0):
+    if os.path.exists(utv):
+        match os.path.isfile(utv):
+            case True:
+                PropWindow = file_properties_win(utv, meret)
+                return PropWindow
+            case False:
+                PropWindow = folder_properties_window(utv)
+                return PropWindow
+            case other:
+                psg.popup_ok('No properties found')
     
 if __name__ == '__main__':
     window = file_properties_win('C:/Users/csehg/pytry/2d_one_file.py', 23510)

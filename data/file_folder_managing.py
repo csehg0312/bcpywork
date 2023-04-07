@@ -2,7 +2,7 @@ import os
 from collections import deque
 from data.dataclass_file_manager import File
 from data.dataclass_folder_manager import Folder
-# import magic
+import magic
 
 def simple_data(ut:str):
     try:
@@ -95,19 +95,21 @@ def create_twoD_list(ut:str):
     return tomb
 
 
-def removing_file():
-    ...
+def open_the_encoding(current_place) -> str:
+    with open(current_place, 'rb') as reader:
+        not_encoded = reader.read()
+        m = magic.Magic(mime_encoding=True)
+        encoded = m.from_buffer(not_encoded)
+        print(encoded)
+    return encoded
+
+def open_file(current_path):
+    with open(current_path, 'r' ,encoding=open_the_encoding(current_path)) as reader:
+        file_text = reader.read()
+        # print(file_text)
+        reader.close()
+        return file_text
     
-def removing_tree():
-    ...
-    
-# def open_the_file(current_place):
-#     with open(current_place, 'rb') as reader:
-#         not_encoded = reader.read()
-#         m = magic.Magic(mime_encoding=True)
-#         encoded = m.from_buffer(not_encoded)
-#         print(type(encoded))
-#     return encoded
 
 def remove_file(current_path) -> str:
     try:
@@ -196,7 +198,7 @@ def renaming(from_file, to_file:str):
     
 if __name__ == '__main__':
     ...
-    # open_the_file("C:/Users/csehg/pytry/2d_list_one.py")
+    # open_file("C:/Users/csehg/pytry/Elmelet/ocdo.csv")
 #     S = mappa_osztaly(utv)
 #     print(S)
 #     print(sys.getsizeof(S))
