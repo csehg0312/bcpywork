@@ -100,15 +100,26 @@ def open_the_encoding(current_place) -> str:
         not_encoded = reader.read()
         m = magic.Magic(mime_encoding=True)
         encoded = m.from_buffer(not_encoded)
-        print(encoded)
+        # print(encoded)
     return encoded
 
 def open_file(current_path):
-    with open(current_path, 'r' ,encoding=open_the_encoding(current_path)) as reader:
-        file_text = reader.read()
-        # print(file_text)
-        reader.close()
-        return file_text
+    encoder = open_the_encoding(current_path)
+    if encoder != 'binary':
+        with open(current_path, 'r', encoding=encoder ) as reader:
+            file_text = reader.read()
+            # print(file_text)
+            reader.close()
+            return file_text
+    else:
+        with open(current_path, 'rb') as reader:
+            binary_text = reader.read()
+            reader.close()
+            return binary_text
+    
+# def is_same_file_extension(val:str) -> bool:
+#     head,tail = os.path.splitext(val)
+#     if 
     
 
 def remove_file(current_path) -> str:
@@ -190,8 +201,12 @@ def create_path_or_folder(file_or_folder:int, current_folder, folder_to_create, 
             create_file(current_folder, file_to_create, encoded, value_in)
             return message
       
-def renaming(from_file, to_file:str):
-    os.rename(from_file,to_file)
+def renaming(from_file, to_file:str) -> str:
+    try:
+        os.rename(from_file,to_file)
+        return 'Renaming OK!'
+    except OSError as e:
+        return 'Exception handled as {e}'
     
 
 

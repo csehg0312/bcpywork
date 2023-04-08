@@ -3,6 +3,7 @@ import PySimpleGUI as psg
 import pyperclip
 import os
 from data.file_folder_managing import remove_folder_or_file, create_path_or_folder, renaming, open_file
+from gui import create_writer
 
 @dataclass
 class EventHandler:
@@ -42,6 +43,18 @@ class EventHandler:
                         # print(message_out)
                         # psg.popup_notify(message_out)
                         # return refresh
+                        
+        if self.bejovo in ('Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas'):
+            match self.bejovo:
+                case 'Megnyitas Writerben':
+                    fajl, bov = self.data.get('jelolt'), self.data.get('bovitmenye')
+                    if os.path.exists(os.path.join(self.data.get('fo'), f'{fajl}{bov}')): 
+                        fajl_text:str = open_file(os.path.join(self.data.get('fo'), f'{fajl}{bov}'))
+                        write_window = create_writer(fajl_text)
+                case 'Eleresi ut masolasa':
+                    ...
+                case 'Masolas':
+                    ...
 
                 
             

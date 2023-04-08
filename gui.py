@@ -2,11 +2,14 @@ import os
 import PySimpleGUI as psg
 #from data.file_folder_managing import create_twoD_list
 from data.disk_manager import kinyeres
+from time import strftime, gmtime
 
 fejlec:list = []*4
 fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret']
 
-
+def calcdate(linux_time):
+    CTV = strftime('%d %b %Y %H:%M', gmtime(linux_time))
+    return f'{CTV}'
 
 
 writer_menu:list
@@ -26,6 +29,8 @@ vals:list = []
 def create_layout():
     back_arrow = "C:/Users/csehg/pywork/bcpywork/back-arrow.png"
     psg.theme('SystemDefault')
+    frame_layout = [[psg.Button('Writer')],
+                    [psg.Button('Refresh')]]
     layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,
                psg.Input(os.getcwd(), enable_events=True, key="-Organize01-", ), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
@@ -53,7 +58,7 @@ def create_layout():
                          enable_events=True,
                          bind_return_key=True
                          ),
-               psg.Button('Writer'),
+               psg.Frame('', frame_layout, element_justification='center'),
                psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
                          key='-TABLE02-',
                          expand_x=True,
@@ -133,45 +138,48 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
 
 
 
-def create_writer():
+def create_writer(multi_input:str = ''):
     layout2 = [[psg.Text('Writer'),psg.Push(), psg.Text('X', enable_events=True)],
                [psg.Menu(menu_definition=writer_menu, visible=True)],
-               [psg.Multiline('', key='-MULTI-', size=(meretek[6],meretek[7])), psg.Text('Kodolas:'), 
+               [psg.Multiline(multi_input, key='-MULTI-', size=(meretek[6],meretek[7])), psg.Text('Kodolas:'), 
                psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8')]
                ]
     return layout2
 
-def make_second_window():
+def make_second_window(multi_input:str = ''):
     window02 = psg.Window('Writer', 
-                          create_writer(), 
+                          create_writer(multi_input), 
                           size=(meretek[4],meretek[5]),
                           no_titlebar=True,
                           return_keyboard_events=True
                           )
     return window02
 
-def file_properties_lay(utv:str, meret: int) -> list:
+def file_properties_lay(utv:str, meret: int, modositas) -> list:
     szulo, fajl = os.path.split(utv)
     nev, bov = os.path.splitext(fajl)
-    layout = [[psg.Input(nev, enable_events=True)],
+    mod_date = calcdate(os.path.getctime(utv))
+    layout = [[psg.Input(nev, enable_events=True, key='-RENAMER-FILE-')],
               [psg.Text('Bovitmeny:'), psg.Text(bov)],
               [psg.Text('Hely:'), psg.Text(szulo)],
               [psg.HorizontalSeparator()],
-              [psg.Text('Meret:'), psg.Text(round(meret/1024, 2))],
+              [psg.Text('Meret:'), psg.Text(f'{round(meret/1024, 2)} kB')],
+              [psg.Text('Modositas datuma:'), psg.Text(modositas)],
+              [psg.Text('Letrehozas datuma: '), psg.Text(mod_date)]
               ]
     
     return layout
 
-def file_properties_win(utv:str, meret:int):
+def file_properties_win(utv:str, meret:int,  modositas):
     prop_window = psg.Window('Tulajdonsagok', 
-                             file_properties_lay(utv, meret), 
+                             file_properties_lay(utv, meret, modositas), 
                              disable_minimize=True, 
                              use_custom_titlebar=True)
     return prop_window
 
 def folder_properties_layout(utv:str):
     szulo, mappa = os.path.split(utv)
-    layout = [[psg.Input(mappa, enable_events=True)],
+    layout = [[psg.Input(mappa, enable_events=True, key='-RENAMER-')],
               [psg.Text('Hely:'), psg.Text(szulo)]
               ]
     
@@ -179,19 +187,21 @@ def folder_properties_layout(utv:str):
 
 def folder_properties_window(utv:str):
     prop_window = psg.Window('Tulajdonsagok', 
-                             file_properties_lay(utv), 
+                             folder_properties_layout(utv), 
                              disable_minimize=True, 
                              use_custom_titlebar=True)
     return prop_window
 
 
 def file_or_folder_szita(utv:str, meret:int = 0):
+    print(utv)
     if os.path.exists(utv):
-        match os.path.isfile(utv):
-            case True:
+        print(os.path.isfile(utv))
+        match os.path.isdir(utv):
+            case False:
                 PropWindow = file_properties_win(utv, meret)
                 return PropWindow
-            case False:
+            case True:
                 PropWindow = folder_properties_window(utv)
                 return PropWindow
             case other:
