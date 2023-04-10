@@ -141,8 +141,8 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
 def create_writer(multi_input:str = ''):
     frame_layout = [[psg.Text('untitled.txt', key='-WRITER-NAME-'), psg.Button('Atnevezes', key='-ATNEVEZ-WRITER-')],
                     [psg.Text('Kodolas:'), 
-                     psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8')],
-                    [psg.ButtonMenu('Mentes', menu_def=['Mentes', ['Mentes', 'Mentes mint', ['.txt', '.py', '.html', '.js', 'Mentes']]], key='-SELECT-SAVE-')]
+                     psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8', key='-ENCODED-VAL-')],
+                    [psg.ButtonMenu('Mentes', menu_def=['Mentes', ['Mentes', 'Mentes mint', ['.txt', '.py', '.html', '.js', 'Mentes maskeppen']]], key='-SELECT-SAVE-')]
                     ]
     layout2 = [[psg.Text('Writer'),psg.Push(), psg.Text('X', enable_events=True)],
                [psg.Menu(menu_definition=writer_menu, visible=True)],
@@ -156,7 +156,7 @@ def make_second_window(multi_input:str = ''):
     window02 = psg.Window('Writer', 
                           create_writer(multi_input), 
                           size=(meretek[4],meretek[5]),
-                          use_custom_titlebar=True,
+                          no_titlebar=True,
                           return_keyboard_events=True, 
                           grab_anywhere_using_control=True
                           )

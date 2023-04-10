@@ -354,20 +354,27 @@ while True:
                             case 'Megnyitas Writerben':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
                                 if os.path.exists(os.path.join(t1_ut.szulo, f'{fajl}{bov}')):
-                                    fajl_text = open_file(os.path.join(t1_ut.szulo, f'{fajl}{bov}'))
+                                    fajl_text, encoded = open_file(os.path.join(t1_ut.szulo, f'{fajl}{bov}'))
                                     writer_window = make_second_window(fajl_text)
                                     fajl_text = ''
                                     while True:
                                         writerup = True
-                                        eventw, valuew = writer_window.read()
+                                        eventw, valuew = writer_window.read(timeout=100)
+                                        if eventw in  (psg.WIN_CLOSED, 'X'):
+                                            break
+                                        
+                                        writer_window['-WRITER-NAME-'].update(f'{fajl}{bov}')
+                                        writer_window['-ENCODED-VAL-'].update(encoded)
                                         if eventw == '-ENABLE-MODIFY-':
                                             writer_window['-MULTI-'].update(disabled = False)
                                             writer_window['-ENABLE-MODIFY-'].update(visible = False)
+                                            writer_window['-SELECT-SAVE-'].Update(['Mentes', ['Mentes', 'Mentes mint', ['!.txt', '!.py', '!&.html', '!&.js', 'Mentes maskeppen']]])
                                             
                                         if eventw in ('Mentes', '.txt', '.py', '.html', '.js', 'Mentes maskeppen'):
                                             match eventw:
                                                 case 'Mentes':
-                                                    ...
+                                                    if os.path.exists(os.path.join(t1_ut.szulo,f'{fajl}{bov}')):
+                                                        ...
                                                 case '.txt':
                                                     ...
                                                 case '.py':
@@ -378,10 +385,6 @@ while True:
                                                     ...
                                                 case 'Mentes maskeppen':
                                                     ...
-                                        
-                                        
-                                        if eventw in  (psg.WIN_CLOSED, 'X'):
-                                            break
                                     
                                     writerup = False
                                     writer_window.close()

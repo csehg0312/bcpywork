@@ -110,7 +110,7 @@ def open_file(current_path):
             file_text = reader.read()
             # print(file_text)
             reader.close()
-            return file_text
+            return file_text, encoder
     else:
         with open(current_path, 'rb') as reader:
             binary_text = reader.read()
