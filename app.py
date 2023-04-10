@@ -57,6 +57,8 @@ while True:
                 #logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
                 #logging.warning(f'The Writer has been closed, Event: {writer_event}')
                 break
+            writer_window['-MULTI-'].update(disabled = False)
+            writer_window['-ENABLE-MODIFY-'].update(visible = False)
             if writer_event == 'Control_L:17':
                     key_event, _ = writer_window.read(100)
                     if key_event == 'z':
@@ -358,6 +360,25 @@ while True:
                                     while True:
                                         writerup = True
                                         eventw, valuew = writer_window.read()
+                                        if eventw == '-ENABLE-MODIFY-':
+                                            writer_window['-MULTI-'].update(disabled = False)
+                                            writer_window['-ENABLE-MODIFY-'].update(visible = False)
+                                            
+                                        if eventw in ('Mentes', '.txt', '.py', '.html', '.js', 'Mentes maskeppen'):
+                                            match eventw:
+                                                case 'Mentes':
+                                                    ...
+                                                case '.txt':
+                                                    ...
+                                                case '.py':
+                                                    ...
+                                                case '.html':
+                                                    ...
+                                                case '.js':
+                                                    ...
+                                                case 'Mentes maskeppen':
+                                                    ...
+                                        
                                         
                                         if eventw in  (psg.WIN_CLOSED, 'X'):
                                             break
@@ -614,5 +635,4 @@ while True:
     if event == 'Refresh':
         psg.popup_notify('Refreshed', title='Software')   
     
-    #print(f'{event} and Combo val: {com}')
 window.close()

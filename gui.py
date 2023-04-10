@@ -139,10 +139,16 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
 
 
 def create_writer(multi_input:str = ''):
+    frame_layout = [[psg.Text('untitled.txt', key='-WRITER-NAME-'), psg.Button('Atnevezes', key='-ATNEVEZ-WRITER-')],
+                    [psg.Text('Kodolas:'), 
+                     psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8')],
+                    [psg.ButtonMenu('Mentes', menu_def=['Mentes', ['Mentes', 'Mentes mint', ['.txt', '.py', '.html', '.js', 'Mentes']]], key='-SELECT-SAVE-')]
+                    ]
     layout2 = [[psg.Text('Writer'),psg.Push(), psg.Text('X', enable_events=True)],
                [psg.Menu(menu_definition=writer_menu, visible=True)],
-               [psg.Multiline(multi_input, key='-MULTI-', size=(meretek[6],meretek[7])), psg.Text('Kodolas:'), 
-               psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8')]
+               [psg.Push(), psg.Button('Modositas engedelyezese', key='-ENABLE-MODIFY-', visible=True), psg.Push()],
+               [psg.Multiline(multi_input, key='-MULTI-', size=(meretek[6],meretek[7]), disabled=True),
+               psg.Frame(title='', border_width=0, layout=frame_layout)]
                ]
     return layout2
 
@@ -150,8 +156,9 @@ def make_second_window(multi_input:str = ''):
     window02 = psg.Window('Writer', 
                           create_writer(multi_input), 
                           size=(meretek[4],meretek[5]),
-                          no_titlebar=True,
-                          return_keyboard_events=True
+                          use_custom_titlebar=True,
+                          return_keyboard_events=True, 
+                          grab_anywhere_using_control=True
                           )
     return window02
 
