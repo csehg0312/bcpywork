@@ -1,5 +1,5 @@
 import os
-from data.file_folder_managing import create_twoD_list, open_file, remove_folder_or_file, create_path_or_folder, renaming
+from data.file_folder_managing import create_twoD_list, open_file, remove_folder_or_file, create_path_or_folder, renaming, create_file, overwriting_existing_file
 from gui import create_ablak, make_second_window, create_disk_window, file_or_folder_szita, folder_properties_window, file_properties_win
 from data.disk_manager import kinyeres
 import PySimpleGUI as psg
@@ -27,6 +27,7 @@ van_kijelolt_tabla1:bool = False
 van_kijelolt_tabla2:bool = False
 window_minimized:bool = False
 refresh_bool:bool = False
+is_saved:bool = False
 refresh_num = 0
 
 os.chdir(os.path.expanduser('~'))
@@ -52,24 +53,68 @@ while True:
         writerup = True
         writer_window = make_second_window()
         while True:
-            writer_event,writer_values = writer_window.read(timeout=100)
-            if writer_event in ('X', psg.WIN_CLOSED) or (event == None):
-                #logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-                #logging.warning(f'The Writer has been closed, Event: {writer_event}')
-                break
+            writer_event, writer_values = writer_window.read(timeout=100)
+            used_path = ''
+            if writer_event in ('X', psg.WIN_CLOSED) and (is_saved == False) or (event == None):
+                match writer_values['-MULTI-']:
+                    case '':
+                        break
+                    case other:
+                        made = psg.popup_yes_no('Biztos benne hogy mentes nelkul szeretne bezarni?')
+                        match made:
+                            case 'Yes':
+                                break
+                            case 'No':
+                                continue
             writer_window['-MULTI-'].update(disabled = False)
             writer_window['-ENABLE-MODIFY-'].update(visible = False)
             if writer_event == 'Control_L:17':
-                    key_event, _ = writer_window.read(100)
-                    if key_event == 'z':
-                        want_to_close:str = psg.popup_yes_no('Are you sure want to quit?') 
-                        if want_to_close == 'Yes':
-                            
-                            break
-                        else:
-                            pass
+                    key_event, key_values = writer_window.read(100)
+                    if key_event == 'z' and is_saved == False:
+                        want_to_close:str = psg.popup_yes_no('Biztos benne hogy mentes nelkul szeretne bezarni?') 
+                        match want_to_close:
+                            case 'Yes':
+                                break
+                            case 'No':
+                                continue
                     if key_event == 's':
-                        print('saving')
+                        if (key_values['-WRITER-NAME-'] == 'untitled.txt') and (is_saved == False):
+                            save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                            save_name = psg.popup_get_text('Irja be a fajl nevet es bovitmenyet! (fajl.txt)')
+                            f, b = os.path.splitext(save_name)
+                            if save_place != '' and save_name != '' and f != '' and b != '':
+                                match os.path.exists(os.path.join(save_place, save_name)):
+                                    case True:
+                                        psg.popup_cancel('Ilyen fajl mar letezik!')
+                                    case False:
+                                        out_message = create_file(save_place, save_name, writer_values['-ENCODED-VAL-'], writer_values['-MULTI-'])
+                                        psg.popup_ok(out_message)
+                                        writer_window['-WRITER-NAME-'].update(save_name)
+                                    case other:
+                                        ...
+                            else:
+                                psg.popup_error('Nem megfelelo adatok lettek megadva!')
+                                match save_place:
+                                    case '':
+                                        psg.popup_error('Hianyzo utvonal!')
+                                        continue
+                                    case other:
+                                        match f:
+                                            case '':
+                                                psg.popup_error('Hianyzo fajlnev!')
+                                                used_path = save_place
+                                                continue
+                                            case other:
+                                                match b:
+                                                    case '':
+                                                        psg.popup_error('Hianyzo bovitmeny!')
+                                                        continue
+                                                    case other:
+                                                        continue
+                        elif key_values['-WRITER-NAME-'] != 'untitled.txt' and is_saved == False:
+                            out_message = overwriting_existing_file(used_path, writer_values['-WRITER-NAME-'], writer_values['-ENCODED-VAL-'], writer_values['-MULTI-'])
+                        else:
+                            continue
                     if key_event == 'v':
                         pyperclip.paste()
                     if key_event == 'c':
@@ -84,6 +129,8 @@ while True:
                     w_val = ''
                 case 'Masolas':
                     pyperclip.copy(writer_values['-MULTI-'])
+                case '-MULTI-':
+                    is_saved = False
             
             
         writer_window.close()
@@ -361,7 +408,16 @@ while True:
                                         writerup = True
                                         eventw, valuew = writer_window.read(timeout=100)
                                         if eventw in  (psg.WIN_CLOSED, 'X'):
-                                            break
+                                            match valuew['-MULTI-']:
+                                                case '':
+                                                    break
+                                                case other:
+                                                    made = psg.popup_ok_cancel('Biztos benne hogy mentes nelkul szeretne bezarni?')
+                                                    match made:
+                                                        case 'OK':
+                                                            break
+                                                        case 'Cancel':
+                                                            continue
                                         
                                         writer_window['-WRITER-NAME-'].update(f'{fajl}{bov}')
                                         writer_window['-ENCODED-VAL-'].update(encoded)

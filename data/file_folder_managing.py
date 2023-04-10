@@ -162,6 +162,15 @@ def creating_file_without_value(current_folder, file_to_create, encoded:str) -> 
     else:
         return 'A fajl kodolasa nem megfelelo!'
     
+def overwriting_existing_file(current_folder, existing_file:str, encoded:str, value_in:str):
+    file_created = os.path.join(current_folder, existing_file)
+    try:
+        with open(file_created, 'w', encoding=encoded) as f_write:
+            f_write.write(value_in)
+        return 'A fajl elmentve!'
+    except OSError:
+        return 'A fajl nem talalhato! Kerem probalja a [Mentes maskeppen] segitsegevel!'
+    
 def creating_file_with_value(current_folder, file_to_create, encoded:str, value_in:str) -> str:
     file_created = os.path.join(current_folder, file_to_create)
     encodes = ['utf-8', 'utf-16', 'ansi']

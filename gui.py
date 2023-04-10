@@ -147,7 +147,7 @@ def create_writer(multi_input:str = ''):
     layout2 = [[psg.Text('Writer'),psg.Push(), psg.Text('X', enable_events=True)],
                [psg.Menu(menu_definition=writer_menu, visible=True)],
                [psg.Push(), psg.Button('Modositas engedelyezese', key='-ENABLE-MODIFY-', visible=True), psg.Push()],
-               [psg.Multiline(multi_input, key='-MULTI-', size=(meretek[6],meretek[7]), disabled=True),
+               [psg.Multiline(multi_input, key='-MULTI-', size=(meretek[6],meretek[7]), disabled=True, enable_events=True),
                psg.Frame(title='', border_width=0, layout=frame_layout)]
                ]
     return layout2
