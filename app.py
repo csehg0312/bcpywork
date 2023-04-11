@@ -6,14 +6,12 @@ import PySimpleGUI as psg
 from keyboard import is_pressed
 from collections import deque
 import pyperclip
-from data.binaris_search import binaris_atvitel
 from data.path_manager import Jelen_EleresiUt
-from event_handler import EventHandler
 import logging
 original_right_click:list = []*2
 original_right_click = ['Mappa', ['Uj', ['Fajl', 'Mappa']]]
 file_right_click:list = []*2
-file_right_click = ['Fajl', ['Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+file_right_click = ['Fajl', ['Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 other_right_click:list = []*2
 other_right_click = ['Fajl', ['Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 folder_right_click:list = []*2
@@ -37,6 +35,20 @@ window = create_ablak()
 window.set_icon(icon="icon/icov1.ico")
 eventlist:deque = deque([])
  #--------------------------A program-----------------------------------------------------
+ #  
+# ██████╗░██████╗░░█████╗░░██████╗░██████╗░░█████╗░███╗░░░███╗  ░██╗░░░░░░░██╗██╗░░██╗██╗██╗░░░░░███████╗
+# ██╔══██╗██╔══██╗██╔══██╗██╔════╝░██╔══██╗██╔══██╗████╗░████║  ░██║░░██╗░░██║██║░░██║██║██║░░░░░██╔════╝
+# ██████╔╝██████╔╝██║░░██║██║░░██╗░██████╔╝███████║██╔████╔██║  ░╚██╗████╗██╔╝███████║██║██║░░░░░█████╗░░
+# ██╔═══╝░██╔══██╗██║░░██║██║░░╚██╗██╔══██╗██╔══██║██║╚██╔╝██║  ░░████╔═████║░██╔══██║██║██║░░░░░██╔══╝░░
+# ██║░░░░░██║░░██║╚█████╔╝╚██████╔╝██║░░██║██║░░██║██║░╚═╝░██║  ░░╚██╔╝░╚██╔╝░██║░░██║██║███████╗███████╗
+# ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝  ░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝╚══════╝╚══════╝
+
+# ██╗░░░░░░█████╗░░█████╗░██████╗░
+# ██║░░░░░██╔══██╗██╔══██╗██╔══██╗
+# ██║░░░░░██║░░██║██║░░██║██████╔╝
+# ██║░░░░░██║░░██║██║░░██║██╔═══╝░
+# ███████╗╚█████╔╝╚█████╔╝██║░░░░░
+# ╚══════╝░╚════╝░░╚════╝░╚═╝░░░░░
 while True:
     event, values = window.read()
     
@@ -48,6 +60,13 @@ while True:
         eventlist.append(17)
     
     
+# ░██╗░░░░░░░██╗██████╗░██╗████████╗███████╗██████╗░  ███████╗██╗░░░██╗███████╗███╗░░██╗████████╗
+# ░██║░░██╗░░██║██╔══██╗██║╚══██╔══╝██╔════╝██╔══██╗  ██╔════╝██║░░░██║██╔════╝████╗░██║╚══██╔══╝
+# ░╚██╗████╗██╔╝██████╔╝██║░░░██║░░░█████╗░░██████╔╝  █████╗░░╚██╗░██╔╝█████╗░░██╔██╗██║░░░██║░░░
+# ░░████╔═████║░██╔══██╗██║░░░██║░░░██╔══╝░░██╔══██╗  ██╔══╝░░░╚████╔╝░██╔══╝░░██║╚████║░░░██║░░░
+# ░░╚██╔╝░╚██╔╝░██║░░██║██║░░░██║░░░███████╗██║░░██║  ███████╗░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░
+# ░░░╚═╝░░░╚═╝░░╚═╝░░╚═╝╚═╝░░░╚═╝░░░╚══════╝╚═╝░░╚═╝  ╚══════╝░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░
+    
     if (event == 'Writer' and writerup == False) or (event == 'w' and eventlist[0] == 17 and writerup == False ):
         eventlist.clear()
         writerup = True
@@ -55,6 +74,8 @@ while True:
         while True:
             writer_event, writer_values = writer_window.read(timeout=100)
             used_path = ''
+            used_file = writer_window.find_element('-WRITER-NAME-').get()
+           
             if writer_event in ('X', psg.WIN_CLOSED) and (is_saved == False) or (event == None):
                 match writer_values['-MULTI-']:
                     case '':
@@ -66,6 +87,9 @@ while True:
                                 break
                             case 'No':
                                 continue
+            elif writer_event in ('X', psg.WIN_CLOSED) and (is_saved == True) or (event == None):
+                break
+            is_saved = True
             writer_window['-MULTI-'].update(disabled = False)
             writer_window['-ENABLE-MODIFY-'].update(visible = False)
             if writer_event == 'Control_L:17':
@@ -77,8 +101,10 @@ while True:
                                 break
                             case 'No':
                                 continue
+                    elif key_event == 'z' and is_saved == True:
+                        break
                     if key_event == 's':
-                        if (key_values['-WRITER-NAME-'] == 'untitled.txt') and (is_saved == False):
+                        if (used_file == 'untitled.txt') and (is_saved == False):
                             save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
                             save_name = psg.popup_get_text('Irja be a fajl nevet es bovitmenyet! (fajl.txt)')
                             f, b = os.path.splitext(save_name)
@@ -87,32 +113,35 @@ while True:
                                     case True:
                                         psg.popup_cancel('Ilyen fajl mar letezik!')
                                     case False:
-                                        out_message = create_file(save_place, save_name, writer_values['-ENCODED-VAL-'], writer_values['-MULTI-'])
+                                        out_message = create_file(save_place, save_name, writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                                         psg.popup_ok(out_message)
+                                        is_saved = True
                                         writer_window['-WRITER-NAME-'].update(save_name)
                                     case other:
                                         ...
                             else:
-                                psg.popup_error('Nem megfelelo adatok lettek megadva!')
+                                psg.popup_ok('Nem megfelelo adatok lettek megadva!')
                                 match save_place:
                                     case '':
-                                        psg.popup_error('Hianyzo utvonal!')
+                                        psg.popup_ok('Hianyzo utvonal!')
                                         continue
                                     case other:
                                         match f:
                                             case '':
-                                                psg.popup_error('Hianyzo fajlnev!')
+                                                psg.popup_ok('Hianyzo fajlnev!')
                                                 used_path = save_place
                                                 continue
                                             case other:
                                                 match b:
                                                     case '':
-                                                        psg.popup_error('Hianyzo bovitmeny!')
+                                                        psg.popup_ok('Hianyzo bovitmeny!')
                                                         continue
                                                     case other:
+                                                        is_saved = True
                                                         continue
-                        elif key_values['-WRITER-NAME-'] != 'untitled.txt' and is_saved == False:
-                            out_message = overwriting_existing_file(used_path, writer_values['-WRITER-NAME-'], writer_values['-ENCODED-VAL-'], writer_values['-MULTI-'])
+                        elif (used_file != 'untitled.txt') and (is_saved == False):
+                            out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                            is_saved = True
                         else:
                             continue
                     if key_event == 'v':
@@ -120,17 +149,155 @@ while True:
                     if key_event == 'c':
                         pyperclip.copy()
             if writer_event == 'Megnyitas':
-                ...
+                opening_file = psg.popup_get_file('Kerem adja meg a fajl eleresi utjat!')
+                match os.path.exists(opening_file):
+                    case True:
+                        match os.path.isfile(opening_file):
+                            case True:
+                                fajl_text, encoding = open_file(opening_file)
+                                used_path, used_file = os.path.split(opening_file)
+                                writer_window['-MULTI-'].Update(fajl_text)
+                                writer_window['-ENCODED-VAL-'].Update(encoding)
+                                writer_window['-WRITER-NAME-'].Update(used_file)
+                                is_saved = True
+                            case False:
+                                psg.popup_ok('Nem fajlt adott meg!')
+                    case False:
+                        psg.popup_ok('Nem letezo eleresi ut!')
             
             match writer_event:
                 case 'Beillesztes':
-                    w_val = writer_values['-MULTI-']
+                    w_val = writer_window['-MULTI-'].get()
                     writer_window['-MULTI-'].update(f'{w_val} {pyperclip.paste()}')
                     w_val = ''
                 case 'Masolas':
-                    pyperclip.copy(writer_values['-MULTI-'])
+                    pyperclip.copy(writer_window['-MULTI-'].get().expandtabs(4))
                 case '-MULTI-':
                     is_saved = False
+                    
+            if writer_event in ('Mentes', '.txt', '.py', '.html', '.js' ,'-MULTI-'):
+                match writer_event:
+                    case 'Mentes':
+                        if (used_path != '') or (writer_window['-WRITER-NAME-'].get() != 'untitled.txt'):
+                            if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
+                                out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                psg.popup_ok(out_message)
+                                is_saved = True
+                        else:
+                            used_path:str = psg.popup_get_folder('Kerem adja meg a mappat ahova menteni szeretne!', title='Nem lett megadva mappa!')
+                            used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
+                            match used_path:
+                                case '':
+                                    psg.popup_ok('Nem lett mappa megadva!', title='Hiba')
+                                case other:
+                                    fajl, bov = os.path.splitext(used_file)
+                                    if fajl != '':
+                                        match bov:
+                                            case '':
+                                                if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                    out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                    psg.popup_ok(out_message)
+                                                    is_saved = True
+                                            case other:
+                                                if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
+                                                    out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                    psg.popup_ok(out_message)
+                                                    is_saved = True
+                                    else:
+                                        psg.popup_ok('Nem lett megadva fajlnev')
+                                    
+                    case '.txt':
+                        save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                        save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.txt)')
+                        if save_place != '' and save_name != '':
+                            match os.path.exists(os.path.join(save_place, f'{save_name}.txt')):
+                                case True:
+                                    psg.popup_cancel('Ilyen fajl mar letezik!')
+                                    continue
+                                case False:
+                                    out_message = create_file(save_place, f'{save_name}.txt', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                    psg.popup_ok(out_message)
+                                    is_saved = True
+                                    writer_window['-WRITER-NAME-'].update(save_name)
+                        else:
+                            match save_place:
+                                case '':
+                                    psg.popup_ok('Hianyzo utvonal!')
+                                case other:
+                                    match save_name:
+                                        case '':
+                                            psg.popup_ok('Hianyzo fajlnev')
+                                        case other:
+                                            continue
+                    case '.py':
+                        save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                        save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.py)')
+                        if save_place != '' and save_name != '':
+                            match os.path.exists(os.path.join(save_place, f'{save_name}.py')):
+                                case True:
+                                    psg.popup_cancel('Ilyen fajl mar letezik!')
+                                    continue
+                                case False:
+                                    out_message = create_file(save_place, f'{save_name}.py', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                    psg.popup_ok(out_message)
+                                    is_saved = True
+                                    writer_window['-WRITER-NAME-'].update(save_name)
+                        else:
+                            match save_place:
+                                case '':
+                                    psg.popup_ok('Hianyzo utvonal!')
+                                case other:
+                                    match save_name:
+                                        case '':
+                                            psg.popup_ok('Hianyzo fajlnev')
+                                        case other:
+                                            continue
+                    case '.html':
+                        save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                        save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.html)')
+                        if save_place != '' and save_name != '':
+                            match os.path.exists(os.path.join(save_place, f'{save_name}.html')):
+                                case True:
+                                    psg.popup_cancel('Ilyen fajl mar letezik!')
+                                    continue
+                                case False:
+                                    out_message = create_file(save_place, f'{save_name}.html', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                    psg.popup_ok(out_message)
+                                    is_saved = True
+                                    writer_window['-WRITER-NAME-'].update(save_name)
+                        else:
+                            match save_place:
+                                case '':
+                                    psg.popup_ok('Hianyzo utvonal!')
+                                case other:
+                                    match save_name:
+                                        case '':
+                                            psg.popup_ok('Hianyzo fajlnev')
+                                        case other:
+                                            continue
+                    case '.js':
+                        save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                        save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.js)')
+                        if save_place != '' and save_name != '':
+                            match os.path.exists(os.path.join(save_place, f'{save_name}.js')):
+                                case True:
+                                    psg.popup_cancel('Ilyen fajl mar letezik!')
+                                    continue
+                                case False:
+                                    out_message = create_file(save_place, f'{save_name}.js', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                    psg.popup_ok(out_message)
+                                    is_saved = True
+                                    writer_window['-WRITER-NAME-'].update(save_name)
+                        else:
+                            match save_place:
+                                case '':
+                                    psg.popup_ok('Hianyzo utvonal!')
+                                case other:
+                                    match save_name:
+                                        case '':
+                                            psg.popup_ok('Hianyzo fajlnev')
+                                        case other:
+                                            continue
             
             
         writer_window.close()
@@ -160,6 +327,14 @@ while True:
     #     search_up=False
         
      #--------------------------------Meghajto kivalszto ablak-----------------------------------------------    
+    
+    
+# ██████╗░██╗░██████╗██╗░░██╗  ░██████╗███████╗██╗░░░░░███████╗░█████╗░████████╗░█████╗░██████╗░
+# ██╔══██╗██║██╔════╝██║░██╔╝  ██╔════╝██╔════╝██║░░░░░██╔════╝██╔══██╗╚══██╔══╝██╔══██╗██╔══██╗
+# ██║░░██║██║╚█████╗░█████═╝░  ╚█████╗░█████╗░░██║░░░░░█████╗░░██║░░╚═╝░░░██║░░░██║░░██║██████╔╝
+# ██║░░██║██║░╚═══██╗██╔═██╗░  ░╚═══██╗██╔══╝░░██║░░░░░██╔══╝░░██║░░██╗░░░██║░░░██║░░██║██╔══██╗
+# ██████╔╝██║██████╔╝██║░╚██╗  ██████╔╝███████╗███████╗███████╗╚█████╔╝░░░██║░░░╚█████╔╝██║░░██║
+# ╚═════╝░╚═╝╚═════╝░╚═╝░░╚═╝  ╚═════╝░╚══════╝╚══════╝╚══════╝░╚════╝░░░░╚═╝░░░░╚════╝░╚═╝░░╚═╝
     
     if (event == '-DISK_WIN-' and disk_selectorup == False) or (event == 'd' and eventlist[0] == 17 and disk_selectorup == False ):
         eventlist.clear()
@@ -269,6 +444,16 @@ while True:
                 
     if event in ('-TABLE01-', '-TABLE02-'):
         match event:
+            
+            
+
+# ████████╗░█████╗░██████╗░██╗░░░░░███████╗  ░█████╗░░░███╗░░  ███╗░░░███╗███████╗████████╗██╗░░██╗░█████╗░██████╗░
+# ╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░██╔════╝  ██╔══██╗░████║░░  ████╗░████║██╔════╝╚══██╔══╝██║░░██║██╔══██╗██╔══██╗
+# ░░░██║░░░███████║██████╦╝██║░░░░░█████╗░░  ██║░░██║██╔██║░░  ██╔████╔██║█████╗░░░░░██║░░░███████║██║░░██║██║░░██║
+# ░░░██║░░░██╔══██║██╔══██╗██║░░░░░██╔══╝░░  ██║░░██║╚═╝██║░░  ██║╚██╔╝██║██╔══╝░░░░░██║░░░██╔══██║██║░░██║██║░░██║
+# ░░░██║░░░██║░░██║██████╦╝███████╗███████╗  ╚█████╔╝███████╗  ██║░╚═╝░██║███████╗░░░██║░░░██║░░██║╚█████╔╝██████╔╝
+# ░░░╚═╝░░░╚═╝░░╚═╝╚═════╝░╚══════╝╚══════╝  ░╚════╝░╚══════╝  ╚═╝░░░░░╚═╝╚══════╝░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚═════╝░
+# ░░░╚═╝░░░╚═╝░░╚═╝╚═════╝░╚══════╝╚══════╝  ░╚════╝░╚══════╝
             
             #------------------------------Asztal 1 metodusok---------------------------
             
@@ -401,13 +586,13 @@ while True:
                             case 'Megnyitas Writerben':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
                                 if os.path.exists(os.path.join(t1_ut.szulo, f'{fajl}{bov}')):
-                                    fajl_text, encoded = open_file(os.path.join(t1_ut.szulo, f'{fajl}{bov}'))
+                                    fajl_text, encoded_var = open_file(os.path.join(t1_ut.szulo, f'{fajl}{bov}'))
+                                    is_saved = True
                                     writer_window = make_second_window(fajl_text)
-                                    fajl_text = ''
                                     while True:
                                         writerup = True
                                         eventw, valuew = writer_window.read(timeout=100)
-                                        if eventw in  (psg.WIN_CLOSED, 'X'):
+                                        if eventw in  (psg.WIN_CLOSED, 'X') and is_saved == False:
                                             match valuew['-MULTI-']:
                                                 case '':
                                                     break
@@ -418,29 +603,176 @@ while True:
                                                             break
                                                         case 'Cancel':
                                                             continue
+                                        elif eventw in  (psg.WIN_CLOSED, 'X') and is_saved == True:
+                                            break
+                                        used_path = t1_ut.szulo
+                                        used_file = writer_window['-WRITER-NAME-'].get()
+                                        if eventw == 'Control_L:17':
+                                            key_event, key_values = writer_window.read(100)
+                                            if key_event == 'z' and is_saved == False:
+                                                want_to_close:str = psg.popup_yes_no('Biztos benne hogy mentes nelkul szeretne bezarni?') 
+                                                match want_to_close:
+                                                    case 'Yes':
+                                                        break
+                                                    case 'No':
+                                                        continue
+                                            elif key_event == 'z' and is_saved == True:
+                                                break
+                                            if key_event == 's':
+                                                if (used_file == 'untitled.txt') and (is_saved == False):
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet es bovitmenyet! (fajl.txt)')
+                                                    f, b = os.path.splitext(save_name)
+                                                    if save_place != '' and save_name != '' and f != '' and b != '':
+                                                        match os.path.exists(os.path.join(save_place, save_name)):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                            case False:
+                                                                out_message = create_file(save_place, save_name, writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                            case other:
+                                                                ...
+                                                    else:
+                                                        psg.popup_ok('Nem megfelelo adatok lettek megadva!')
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                                continue
+                                                            case other:
+                                                                match f:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev!')
+                                                                        used_path = save_place
+                                                                        continue
+                                                                    case other:
+                                                                        match b:
+                                                                            case '':
+                                                                                psg.popup_ok('Hianyzo bovitmeny!')
+                                                                                continue
+                                                                            case other:
+                                                                                is_saved = True
+                                                                                continue
+                                                elif (used_file != 'untitled.txt') and (is_saved == False):
+                                                    out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                    is_saved = True
+                                                else:
+                                                    continue
+                                            if key_event == 'v':
+                                                pyperclip.paste()
+                                            if key_event == 'c':
+                                                pyperclip.copy()
                                         
                                         writer_window['-WRITER-NAME-'].update(f'{fajl}{bov}')
-                                        writer_window['-ENCODED-VAL-'].update(encoded)
+                                        writer_window['-ENCODED-VAL-'].update(encoded_var)
+                                        writer_window['-SELECT-SAVE-'].Update(['Mentes', ['!Mentes', 'Mentes mint', ['!.txt', '!.py', '!&.html', '!&.js', ]]])
                                         if eventw == '-ENABLE-MODIFY-':
                                             writer_window['-MULTI-'].update(disabled = False)
                                             writer_window['-ENABLE-MODIFY-'].update(visible = False)
-                                            writer_window['-SELECT-SAVE-'].Update(['Mentes', ['Mentes', 'Mentes mint', ['!.txt', '!.py', '!&.html', '!&.js', 'Mentes maskeppen']]])
+                                            writer_window['-SELECT-SAVE-'].Update(['Mentes', ['Mentes', 'Mentes mint', ['!.txt', '!.py', '!&.html', '!&.js', ]]])
                                             
-                                        if eventw in ('Mentes', '.txt', '.py', '.html', '.js', 'Mentes maskeppen'):
+                                        if eventw in ('Mentes', '.txt', '.py', '.html', '.js' ,'-MULTI-'):
                                             match eventw:
                                                 case 'Mentes':
                                                     if os.path.exists(os.path.join(t1_ut.szulo,f'{fajl}{bov}')):
-                                                        ...
+                                                        out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                        psg.popup_ok(out_message)
+                                                        is_saved = True
                                                 case '.txt':
-                                                    ...
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.txt)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.txt')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.txt', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
                                                 case '.py':
-                                                    ...
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.py)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.py')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.py', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
                                                 case '.html':
-                                                    ...
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.html)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.html')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.html', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
                                                 case '.js':
-                                                    ...
-                                                case 'Mentes maskeppen':
-                                                    ...
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.js)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.js')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.js', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
+                                                case '-MULTI-':
+                                                    is_saved = False
                                     
                                     writerup = False
                                     writer_window.close()
@@ -493,6 +825,15 @@ while True:
                                     psg.popup_notify('Nem lett atnevezve!')
                     to_rename = '' 
                     tmp.clear()
+                    
+                    
+
+# ████████╗░█████╗░██████╗░██╗░░░░░███████╗  ░█████╗░██████╗░  ███╗░░░███╗███████╗████████╗██╗░░██╗░█████╗░██████╗░
+# ╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░██╔════╝  ██╔══██╗╚════██╗  ████╗░████║██╔════╝╚══██╔══╝██║░░██║██╔══██╗██╔══██╗
+# ░░░██║░░░███████║██████╦╝██║░░░░░█████╗░░  ██║░░██║░░███╔═╝  ██╔████╔██║█████╗░░░░░██║░░░███████║██║░░██║██║░░██║
+# ░░░██║░░░██╔══██║██╔══██╗██║░░░░░██╔══╝░░  ██║░░██║██╔══╝░░  ██║╚██╔╝██║██╔══╝░░░░░██║░░░██╔══██║██║░░██║██║░░██║
+# ░░░██║░░░██║░░██║██████╦╝███████╗███████╗  ╚█████╔╝███████╗  ██║░╚═╝░██║███████╗░░░██║░░░██║░░██║╚█████╔╝██████╔╝
+# ░░░╚═╝░░░╚═╝░░╚═╝╚═════╝░╚══════╝╚══════╝  ░╚════╝░╚══════╝  ╚═╝░░░░░╚═╝╚══════╝░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚═════╝░
                     
                     #------------------------------Asztal 2 metodusok---------------------------
                     
@@ -609,22 +950,202 @@ while True:
                                     ...
                     if eventT2 in ('Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Megnyitas alapertelmezett alkalmazasban'):
                         match eventT2:
+                            ############################################
                             case 'Megnyitas Writerben':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
                                 if os.path.exists(os.path.join(t2_ut.szulo, f'{fajl}{bov}')):
-                                    fajl_text = open_file(os.path.join(t2_ut.szulo, f'{fajl}{bov}'))
+                                    fajl_text, encoded_var = open_file(os.path.join(t2_ut.szulo, f'{fajl}{bov}'))
+                                    is_saved = True
                                     writer_window = make_second_window(fajl_text)
-                                    fajl_text = ''
                                     while True:
                                         writerup = True
-                                        eventw, valuew = writer_window.read()
-                                        
-                                        if eventw in  (psg.WIN_CLOSED, 'X'):
+                                        eventw, valuew = writer_window.read(timeout=100)
+                                        if eventw in  (psg.WIN_CLOSED, 'X') and is_saved == False:
+                                            match valuew['-MULTI-']:
+                                                case '':
+                                                    break
+                                                case other:
+                                                    made = psg.popup_ok_cancel('Biztos benne hogy mentes nelkul szeretne bezarni?')
+                                                    match made:
+                                                        case 'OK':
+                                                            break
+                                                        case 'Cancel':
+                                                            continue
+                                        elif eventw in  (psg.WIN_CLOSED, 'X') and is_saved == True:
                                             break
+                                        used_path = t2_ut.szulo
+                                        used_file = writer_window['-WRITER-NAME-'].get()
+                                        if eventw == 'Control_L:17':
+                                            key_event, key_values = writer_window.read(100)
+                                            if key_event == 'z' and is_saved == False:
+                                                want_to_close:str = psg.popup_yes_no('Biztos benne hogy mentes nelkul szeretne bezarni?') 
+                                                match want_to_close:
+                                                    case 'Yes':
+                                                        break
+                                                    case 'No':
+                                                        continue
+                                            elif key_event == 'z' and is_saved == True:
+                                                break
+                                            if key_event == 's':
+                                                if (used_file == 'untitled.txt') and (is_saved == False):
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet es bovitmenyet! (fajl.txt)')
+                                                    f, b = os.path.splitext(save_name)
+                                                    if save_place != '' and save_name != '' and f != '' and b != '':
+                                                        match os.path.exists(os.path.join(save_place, save_name)):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                            case False:
+                                                                out_message = create_file(save_place, save_name, writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                            case other:
+                                                                ...
+                                                    else:
+                                                        psg.popup_ok('Nem megfelelo adatok lettek megadva!')
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                                continue
+                                                            case other:
+                                                                match f:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev!')
+                                                                        used_path = save_place
+                                                                        continue
+                                                                    case other:
+                                                                        match b:
+                                                                            case '':
+                                                                                psg.popup_ok('Hianyzo bovitmeny!')
+                                                                                continue
+                                                                            case other:
+                                                                                is_saved = True
+                                                                                continue
+                                                elif (used_file != 'untitled.txt') and (is_saved == False):
+                                                    out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                    is_saved = True
+                                                else:
+                                                    continue
+                                            if key_event == 'v':
+                                                pyperclip.paste()
+                                            if key_event == 'c':
+                                                pyperclip.copy()
+                                        
+                                        writer_window['-WRITER-NAME-'].update(f'{fajl}{bov}')
+                                        writer_window['-ENCODED-VAL-'].update(encoded_var)
+                                        writer_window['-SELECT-SAVE-'].Update(['Mentes', ['!Mentes', 'Mentes mint', ['!.txt', '!.py', '!&.html', '!&.js', ]]])
+                                        if eventw == '-ENABLE-MODIFY-':
+                                            writer_window['-MULTI-'].update(disabled = False)
+                                            writer_window['-ENABLE-MODIFY-'].update(visible = False)
+                                            writer_window['-SELECT-SAVE-'].Update(['Mentes', ['Mentes', 'Mentes mint', ['!.txt', '!.py', '!&.html', '!&.js', ]]])
+                                            
+                                        if eventw in ('Mentes', '.txt', '.py', '.html', '.js','-MULTI-'):
+                                            match eventw:
+                                                case 'Mentes':
+                                                    if os.path.exists(os.path.join(t2_ut.szulo,f'{fajl}{bov}')):
+                                                        out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                        psg.popup_ok(out_message)
+                                                        is_saved = True
+                                                case '.txt':
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.txt)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.txt')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.txt', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
+                                                case '.py':
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.py)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.py')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.py', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
+                                                case '.html':
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.html)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.html')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.html', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
+                                                case '.js':
+                                                    save_place = psg.popup_get_folder('Valassza ki a menteni kivant fajl helyet!')
+                                                    save_name = psg.popup_get_text('Irja be a fajl nevet! (fajl.js)')
+                                                    if save_place != '' and save_name != '':
+                                                        match os.path.exists(os.path.join(save_place, f'{save_name}.js')):
+                                                            case True:
+                                                                psg.popup_cancel('Ilyen fajl mar letezik!')
+                                                                continue
+                                                            case False:
+                                                                out_message = create_file(save_place, f'{save_name}.js', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                psg.popup_ok(out_message)
+                                                                is_saved = True
+                                                                writer_window['-WRITER-NAME-'].update(save_name)
+                                                    else:
+                                                        match save_place:
+                                                            case '':
+                                                                psg.popup_ok('Hianyzo utvonal!')
+                                                            case other:
+                                                                match save_name:
+                                                                    case '':
+                                                                        psg.popup_ok('Hianyzo fajlnev')
+                                                                    case other:
+                                                                        continue
+                                                case '-MULTI-':
+                                                    is_saved = False
                                     
                                     writerup = False
                                     writer_window.close()
                                     fajl, bov = '', ''
+                                    ###################################################3
                             case 'Eleresi ut masolasa':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
                                 if os.path.exists(os.path.join(t2_ut.szulo, f'{fajl}{bov}')):
@@ -691,7 +1212,7 @@ while True:
     if ((event == 'r') and (eventlist[0] == 17)) or event == 'Refresh':
         psg.popup_notify('Refreshed', title='Software')
         
-    if event == 'Refresh':
-        psg.popup_notify('Refreshed', title='Software')   
+    # if event == 'Refresh':
+    #     psg.popup_notify('Refreshed', title='Software')   
     
 window.close()
