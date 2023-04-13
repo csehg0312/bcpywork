@@ -1,5 +1,5 @@
 import os
-from data.file_folder_managing import create_twoD_list, open_file, remove_folder_or_file, create_path_or_folder, renaming, create_file, overwriting_existing_file
+from data.file_folder_managing import *
 from gui import create_ablak, make_second_window, create_disk_window, file_or_folder_szita, folder_properties_window, file_properties_win
 from data.disk_manager import kinyeres
 import PySimpleGUI as psg
@@ -11,11 +11,11 @@ import logging
 original_right_click:list = []*2
 original_right_click = ['Mappa', ['Uj', ['Fajl', 'Mappa']]]
 file_right_click:list = []*2
-file_right_click = ['Fajl', ['Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+file_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 other_right_click:list = []*2
-other_right_click = ['Fajl', ['Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+other_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 folder_right_click:list = []*2
-folder_right_click = ['Folder', ['Utvonal masolasa...', 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Directory fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
+folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa'], 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
 new_menu:list
 new_menu = [['Uj fajl', ['Txt fajl', 'Egyeb fajl']], ['Mappa']]
 writerup:bool = False
@@ -27,6 +27,17 @@ window_minimized:bool = False
 refresh_bool:bool = False
 is_saved:bool = False
 refresh_num = 0
+
+#Ablak es asztal valtozok
+prop_win:psg.Window
+prop_event:str;prop_val:str
+
+#Writer_valtozok
+t1_ut='';t2_ut=''
+
+#Diszk_valtozok
+
+
 
 os.chdir(os.path.expanduser('~'))
 
@@ -50,7 +61,7 @@ eventlist:deque = deque([])
 # ███████╗╚█████╔╝╚█████╔╝██║░░░░░
 # ╚══════╝░╚════╝░░╚════╝░╚═╝░░░░░
 while True:
-    event, values = window.read()
+    event, values = window.read(timeout=2300)
     
     if event == psg.WIN_CLOSED:
         break
@@ -335,7 +346,7 @@ while True:
 # ██║░░██║██║░╚═══██╗██╔═██╗░  ░╚═══██╗██╔══╝░░██║░░░░░██╔══╝░░██║░░██╗░░░██║░░░██║░░██║██╔══██╗
 # ██████╔╝██║██████╔╝██║░╚██╗  ██████╔╝███████╗███████╗███████╗╚█████╔╝░░░██║░░░╚█████╔╝██║░░██║
 # ╚═════╝░╚═╝╚═════╝░╚═╝░░╚═╝  ╚═════╝░╚══════╝╚══════╝╚══════╝░╚════╝░░░░╚═╝░░░░╚════╝░╚═╝░░╚═╝
-    
+    eventlist.append(0)
     if (event == '-DISK_WIN-' and disk_selectorup == False) or (event == 'd' and eventlist[0] == 17 and disk_selectorup == False ):
         eventlist.clear()
         disk_selectorup = True
@@ -461,18 +472,14 @@ while True:
                 # kijelolt_sor01:list = []
                 window['-TABLE01-'].set_right_click_menu(original_right_click)
                 tmp:list = window['-TABLE01-'].get().copy()
+                kijelolt_sor = []
                 
                     # meghatarozzuk melyik sorba lett kattintva Asztal1 en
                 
                 try:
-                    # while is_pressed('control'):
-                    #     control_event, _ = window.read()
-                    #     if control_event == '-TABLE01-':
-                    #         kijelolt_sor01.extend(tmp [row] for row in values[event])
-                    #     print(kijelolt_sor01)
                     kijelolt_sor = [tmp [row] for row in values[event]].pop()
                 except IndexError:
-                    ...
+                    kijelolt_sor = [0,0,0,0]
                     
                     # meghatarozzuk hogy a sorban levo elem mappa vagy sem ha igen, figyeljuk az esemenyeket
                     
@@ -503,6 +510,83 @@ while True:
                             t1_ut.SzuloUtvonal()
                             tmp.clear()
                     event_folder1, _ = window.read() 
+                    
+                    if event_folder1 == 'Utvonal masolasa...':
+                        mappa = kijelolt_sor[0]
+                        if os.path.exists(os.path.join(t1_ut.szulo, f'{mappa}')):
+                            pyperclip.copy(f'{os.path.normcase(os.path.join(t1_ut.szulo, mappa))}')
+                            psg.popup_notify('Copied to clipboard', title='Copied')
+                            mappa = ''
+                            
+                    match event_folder1:
+                        case 'Uj fajl':
+                            used_path:str = t1_ut.szulo
+                            used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
+                            match used_path:
+                                case '':
+                                    psg.popup_ok('Nem lett mappa megadva!', title='Hiba')
+                                case other:
+                                    fajl, bov = os.path.splitext(used_file)
+                                    if fajl != '':
+                                        match bov:
+                                            case '':
+                                                if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                    out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                    psg.popup_ok(out_message)
+                                                    refresh_bool = True
+                                                    refresh_num = 1
+                                            case other:
+                                                if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
+                                                    out_message = creating_file_without_value(used_path, f'{used_file}{bov}', 'utf-8', '')
+                                                    psg.popup_ok(out_message)
+                                                    refresh_bool = True
+                                                    refresh_num = 1
+                                    else:
+                                        psg.popup_ok('Nem lett megadva fajlnev')
+                        case 'Uj mappa':
+                            used_path = t1_ut.szulo
+                            used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
+                            message_out = creating_folder(used_path, used_dir)
+                            psg.popup_notify(message_out)
+                            refresh_bool = True
+                            refresh_num = 1
+                        case 'Athelyezes::-FOLDER-':
+                            ...
+                        case 'Athelyezes megadott mappaba...::-FOLDER-':
+                            ...
+                        case 'Atnevezes::-FOLDER-':
+                            ...
+                        case 'Eltavolitas':
+                            try:
+                                os.rmdir(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
+                                psg.popup_notify('Eltavolitas megtortent!')
+                                refresh_bool = True
+                                refresh_num = 1
+                            except OSError as e:
+                                psg.popup_notify('Kerem hasznalja a Konyvtar fa eltavolitasa lehetoseget', title='A konyvtar nem ures!')
+                        case 'Konyvtar fa eltavolitasa...':
+                            mappa = kijelolt_sor[0]
+                            choice = psg.popup_get_text(f'El szeretne tavolitani a {mappa} elemet? Valaszlehetoseg: (yes/no)', title='Delete')
+                            match choice:
+                                case None:
+                                    psg.popup_notify('Cancelled!')
+                                case '':
+                                    psg.popup_notify('No choice!')
+                                case 'yes':
+                                    message_out = remove_tree(os.path.join(t2_ut.szulo, mappa))
+                                    psg.popup_notify(message_out)
+                                    refresh_bool = True
+                                    refresh_num = 1
+                                case 'no':
+                                    psg.popup_notify('Cancelled!')
+                                case other:
+                                    psg.popup_notify('Cancelled!')
+                            fajl, bov = '', ''
+                        case 'Megnyitas a masik asztalon':
+                            window['-TABLE02-'].Update(create_twoD_list(os.path.join(t1_ut.szulo, kijelolt_sor[0])))
+                            window['-Organize02-'].Update(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
+                            t2_ut:Jelen_EleresiUt = Jelen_EleresiUt(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
+                    
                     if event_folder1 == 'Tulajdonsagok':
                         prop_win = folder_properties_window(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
                         while True:
@@ -543,7 +627,7 @@ while True:
                                     fajl, bov = '', ''
                             case 'x':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
-                                choice = psg.popup_get_text(f'Are you sure you want to delete the file {fajl}{bov}: Type:(yes/no)', title='Delete')
+                                choice = psg.popup_get_text(f'El szeretne tavolitani a {fajl}{bov} elemet? Valaszlehetoseg: (yes/no)', title='Delete')
                                 match choice:
                                     case None:
                                         psg.popup_notify('Cancelled!')
@@ -801,19 +885,17 @@ while True:
                         to_rename = ''
                         while True:
                             prop_event, prop_val = prop_win.read()
-                            prop_win['-RENAMER-'].set_cursor()
                             if prop_event == psg.WIN_CLOSED:
                                 break
-                            if prop_event == '-RENAMER-':
-                                print(to_rename)
-                                to_rename = prop_val['-RENAMER-']
+                            prop_win['-RENAMER-FILE-'].set_cursor()
+                            if prop_event == '-RENAMER-FILE-':
+                                to_rename = prop_win['-RENAMER-FILE-'].get()
                         prop_win.close()
-                        print(to_rename)
-                        if to_rename != kijelolt_sor[0]:
+                        if (to_rename != f'{kijelolt_sor[0]}') and (to_rename != ''):
                             ev = psg.popup_yes_no('Szeretne atnevezni a mappat?')
                             match ev:
                                 case 'Yes': 
-                                    renaming(os.path.join(t1_ut.szulo, kijelolt_sor[0]), os.path.join(t1_ut.szulo, to_rename))
+                                    renaming(os.path.join(t1_ut.szulo,f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t1_ut.szulo, f'{to_rename}{kijelolt_sor[1]}'))
                                     psg.popup_notify('Atnevezes megtortent!')
                                     refresh_bool = True
                                     refresh_num = 1
@@ -839,10 +921,11 @@ while True:
                     
             case '-TABLE02-':
                 tmp:list = window['-TABLE02-'].get().copy()
+                kijelolt_sor = []
                 try:
                     kijelolt_sor = [tmp [row] for row in values[event]].pop()
                 except IndexError:
-                    ...
+                    kijelolt_sor = [0,0,0,0]
                 if (kijelolt_sor[1] == 'Mappa'):
                     window['-TABLE02-'].set_right_click_menu(folder_right_click)
                     window['-TABLE02-'].set_tooltip('Az enter lenyomasaval megnyithato')
@@ -858,6 +941,28 @@ while True:
                             tmp.clear()
                             
                     event_folder2, _ = window.read()
+                    if event_folder2 == 'Utvonal masolasa...':
+                        mappa = kijelolt_sor[0]
+                        if os.path.exists(os.path.join(t2_ut.szulo, f'{mappa}')):
+                            pyperclip.copy(f'{os.path.normcase(os.path.join(t2_ut.szulo, mappa))}')
+                            psg.popup_notify('Copied to clipboard', title='Copied')
+                            mappa = ''
+                            
+                    match event_folder2:
+                        case 'Athelyezes::-FOLDER-':
+                            ...
+                        case 'Athelyezes megadott mappaba...::-FOLDER-':
+                            ...
+                        case 'Atnevezes::-FOLDER-':
+                            ...
+                        case 'Eltavolitas':
+                            ...
+                        case 'Konyvtar fa eltavolitasa...':
+                            ...
+                        case 'Megnyitas a masik asztalon':
+                            window['-TABLE01-'].Update(create_twoD_list(os.path.join(t2_ut.szulo, kijelolt_sor[0])))
+                            window['-Organize01-'].Update(os.path.join(t2_ut.szulo, kijelolt_sor[0]))
+                            t1_ut:Jelen_EleresiUt = Jelen_EleresiUt(os.path.join(t2_ut.szulo, kijelolt_sor[0]))
                     if event_folder2 == 'Tulajdonsagok':
                         prop_win = folder_properties_window(os.path.join(t2_ut.szulo, kijelolt_sor[0]))
                         to_rename = ''
@@ -865,10 +970,12 @@ while True:
                             prop_event, prop_val = prop_win.read()
                             if prop_event == psg.WIN_CLOSED:
                                 break
+                            
                             if prop_event == '-RENAMER-':
-                                to_rename = prop_val['-RENAMER-']
+                                to_rename = prop_win['-RENAMER-'].get()
                         prop_win.close()
-                        if to_rename != kijelolt_sor[0]:
+                        
+                        if (to_rename != f'{kijelolt_sor[0]}') and (to_rename != ''):
                             ev = psg.popup_yes_no('Szeretne atnevezni a mappat?')
                             match ev:
                                 case 'Yes': 
@@ -912,7 +1019,7 @@ while True:
                                     fajl, bov = '', ''
                             case 'x':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
-                                choice = psg.popup_get_text(f'Are you sure you want to delete the file {fajl}{bov}: Type:(yes/no)', title='Delete')
+                                choice = psg.popup_get_text(f'El szeretne tavolitani a {fajl}{bov} elemet? Valaszlehetoseg: (yes/no)', title='Delete')
                                 match choice:
                                     case None:
                                         psg.popup_notify('Cancelled!')
@@ -1165,12 +1272,31 @@ while True:
                                     fajl, bov = '', ''   
                                     
                     if eventT2 == 'Tulajdonsagok':
+                        to_rename = ''
                         prop_win = file_properties_win(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), kijelolt_sor[3], kijelolt_sor[2])
                         while True:
-                            prop_event, _ = prop_win.read()
+                            prop_event, prop_val = prop_win.read()
                             if prop_event == psg.WIN_CLOSED:
                                 break
-                        prop_win.close()      
+                            prop_win['-RENAMER-FILE-'].set_cursor()
+                            if prop_event == '-RENAMER-FILE-':
+                                to_rename = prop_win['-RENAMER-FILE-'].get()
+                        prop_win.close()
+                        if (to_rename != f'{kijelolt_sor[0]}') and (to_rename != ''):
+                            ev = psg.popup_yes_no('Szeretne atnevezni a mappat?')
+                            match ev:
+                                case 'Yes': 
+                                    message_out = renaming(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t2_ut.szulo, f'{to_rename}{kijelolt_sor[1]}'))
+                                    psg.popup_notify(message_out)
+                                    refresh_bool = True
+                                    refresh_num = 2
+                                    tmp:list = window['-TABLE02-'].get().copy()
+                                    kijelolt_sor = [tmp [row] for row in values[event]].pop()
+                                    tmp.clear()
+                                    
+                                case 'No':
+                                    psg.popup_notify('Nem lett atnevezve!')
+                    to_rename = ''    
                     tmp.clear()
                     
     #---------------------------Az asztalon valo visszalepes kezelese---------------------------------------------------------- 
@@ -1199,14 +1325,55 @@ while True:
                 refresh_bool = False
                 refresh_num = 0
                 
+    match event:
+        case '-Organize01-':
+            if os.path.exists(window["-Organize01-"].get()) and (window["-Organize01-"].get()[-1] == '/') or (window["-Organize01-"].get()[-1] == '\''):
+                choice = psg.popup_yes_no(f'Megnyissa a {window["-Organize01-"].get()} mappat?')
+                if choice == 'Yes':
+                    window['-TABLE01-'].Update(create_twoD_list(window['-Organize01-'].get()))
+                    t1_ut:Jelen_EleresiUt = Jelen_EleresiUt(window['-Organize01-'].get())
+                else:
+                    continue
+        case "-Organize02-":
+            if os.path.exists(window["-Organize02-"].get()):
+                choice = psg.popup_yes_no(f'Megnyissa a {window["-Organize02-"].get()} mappat?')
+                if choice == 'Yes':
+                    window['-TABLE02-'].Update(create_twoD_list(window['-Organize02-'].get()))
+                    t2_ut:Jelen_EleresiUt = Jelen_EleresiUt(window['-Organize02-'].get())
+                else:
+                    continue
+        case other:
+            continue
+                
+    match event:
+        case ('-TABLE01-', '+CLICKED+', (-1, 0)):
+            window['-TABLE01-'].get().sort(key=lambda x: x[0])
+            window['-TABLE01-'].update(values=window['-TABLE01-'].get())
+        case ('-TABLE02-', '+CLICKED+', (-1, 0)):
+            window['-TABLE02-'].get().sort(key=lambda x: x[0])
+            window['-TABLE02-'].update(values=window['-TABLE01-'].get())
+        case ('-TABLE01-', '+CLICKED+', (-1, 1)):
+            window['-TABLE01-'].get().sort(key=lambda x: x[1])
+            window['-TABLE01-'].update(values=window['-TABLE01-'].get())
+        case ('-TABLE02-', '+CLICKED+', (-1, 1)):
+            window['-TABLE02-'].get().sort(key=lambda x: x[1])
+            window['-TABLE02-'].update(values=window['-TABLE01-'].get())
+        case ('-TABLE01-', '+CLICKED+', (-1, 3)):
+            window['-TABLE01-'].get().sort(key=lambda x: x[3])
+            window['-TABLE01-'].update(values=window['-TABLE01-'].get())
+        case ('-TABLE02-', '+CLICKED+', (-1, 3)):
+            window['-TABLE02-'].get().sort(key=lambda x: x[3])
+            window['-TABLE02-'].update(values=window['-TABLE01-'].get())
+        
+                
     # if event in ('Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Athelyezes::-FILE-', 'Atnevezes::-FILE-'):
     #     match event:
     #         case 'Megnyitas':
     #             ...
         
-    # if event in ('Masolas', '&Utvonal masolasa...', 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Directory fa eltavolitasa...' ,'Megnyitas a masik asztalon'):
+    # if event in ('Masolas', '&Utvonal masolasa...', 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...' ,'Megnyitas a masik asztalon'):
     #     ...
-        
+    
     # if event == 'Tulajdonsagok':
     #     ...
     if ((event == 'r') and (eventlist[0] == 17)) or event == 'Refresh':

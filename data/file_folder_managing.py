@@ -1,4 +1,5 @@
 import os
+import shutil
 from collections import deque
 from data.dataclass_file_manager import File
 from data.dataclass_folder_manager import Folder
@@ -150,15 +151,22 @@ def remove_folder_or_file(file_or_folder:int, current_path) -> str:
         case other:
             return 'No path added'
         
+def is_exists(path_folder_or_file) -> bool:
+    return os.path.exists(path_folder_or_file)
+        
 
 def creating_file_without_value(current_folder, file_to_create, encoded:str) -> str:
     file_created = os.path.join(current_folder, file_to_create)
     encodes = ['utf-8', 'utf-16', 'ansi']
     if encoded in encodes:
         # print('its all good')
-        with open(file_created, 'w', encoding=encoded) as f_write:
-            pass
-        return 'A fajl elmentve tartalom nelkul!'
+        match is_exists(file_created):
+            case False:
+                with open(file_created, 'w', encoding=encoded) as f_write:
+                    pass
+                return 'A fajl elmentve tartalom nelkul!'
+            case True:
+                return 'A fajl mar letezik! Nevezze at a fajlt!'
     else:
         return 'A fajl kodolasa nem megfelelo!'
     
@@ -175,10 +183,13 @@ def creating_file_with_value(current_folder, file_to_create, encoded:str, value_
     file_created = os.path.join(current_folder, file_to_create)
     encodes = ['utf-8', 'utf-16', 'ansi']
     if encoded in encodes:
-        # print('its all good')
-        with open(file_created, 'w', encoding=encoded) as f_write:
-            f_write.write(value_in)
-        return 'A fajl elmentve!'
+        match is_exists(file_created):
+            case False:
+                with open(file_created, 'w', encoding=encoded) as f_write:
+                    f_write.write(value_in)
+                return 'A fajl elmentve!'
+            case True:
+                'A fajl mar letezik! Nevezze at a fajlt!'
     else:
         return 'A fajl kodolasa nem megfelelo!'
 
@@ -193,29 +204,30 @@ def create_file(current_folder, file_to_create, encoded:str, value_in:str) -> st
         return message
     
 def creating_folder(current_folder, folder_to_create) -> str:
-    if os.path.exists(current_folder) and os.path.exists(os.path.join(current_folder, folder_to_create) == False):
-        
-        folder_created = os.path.join(current_folder, folder_to_create)
-        os.mkdir(folder_created)
-        return 'Path has been created!'
+    if os.path.exists(current_folder):
+        match is_exists(os.path.join(current_folder, folder_to_create)):
+            case False:
+                folder_created = os.path.join(current_folder, folder_to_create)
+                os.mkdir(folder_created)
+                return 'Mappa letrehozva!'
+            case True:
+                return 'A mappa mar letezik'
     else:
-        return 'Current path does not exist!'
-    
-def create_path_or_folder(file_or_folder:int, current_folder, folder_to_create, file_to_create, encoded:str, value_in:str):
-    match file_or_folder:
-        case 0:
-            message:str = creating_folder(current_folder, folder_to_create)
-            return message
-        case 1:
-            create_file(current_folder, file_to_create, encoded, value_in)
-            return message
+        return 'A megadott mappa nem letezik'
       
 def renaming(from_file, to_file:str) -> str:
     try:
         os.rename(from_file,to_file)
-        return 'Renaming OK!'
+        return 'Atnevezes megtortent sikeresen'
     except OSError as e:
-        return 'Exception handled as {e}'
+        return 'Rendszerszintu megszakitas, mint {e}'
+    
+def removing_tree(path_to_folder) -> str:
+    try:
+        shutil.rmtree(path_to_folder)
+        return 'A fajl eltavolitasa sikeres!'
+    except OSError:
+        return 'Rendszerszintu megszakitas vegett nem lett eltavolitva!'
     
 
 

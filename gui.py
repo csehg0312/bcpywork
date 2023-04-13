@@ -32,10 +32,10 @@ def create_layout():
     frame_layout = [[psg.Button('Writer')],
                     [psg.Button('Refresh')]]
     layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,
-               psg.Input(os.getcwd(), enable_events=True, key="-Organize01-", ), 
+               psg.Input('', enable_events=True, key="-Organize01-", ), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
                psg.Push(),
-               psg.Input(os.getcwd(), enable_events=True, key="-Organize02-"), 
+               psg.Input('', enable_events=True, key="-Organize02-"), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
                psg.Push()],
               [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
@@ -56,7 +56,8 @@ def create_layout():
                          expand_y=True,
                          key='-TABLE01-', 
                          enable_events=True,
-                         bind_return_key=True
+                         bind_return_key=True,
+                         enable_click_events=True
                          ),
                psg.Frame('', frame_layout, element_justification='center'),
                psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
@@ -64,7 +65,8 @@ def create_layout():
                          expand_x=True,
                          expand_y=True,
                          enable_events=True,
-                         bind_return_key=True), 
+                         bind_return_key=True,
+                         enable_click_events=True), 
                ]
               ]
     
@@ -77,8 +79,7 @@ def create_ablak():
                         resizable=True, 
                         return_keyboard_events=True, 
                         location=(0,0),
-                        disable_minimize=False
-                        )
+                        disable_minimize=False)
     return window
 
 def create_disk_layout(diszk_nev:str, diszk_key:str,diszk_max:int):
@@ -215,5 +216,5 @@ def file_or_folder_szita(utv:str, meret:int = 0):
                 psg.popup_ok('No properties found')
     
 if __name__ == '__main__':
-    window = file_properties_win('C:/Users/csehg/pytry/2d_one_file.py', 23510)
+   ...
     
