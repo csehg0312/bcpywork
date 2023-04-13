@@ -538,7 +538,7 @@ while True:
                                             case other:
                                                 if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
                                                     out_message = creating_file_without_value(used_path, f'{used_file}{bov}', 'utf-8', '')
-                                                    psg.popup_ok(out_message)
+                                                    psg.popup_ok(out_message, title='Letrehozas')
                                                     refresh_bool = True
                                                     refresh_num = 1
                                     else:
@@ -547,15 +547,33 @@ while True:
                             used_path = t1_ut.szulo
                             used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
                             message_out = creating_folder(used_path, used_dir)
-                            psg.popup_notify(message_out)
+                            psg.popup_notify(message_out, title='Letrehozas')
                             refresh_bool = True
                             refresh_num = 1
                         case 'Athelyezes::-FOLDER-':
-                            ...
+                            match t2_ut.szulo:
+                                case '':
+                                    psg.popup_ok('A masik asztalon nincs megnyitva mappa!', title='Asztal 1')
+                                case other:
+                                    used_path = t1_ut.szulo
+                                    used_dir = kijelolt_sor[0]
+                                    reg_path = os.path.join(used_path,used_dir)
+                                    
                         case 'Athelyezes megadott mappaba...::-FOLDER-':
                             ...
                         case 'Atnevezes::-FOLDER-':
-                            ...
+                            real_path, real_dir, = t1_ut.szulo, kijelolt_sor[0]
+                            val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{real_dir}', keep_on_top=True)
+                            if val != f'{real_dir}' and val != '' and val != None:
+                                message_out = renaming(os.path.join(real_path, f'{real_dir}'), os.path.join(real_path, val))
+                                psg.popup_notify(message_out, title='Atnevezes')
+                                refresh_bool = True
+                                refresh_num = 1
+                                tmp:list = window['-TABLE01-'].get().copy()
+                                kijelolt_sor = [tmp [row] for row in values[event]].pop()
+                                tmp.clear()
+                            else:
+                                psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
                         case 'Eltavolitas':
                             try:
                                 os.rmdir(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
@@ -653,10 +671,8 @@ while True:
                             case 'Atnevezes::-FILE-':
                                 real_path, head, tail = t1_ut.szulo, kijelolt_sor[0], kijelolt_sor[1]
                                 val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{head}{tail}', keep_on_top=True,)
-                                print(f'{val}')
                                 if val != f'{head}{tail}' and val != '' and val != None:
                                     message_out = renaming(os.path.join(real_path, f'{head}{tail}'), os.path.join(real_path, val))
-                                    print(message_out)
                                     psg.popup_notify(message_out)
                                     refresh_bool = True
                                     refresh_num = 1
@@ -664,7 +680,7 @@ while True:
                                     kijelolt_sor = [tmp [row] for row in values[event]].pop()
                                     tmp.clear()
                                 else:
-                                    ...
+                                    psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
                     if eventT1 in ('Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Megnyitas alapertelmezett alkalmazasban'):
                         match eventT1:
                             case 'Megnyitas Writerben':
@@ -954,7 +970,18 @@ while True:
                         case 'Athelyezes megadott mappaba...::-FOLDER-':
                             ...
                         case 'Atnevezes::-FOLDER-':
-                            ...
+                            real_path, real_dir, = t2_ut.szulo, kijelolt_sor[0]
+                            val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{real_dir}', keep_on_top=True)
+                            if val != f'{real_dir}' and val != '' and val != None:
+                                message_out = renaming(os.path.join(real_path, f'{real_dir}'), os.path.join(real_path, val))
+                                psg.popup_notify(message_out, title='Atnevezes')
+                                refresh_bool = True
+                                refresh_num = 2
+                                tmp:list = window['-TABLE02-'].get().copy()
+                                kijelolt_sor = [tmp [row] for row in values[event]].pop()
+                                tmp.clear()
+                            else:
+                                psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
                         case 'Eltavolitas':
                             ...
                         case 'Konyvtar fa eltavolitasa...':

@@ -229,7 +229,12 @@ def removing_tree(path_to_folder) -> str:
     except OSError:
         return 'Rendszerszintu megszakitas vegett nem lett eltavolitva!'
     
-
+def moving_file_to_dest(reg_path,cel_path) -> str:
+    match is_exists(cel_path):
+        case True:
+            shutil.move(reg_path, cel_path)
+        case False:
+            return 'A celmappa nem letezik'
 
     
 if __name__ == '__main__':
