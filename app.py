@@ -13,7 +13,7 @@ original_right_click = ['Mappa', ['Uj', ['Fajl', 'Mappa']]]
 file_right_click:list = []*2
 file_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 other_right_click:list = []*2
-other_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+other_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas','---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 folder_right_click:list = []*2
 folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa'], 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
 new_menu:list
@@ -576,11 +576,11 @@ while True:
                                 psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
                         case 'Eltavolitas':
                             try:
-                                os.rmdir(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
+                                remove_to_recycle_bin(os.path.join(t1_ut.szulo, kijelolt_sor[0]))
                                 psg.popup_notify('Eltavolitas megtortent!')
                                 refresh_bool = True
                                 refresh_num = 1
-                            except OSError as e:
+                            except:
                                 psg.popup_notify('Kerem hasznalja a Konyvtar fa eltavolitasa lehetoseget', title='A konyvtar nem ures!')
                         case 'Konyvtar fa eltavolitasa...':
                             mappa = kijelolt_sor[0]

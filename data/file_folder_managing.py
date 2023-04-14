@@ -1,5 +1,6 @@
 import os
 import shutil
+from winshell import copy_file, delete_file, move_file
 from collections import deque
 from data.dataclass_file_manager import File
 from data.dataclass_folder_manager import Folder
@@ -221,7 +222,14 @@ def renaming(from_file, to_file:str) -> str:
         return 'Atnevezes megtortent sikeresen'
     except OSError as e:
         return 'Rendszerszintu megszakitas, mint {e}'
-    
+
+def remove_to_recycle_bin(path_file_folder) -> str:
+    try:
+        delete_file(path_file_folder)
+        return 'A fajl eltavolitasa sikeres!'
+    except OSError:
+        return 'Rendszerszintu megszakitas vegett nem lett eltavolitva!'
+
 def removing_tree(path_to_folder) -> str:
     try:
         shutil.rmtree(path_to_folder)
@@ -232,7 +240,7 @@ def removing_tree(path_to_folder) -> str:
 def moving_file_to_dest(reg_path,cel_path) -> str:
     match is_exists(cel_path):
         case True:
-            shutil.move(reg_path, cel_path)
+            move_file(reg_path, cel_path)
         case False:
             return 'A celmappa nem letezik'
 
