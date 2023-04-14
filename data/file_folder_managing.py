@@ -1,6 +1,6 @@
 import os
 import shutil
-from winshell import copy_file, delete_file, move_file
+from winshell import copy_file, delete_file, move_file, rename_file
 from collections import deque
 from data.dataclass_file_manager import File
 from data.dataclass_folder_manager import Folder
@@ -218,17 +218,17 @@ def creating_folder(current_folder, folder_to_create) -> str:
       
 def renaming(from_file, to_file:str) -> str:
     try:
-        os.rename(from_file,to_file)
+        rename_file(from_file,to_file)
         return 'Atnevezes megtortent sikeresen'
-    except OSError as e:
-        return 'Rendszerszintu megszakitas, mint {e}'
+    except:
+        return 'Felhasznaloi megszakitas, mint {e}'
 
 def remove_to_recycle_bin(path_file_folder) -> str:
     try:
         delete_file(path_file_folder)
         return 'A fajl eltavolitasa sikeres!'
     except OSError:
-        return 'Rendszerszintu megszakitas vegett nem lett eltavolitva!'
+        return 'Felhasznaloi megszakitas vegett nem lett eltavolitva!'
 
 def removing_tree(path_to_folder) -> str:
     try:
@@ -240,7 +240,24 @@ def removing_tree(path_to_folder) -> str:
 def moving_file_to_dest(reg_path,cel_path) -> str:
     match is_exists(cel_path):
         case True:
-            move_file(reg_path, cel_path)
+            try:
+                move_file(reg_path, cel_path)
+                return 'Athelyezve cel mappaba'
+            except:
+                return 'Felhasznaloi megszakitas miatt nem lett athelyezve'
+                
+        case False:
+            return 'A celmappa nem letezik'
+        
+def copy_file_to_dest(file_folder_path, path_to_copy) -> str:
+    match is_exists(path_to_copy):
+        case True:
+            try:
+                copy_file(file_folder_path, path_to_copy, no_confirm=True)
+                return 'Athelyezve cel mappaba'
+            except:
+                return 'Felhasznaloi megszakitas miatt nem lett athelyezve'
+                
         case False:
             return 'A celmappa nem letezik'
 

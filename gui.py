@@ -157,7 +157,6 @@ def make_second_window(multi_input:str = ''):
     window02 = psg.Window('Writer', 
                           create_writer(multi_input), 
                           size=(meretek[4],meretek[5]),
-                          no_titlebar=True,
                           return_keyboard_events=True, 
                           grab_anywhere_using_control=True
                           )
@@ -182,7 +181,8 @@ def file_properties_win(utv:str, meret:int,  modositas):
     prop_window = psg.Window('Tulajdonsagok', 
                              file_properties_lay(utv, meret, modositas), 
                              disable_minimize=True, 
-                             use_custom_titlebar=True)
+                             use_custom_titlebar=True, 
+                             keep_on_top=True)
     return prop_window
 
 def folder_properties_layout(utv:str):
@@ -197,7 +197,8 @@ def folder_properties_window(utv:str):
     prop_window = psg.Window('Tulajdonsagok', 
                              folder_properties_layout(utv), 
                              disable_minimize=True, 
-                             use_custom_titlebar=True)
+                             use_custom_titlebar=True,
+                             keep_on_top=True)
     return prop_window
 
 

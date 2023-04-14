@@ -7,7 +7,7 @@ from keyboard import is_pressed
 from collections import deque
 import pyperclip
 from data.path_manager import Jelen_EleresiUt
-import logging
+#import logging
 original_right_click:list = []*2
 original_right_click = ['Mappa', ['Uj', ['Fajl', 'Mappa']]]
 file_right_click:list = []*2
