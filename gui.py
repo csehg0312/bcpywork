@@ -136,9 +136,21 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
 #                         keep_on_top=True
 #                         )
 #     return window3
+# kommand_data = ['programs','favorites', 'start', 'appdata', 'documents', 'recent']
 
+# def to_show_data():
+#     ...
 
+# def kommand_layout():
+#     simple_layout = [[psg.Text('A kommand szovege johet ide')],
+#                      [psg.Input('', expand_x=True, tooltip=f'{kommand_data}')]
+#                      ]
+    
+#     return simple_layout
 
+# def kommand_window():
+#     ...
+    
 def create_writer(multi_input:str = ''):
     frame_layout = [[psg.Text('untitled.txt', key='-WRITER-NAME-'), psg.Button('Atnevezes', key='-ATNEVEZ-WRITER-')],
                     [psg.Text('Kodolas:'), 
@@ -152,6 +164,7 @@ def create_writer(multi_input:str = ''):
                psg.Frame(title='', border_width=0, layout=frame_layout)]
                ]
     return layout2
+
 
 def make_second_window(multi_input:str = ''):
     window02 = psg.Window('Writer', 

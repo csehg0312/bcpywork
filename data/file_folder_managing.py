@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 from winshell import copy_file, delete_file, move_file, rename_file
 from collections import deque
 from data.dataclass_file_manager import File
@@ -260,6 +261,14 @@ def copy_file_to_dest(file_folder_path, path_to_copy) -> str:
                 
         case False:
             return 'A celmappa nem letezik'
+        
+# def open_visual_studio(path_to_file) -> str:
+#     try:
+#         outp = os.system("C:/Users/csehg/AppData/Local/Programs/Microsoft VS Code/Code.exe", path_to_file)
+#         print(outp)
+#         return 'Megnyitas'
+#     except:
+#         return 'A fajl nem nyithato meg!'
 
     
 if __name__ == '__main__':

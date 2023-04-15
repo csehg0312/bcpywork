@@ -13,7 +13,7 @@ original_right_click = ['Mappa', ['Uj', ['Fajl', 'Mappa']]]
 file_right_click:list = []*2
 file_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 other_right_click:list = []*2
-other_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas','---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+other_right_click = ['Fajl', ['Uj fajl letrehozasa','Megnyitas mint...',['Megnyitas alapertelmezett alkalmazasban'], 'Eleresi ut masolasa', 'Masolas','---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 folder_right_click:list = []*2
 folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa'], 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
 new_menu:list
@@ -895,6 +895,13 @@ while True:
                                 except OSError as e:
                                     psg.popup_notify( f'{bov} cannot be opened and exception {e}' ,title='No program to open') 
                                     fajl, bov = '', ''    
+                            case 'Megnyitas Visual Studio Kodban':
+                                fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
+                                fajlnev = f'{fajl}{bov}'
+                                message_out = open_visual_studio(os.path.join(t1_ut.szulo, fajlnev))
+                                psg.popup_ok(message_out, title='Visual Studio Code')
+                                fajl, bov = '', ''
+                                fajlnev = ''
                                     
                     if eventT1 == 'Tulajdonsagok':
                         prop_win = file_properties_win(os.path.join(t1_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), kijelolt_sor[3], kijelolt_sor[2])
@@ -1296,7 +1303,15 @@ while True:
                                     fajl, bov = '', ''
                                 except OSError as e:
                                     psg.popup_notify( f'{bov} cannot be opened and exception {e}' ,title='No program to open')
-                                    fajl, bov = '', ''   
+                                    fajl, bov = '', ''  
+                            # case 'Megnyitas Visual Studio Kodban':
+                            #     fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
+                            #     fajlnev = f'{fajl}{bov}'
+                            #     message_out = open_visual_studio(os.path.join(t2_ut.szulo, fajlnev))
+                            #     psg.popup_ok(message_out, title='Visual Studio Code')
+                            #     fajl, bov = '', ''
+                            #     fajlnev = ''
+                             
                                     
                     if eventT2 == 'Tulajdonsagok':
                         to_rename = ''
@@ -1354,7 +1369,7 @@ while True:
                 
     match event:
         case '-Organize01-':
-            if os.path.exists(window["-Organize01-"].get()) and (window["-Organize01-"].get()[-1] == '/') or (window["-Organize01-"].get()[-1] == '\''):
+            if os.path.exists(window["-Organize01-"].get()) and (os.path.isdir(window["-Organize02-"].get())) and (window["-Organize01-"].get()[-1] == '/') or (window["-Organize01-"].get()[-1] == '\''):
                 choice = psg.popup_yes_no(f'Megnyissa a {window["-Organize01-"].get()} mappat?')
                 if choice == 'Yes':
                     window['-TABLE01-'].Update(create_twoD_list(window['-Organize01-'].get()))
@@ -1362,7 +1377,7 @@ while True:
                 else:
                     continue
         case "-Organize02-":
-            if os.path.exists(window["-Organize02-"].get()):
+            if (os.path.exists(window["-Organize02-"].get())) and (os.path.isdir(window["-Organize02-"].get())) and (window["-Organize01-"].get()[-1] == '/') or (window["-Organize01-"].get()[-1] == '\''):
                 choice = psg.popup_yes_no(f'Megnyissa a {window["-Organize02-"].get()} mappat?')
                 if choice == 'Yes':
                     window['-TABLE02-'].Update(create_twoD_list(window['-Organize02-'].get()))
