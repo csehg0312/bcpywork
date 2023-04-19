@@ -226,9 +226,9 @@ def renaming(from_file, to_file:str) -> str:
 
 def remove_to_recycle_bin(path_file_folder) -> str:
     try:
-        delete_file(path_file_folder)
+        print(delete_file(path_file_folder))
         return 'A fajl eltavolitasa sikeres!'
-    except OSError:
+    except:
         return 'Felhasznaloi megszakitas vegett nem lett eltavolitva!'
 
 def removing_tree(path_to_folder) -> str:

@@ -5,12 +5,7 @@ from data.disk_manager import kinyeres
 from time import strftime, gmtime
 
 fejlec:list = []*4
-fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret']
-
-def calcdate(linux_time):
-    CTV = strftime('%d %b %Y %H:%M', gmtime(linux_time))
-    return f'{CTV}'
-
+fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret bájtokban']
 
 writer_menu:list
 writer_menu = ['Fajl', ['Mentes', 'Mentes maskent', 'Megnyitas']], ['Szerkeszt', ['Masolas', 'Beillesztes']]
@@ -22,15 +17,32 @@ folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...',
 meretek:list = [1280,720,300,36,1000,800,85,45, 400, 700, 50, 50, 400, 400]
 
 vals:list = []
-# vals = create_twoD_list(os.getcwd())
 
+def calcdate(linux_time):
+    CTV = strftime('%d %b %Y %H:%M', gmtime(linux_time))
+    return f'{CTV}'
 
 
 def create_layout():
     back_arrow = "C:/Users/csehg/pywork/bcpywork/back-arrow.png"
+    copy_it = "C:/Users/csehg/pywork/bcpywork/copy_it.png"
+    delete_it = "C:/Users/csehg/pywork/bcpywork/delete_it.png"
+    edit_it = "C:/Users/csehg/pywork/bcpywork/edit_it.png"
     psg.theme('SystemDefault')
     frame_layout = [[psg.Button('Writer')],
-                    [psg.Button('Refresh')]]
+                    [psg.Button('Refresh')],
+                    [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+                          image_filename=copy_it, size=(10,10), key='Copy_OUT',
+                          image_subsample=2, border_width=0,
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+                     psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+                          image_filename=delete_it, size=(10,10), key='Delete_OUT',
+                          image_subsample=2, border_width=0,
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+                     psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+                          image_filename=edit_it, size=(10,10), key='Edit_OUT',
+                          image_subsample=2, border_width=0,
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae"))]]
     layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,
                psg.Input('', enable_events=True, key="-Organize01-", ), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),

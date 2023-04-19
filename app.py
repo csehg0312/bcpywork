@@ -21,8 +21,8 @@ new_menu = [['Uj fajl', ['Txt fajl', 'Egyeb fajl']], ['Mappa']]
 writerup:bool = False
 search_up:bool = False
 disk_selectorup:bool = False
-van_kijelolt_tabla1:bool = False
-van_kijelolt_tabla2:bool = False
+is_active1:bool = False
+is_active2:bool = False
 window_minimized:bool = False
 refresh_bool:bool = False
 is_saved:bool = False
@@ -469,6 +469,8 @@ while True:
             #------------------------------Asztal 1 metodusok---------------------------
             
             case '-TABLE01-':
+                is_active1 = True
+                is_active2 = False
                 # kijelolt_sor01:list = []
                 window['-TABLE01-'].set_right_click_menu(original_right_click)
                 tmp:list = window['-TABLE01-'].get().copy()
@@ -895,13 +897,6 @@ while True:
                                 except OSError as e:
                                     psg.popup_notify( f'{bov} cannot be opened and exception {e}' ,title='No program to open') 
                                     fajl, bov = '', ''    
-                            case 'Megnyitas Visual Studio Kodban':
-                                fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
-                                fajlnev = f'{fajl}{bov}'
-                                message_out = open_visual_studio(os.path.join(t1_ut.szulo, fajlnev))
-                                psg.popup_ok(message_out, title='Visual Studio Code')
-                                fajl, bov = '', ''
-                                fajlnev = ''
                                     
                     if eventT1 == 'Tulajdonsagok':
                         prop_win = file_properties_win(os.path.join(t1_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), kijelolt_sor[3], kijelolt_sor[2])
@@ -943,6 +938,8 @@ while True:
                     #------------------------------Asztal 2 metodusok---------------------------
                     
             case '-TABLE02-':
+                is_active1 = False
+                is_active2 = True
                 tmp:list = window['-TABLE02-'].get().copy()
                 kijelolt_sor = []
                 try:
@@ -1384,10 +1381,50 @@ while True:
                     t2_ut:Jelen_EleresiUt = Jelen_EleresiUt(window['-Organize02-'].get())
                 else:
                     continue
-        case other:
-            continue
-                
-    match event:
+        case 'Refresh':
+            psg.popup_notify('Refreshed', title='Software')
+        case 'Copy_OUT':
+            match is_active1:
+                case True:
+                    ...
+                case False:
+                    match is_active2:
+                        case True:
+                            ...
+                        case False:
+                            continue
+        case 'Delete_OUT':
+            match is_active1:
+                case True:
+                    fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
+                    if bov != 'Mappa' or bov != '':
+                        fajlnev = f'{fajl}{bov}'
+                        message_out = remove_to_recycle_bin(os.path.join(t1_ut.szulo, fajlnev))
+                    else:
+                        message_out = remove_to_recycle_bin(os.path.join(t2_ut.szulo, fajl))
+                    psg.popup_ok(message_out, title='Asztal 1')
+                case False:
+                    match is_active2:
+                        case True:
+                            fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
+                            if bov != 'Mappa' or bov != '':
+                                fajlnev = f'{fajl}{bov}'
+                                message_out = remove_to_recycle_bin(os.path.join(t2_ut.szulo, fajlnev))
+                            else:
+                                message_out = remove_to_recycle_bin(os.path.join(t2_ut.szulo, fajl))
+                            psg.popup_ok(message_out, title='Asztal 2')
+                        case False:
+                            continue
+        case 'Edit_OUT':
+            match is_active1:
+                case True:
+                    ...
+                case False:
+                    match is_active2:
+                        case True:
+                            ...
+                        case False:
+                            continue
         case ('-TABLE01-', '+CLICKED+', (-1, 0)):
             window['-TABLE01-'].get().sort(key=lambda x: x[0])
             window['-TABLE01-'].update(values=window['-TABLE01-'].get())
@@ -1406,7 +1443,7 @@ while True:
         case ('-TABLE02-', '+CLICKED+', (-1, 3)):
             window['-TABLE02-'].get().sort(key=lambda x: x[3])
             window['-TABLE02-'].update(values=window['-TABLE01-'].get())
-        
+    
                 
     # if event in ('Megnyitas', 'Eleresi ut masolasa', 'Masolas', 'Athelyezes::-FILE-', 'Atnevezes::-FILE-'):
     #     match event:
@@ -1417,9 +1454,6 @@ while True:
     #     ...
     
     # if event == 'Tulajdonsagok':
-    #     ...
-    if ((event == 'r') and (eventlist[0] == 17)) or event == 'Refresh':
-        psg.popup_notify('Refreshed', title='Software')
         
     # if event == 'Refresh':
     #     psg.popup_notify('Refreshed', title='Software')   
