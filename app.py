@@ -1418,11 +1418,27 @@ while True:
         case 'Edit_OUT':
             match is_active1:
                 case True:
-                    ...
+                    # fajl:str = str(kijelolt_sor[0])
+                    named:str = psg.popup_get_text('Fajlnev modositasa!', title='PyFileManager', default_text=f'{kijelolt_sor[0]}')
+                    if (named == kijelolt_sor[0]) or (named == '') or (named == None):
+                        ...
+                    else:
+                        message_out = renaming(os.path.join(t1_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t1_ut.szulo, f'{named}{kijelolt_sor[1]}'))
+                        psg.popup_ok(message_out, title='PyFileManager')
+                        refresh_bool = True
+                        refresh_num = 1
                 case False:
                     match is_active2:
                         case True:
-                            ...
+                            # fajl:str = str(kijelolt_sor[0])
+                            named:str = psg.popup_get_text('Fajlnev modositasa!', title='PyFileManager', default_text=f'{kijelolt_sor[0]}')
+                            if (named == kijelolt_sor[0]) or (named == '') or (named == None):
+                                ...
+                            else:
+                                message_out = renaming(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t2_ut.szulo, f'{named}{kijelolt_sor[1]}'))
+                                psg.popup_ok(message_out, title='PyFileManager')
+                                refresh_bool = True
+                                refresh_num = 2
                         case False:
                             continue
         case ('-TABLE01-', '+CLICKED+', (-1, 0)):
