@@ -1363,6 +1363,13 @@ while True:
                 window['-TABLE02-'].Update(vals)
                 refresh_bool = False
                 refresh_num = 0
+            case 12:
+                vals = create_twoD_list(t1_ut.szulo)
+                window['-TABLE01-'].Update(vals)
+                vals = create_twoD_list(t2_ut.szulo)
+                window['-TABLE02-'].Update(vals)
+                refresh_bool = False
+                refresh_num = 0
                 
     match event:
         case '-Organize01-':
@@ -1391,10 +1398,12 @@ while True:
                     else:
                         to_move = f'{kijelolt_sor[0]}'
                     if t2_ut != '' and t2_ut != t1_ut:
-                        message_out = moving_file_to_dest(os.path.join(t2_ut.szulo, to_move), t1_ut.szulo)
+                        message_out = moving_file_to_dest(os.path.join(t1_ut.szulo, to_move), window['-Organize02-'].get())
                         psg.popup_notify(message_out, title='PyFileManager')
+                        refresh_bool = True
+                        refresh_num = 12
                     else:
-                        print('please specify a path')
+                        psg.popup_ok('Nyissa meg az Asztal2 - n az uj mappat!', title='PyFileManager')
                 case False:
                     match is_active2:
                         case True:
@@ -1402,11 +1411,13 @@ while True:
                                 to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
                             else:
                                 to_move = f'{kijelolt_sor[0]}'
-                            if t2_ut != '' and t2_ut != t1_ut:
-                                message_out = moving_file_to_dest(os.path.join(t1_ut.szulo, to_move), t2_ut.szulo)
+                            if t1_ut != '' and t1_ut != t2_ut:
+                                message_out = moving_file_to_dest(os.path.join(t2_ut.szulo, to_move), window['-Organize01-'].get())
                                 psg.popup_notify(message_out, title='PyFileManager')
+                                refresh_bool = True
+                                refresh_num = 12
                             else:
-                                print('please specify a path')
+                                psg.popup_ok('Nyissa meg az Asztal1 - n az uj mappat!', title='PyFileManager')
                         case False:
                             continue
         case 'Delete_OUT':
