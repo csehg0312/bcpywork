@@ -1386,11 +1386,27 @@ while True:
         case 'Copy_OUT':
             match is_active1:
                 case True:
-                    ...
+                    if kijelolt_sor[1] != 'Mappa':
+                        to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
+                    else:
+                        to_move = f'{kijelolt_sor[0]}'
+                    if t2_ut != '' and t2_ut != t1_ut:
+                        message_out = moving_file_to_dest(os.path.join(t2_ut.szulo, to_move), t1_ut.szulo)
+                        psg.popup_notify(message_out, title='PyFileManager')
+                    else:
+                        print('please specify a path')
                 case False:
                     match is_active2:
                         case True:
-                            ...
+                            if kijelolt_sor[1] != 'Mappa':
+                                to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
+                            else:
+                                to_move = f'{kijelolt_sor[0]}'
+                            if t2_ut != '' and t2_ut != t1_ut:
+                                message_out = moving_file_to_dest(os.path.join(t1_ut.szulo, to_move), t2_ut.szulo)
+                                psg.popup_notify(message_out, title='PyFileManager')
+                            else:
+                                print('please specify a path')
                         case False:
                             continue
         case 'Delete_OUT':
@@ -1421,7 +1437,7 @@ while True:
                     # fajl:str = str(kijelolt_sor[0])
                     named:str = psg.popup_get_text('Fajlnev modositasa!', title='PyFileManager', default_text=f'{kijelolt_sor[0]}')
                     if (named == kijelolt_sor[0]) or (named == '') or (named == None):
-                        ...
+                        continue
                     else:
                         message_out = renaming(os.path.join(t1_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t1_ut.szulo, f'{named}{kijelolt_sor[1]}'))
                         psg.popup_ok(message_out, title='PyFileManager')
@@ -1433,7 +1449,7 @@ while True:
                             # fajl:str = str(kijelolt_sor[0])
                             named:str = psg.popup_get_text('Fajlnev modositasa!', title='PyFileManager', default_text=f'{kijelolt_sor[0]}')
                             if (named == kijelolt_sor[0]) or (named == '') or (named == None):
-                                ...
+                                continue
                             else:
                                 message_out = renaming(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t2_ut.szulo, f'{named}{kijelolt_sor[1]}'))
                                 psg.popup_ok(message_out, title='PyFileManager')
