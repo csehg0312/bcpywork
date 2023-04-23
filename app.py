@@ -11,11 +11,11 @@ from data.path_manager import Jelen_EleresiUt
 original_right_click:list = []*2
 original_right_click = ['Mappa', ['Uj', ['Fajl', 'Mappa']]]
 file_right_click:list = []*2
-file_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas', '---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+file_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas','Athelyezes::-FILE-', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 other_right_click:list = []*2
-other_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas mint...',['Megnyitas alapertelmezett alkalmazasban'], 'Eleresi ut masolasa', 'Masolas','---','Athelyezes::-FILE-','Athelyezes megadott mappaba...::-FILE-','---', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+other_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas mint...',['Megnyitas alapertelmezett alkalmazasban'], 'Eleresi ut masolasa', 'Masolas','Athelyezes::-FILE-', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 folder_right_click:list = []*2
-folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa', 'Uj mappa a mappan belul'], 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
+folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa', 'Uj mappa a mappan belul'], 'Athelyezes::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
 new_menu:list
 new_menu = [['Uj fajl', ['Txt fajl', 'Egyeb fajl']], ['Mappa']]
 writerup:bool = False
@@ -519,6 +519,8 @@ while True:
                             pyperclip.copy(f'{os.path.normcase(os.path.join(t1_ut.szulo, mappa))}')
                             psg.popup_notify('Copied to clipboard', title='Copied')
                             mappa = ''
+                    else:
+                        continue
                             
                     match event_folder1:
                         case 'Uj fajl':
@@ -552,17 +554,21 @@ while True:
                             psg.popup_notify(message_out, title='Letrehozas')
                             refresh_bool = True
                             refresh_num = 1
+                        case 'Uj mappa a mappan belul':
+                            used_path = os.path.join(t1_ut.szulo, kijelolt_sor[0])
+                            used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
+                            message_out = creating_folder(used_path, used_dir)
+                            psg.popup_notify(message_out, title='Letrehozas')
                         case 'Athelyezes::-FOLDER-':
-                            match t2_ut.szulo:
-                                case '':
-                                    psg.popup_ok('A masik asztalon nincs megnyitva mappa!', title='Asztal 1')
-                                case other:
-                                    used_path = t1_ut.szulo
-                                    used_dir = kijelolt_sor[0]
-                                    reg_path = os.path.join(used_path,used_dir)
+                            to_move = f'{kijelolt_sor[0]}'
+                            if t2_ut != '' and t2_ut != t1_ut:
+                                message_out = moving_file_to_dest(os.path.join(t1_ut.szulo, to_move), window['-Organize02-'].get())
+                                psg.popup_notify(message_out, title='PyFileManager')
+                                refresh_bool = True
+                                refresh_num = 12
+                            else:
+                                psg.popup_ok('Nyissa meg az Asztal2 - n az uj mappat!', title='Asztal 1')
                                     
-                        case 'Athelyezes megadott mappaba...::-FOLDER-':
-                            ...
                         case 'Atnevezes::-FOLDER-':
                             real_path, real_dir, = t1_ut.szulo, kijelolt_sor[0]
                             val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{real_dir}', keep_on_top=True)
@@ -632,9 +638,7 @@ while True:
                         # az egyszerubb elereshez
                     
                     if eventT1 == 'Control_L:17':
-                        print(eventT1)
                         control_event, _ = window.read()
-                        print(control_event)
                         match control_event:
                             case 'o':
                                 try:
@@ -664,12 +668,18 @@ while True:
                                         
                                         #billentyukombinaciok tesztelese utan a jobb klikk esemenyek tesztelese
                                         
-                    if eventT1 in ('Athelyezes megadott mappaba...::-FILE-', 'Athelyezes::-FILE-', 'Atnevezes::-FILE-'):
+                    if eventT1 in ('Athelyezes::-FILE-', 'Atnevezes::-FILE-'):
                         match eventT1:
                             case 'Athelyezes::-FILE-':
-                                ...
-                            case 'Athelyezes megadott mappaba...::-FILE-':
-                                ...
+                                to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
+
+                                if t2_ut != '' and t2_ut != t1_ut:
+                                    message_out = moving_file_to_dest(os.path.join(t1_ut.szulo, to_move), window['-Organize02-'].get())
+                                    psg.popup_notify(message_out, title='PyFileManager')
+                                    refresh_bool = True
+                                    refresh_num = 12
+                                else:
+                                    psg.popup_ok('Nyissa meg az Asztal2 - n az uj mappat!', title='Asztal 1')
                             case 'Atnevezes::-FILE-':
                                 real_path, head, tail = t1_ut.szulo, kijelolt_sor[0], kijelolt_sor[1]
                                 val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{head}{tail}', keep_on_top=True,)
@@ -887,7 +897,17 @@ while True:
                                     psg.popup_notify('Copied to clipboard', title='Copied')
                                     fajl, bov = '', ''
                             case 'Masolas':
-                                ...
+                                if kijelolt_sor[1] != 'Mappa':
+                                    to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
+                                else:
+                                    to_move = f'{kijelolt_sor[0]}'
+                                if t2_ut != '' and t2_ut != t1_ut:
+                                    message_out = copy_file_to_dest(os.path.join(t1_ut.szulo, to_move), window['-Organize02-'].get())
+                                    psg.popup_notify(message_out, title='PyFileManager')
+                                    refresh_bool = True
+                                    refresh_num = 12
+                                else:
+                                    psg.popup_ok('Nyissa meg az Asztal2 - n az uj mappat!', title='Asztal 1')
                             case 'Megnyitas alapertelmezett alkalmazasban':
                                 try:
                                     fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
@@ -967,12 +987,57 @@ while True:
                             pyperclip.copy(f'{os.path.normcase(os.path.join(t2_ut.szulo, mappa))}')
                             psg.popup_notify('Copied to clipboard', title='Copied')
                             mappa = ''
+                    else:
+                        continue
                             
                     match event_folder2:
+                        case 'Uj fajl':
+                            used_path:str = t2_ut.szulo
+                            used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
+                            match used_path:
+                                case '':
+                                    psg.popup_ok('Nem lett mappa megadva!', title='Hiba')
+                                case other:
+                                    fajl, bov = os.path.splitext(used_file)
+                                    if fajl != '':
+                                        match bov:
+                                            case '':
+                                                if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                    out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                    psg.popup_ok(out_message)
+                                                    refresh_bool = True
+                                                    refresh_num = 1
+                                            case other:
+                                                if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
+                                                    out_message = creating_file_without_value(used_path, f'{used_file}{bov}', 'utf-8', '')
+                                                    psg.popup_ok(out_message, title='Letrehozas')
+                                                    refresh_bool = True
+                                                    refresh_num = 1
+                                    else:
+                                        psg.popup_ok('Nem lett megadva fajlnev')
+                        case 'Uj mappa':
+                            used_path = t2_ut.szulo
+                            used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
+                            message_out = creating_folder(used_path, used_dir)
+                            psg.popup_notify(message_out, title='Letrehozas')
+                            refresh_bool = True
+                            refresh_num = 1
+                        case 'Uj mappa a mappan belul':
+                            used_path = os.path.join(t2_ut.szulo, kijelolt_sor[0])
+                            used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
+                            message_out = creating_folder(used_path, used_dir)
+                            psg.popup_notify(message_out, title='Letrehozas')
                         case 'Athelyezes::-FOLDER-':
-                            ...
-                        case 'Athelyezes megadott mappaba...::-FOLDER-':
-                            ...
+                            
+                            to_move = f'{kijelolt_sor[0]}'
+                                
+                            if t1_ut != '' and t1_ut != t2_ut:
+                                message_out = moving_file_to_dest(os.path.join(t2_ut.szulo, to_move), window['-Organize01-'].get())
+                                psg.popup_notify(message_out, title='PyFileManager')
+                                refresh_bool = True
+                                refresh_num = 12
+                            else:
+                                psg.popup_ok('Nyissa meg az Asztal1 - n az uj mappat!', title='Asztal 2')
                         case 'Atnevezes::-FOLDER-':
                             real_path, real_dir, = t2_ut.szulo, kijelolt_sor[0]
                             val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{real_dir}', keep_on_top=True)
@@ -986,10 +1051,6 @@ while True:
                                 tmp.clear()
                             else:
                                 psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
-                        case 'Eltavolitas':
-                            ...
-                        case 'Konyvtar fa eltavolitasa...':
-                            ...
                         case 'Megnyitas a masik asztalon':
                             window['-TABLE01-'].Update(create_twoD_list(os.path.join(t2_ut.szulo, kijelolt_sor[0])))
                             window['-Organize01-'].Update(os.path.join(t2_ut.szulo, kijelolt_sor[0]))
@@ -1064,12 +1125,18 @@ while True:
                                     case other:
                                         psg.popup_notify('Cancelled!')
                                 fajl, bov = '', ''
-                    if eventT2 in ('Athelyezes megadott mappaba...::-FILE-', 'Athelyezes::-FILE-', 'Atnevezes::-FILE-'):
+                    if eventT2 in ('Athelyezes::-FILE-', 'Atnevezes::-FILE-'):
                         match eventT2:
                             case 'Athelyezes::-FILE-':
-                                ...
-                            case 'Athelyezes megadott mappaba...::-FILE-':
-                                ...
+                                to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
+                            
+                                if t1_ut != '' and t2_ut != t1_ut:
+                                    message_out = moving_file_to_dest(os.path.join(t2_ut.szulo, to_move), window['-Organize01-'].get())
+                                    psg.popup_notify(message_out, title='PyFileManager')
+                                    refresh_bool = True
+                                    refresh_num = 12
+                                else:
+                                    psg.popup_ok('Nyissa meg az Asztal1 - n az uj mappat!', title='Asztal 2')
                             case 'Atnevezes::-FILE-':
                                 real_path, head, tail = t2_ut.szulo, kijelolt_sor[0], kijelolt_sor[1]
                                 val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{head}{tail}', keep_on_top=True,)
@@ -1291,7 +1358,17 @@ while True:
                                     psg.popup_notify('Copied to clipboard', title='Copied')
                                     fajl, bov = '', ''
                             case 'Masolas':
-                                ...
+                                if kijelolt_sor[1] != 'Mappa':
+                                    to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
+                                else:
+                                    to_move = f'{kijelolt_sor[0]}'
+                                if t1_ut != '' and t1_ut != t2_ut:
+                                    message_out = copy_file_to_dest(os.path.join(t2_ut.szulo, to_move), window['-Organize01-'].get())
+                                    psg.popup_notify(message_out, title='PyFileManager')
+                                    refresh_bool = True
+                                    refresh_num = 12
+                                else:
+                                    psg.popup_ok('Nyissa meg az Asztal1 - n az uj mappat!', title='Asztal 2')
                             case 'Megnyitas alapertelmezett alkalmazasban':
                                 try:
                                     fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
@@ -1398,7 +1475,7 @@ while True:
                     else:
                         to_move = f'{kijelolt_sor[0]}'
                     if t2_ut != '' and t2_ut != t1_ut:
-                        message_out = moving_file_to_dest(os.path.join(t1_ut.szulo, to_move), window['-Organize02-'].get())
+                        message_out = copy_file_to_dest(os.path.join(t1_ut.szulo, to_move), window['-Organize02-'].get())
                         psg.popup_notify(message_out, title='PyFileManager')
                         refresh_bool = True
                         refresh_num = 12
@@ -1412,7 +1489,7 @@ while True:
                             else:
                                 to_move = f'{kijelolt_sor[0]}'
                             if t1_ut != '' and t1_ut != t2_ut:
-                                message_out = moving_file_to_dest(os.path.join(t2_ut.szulo, to_move), window['-Organize01-'].get())
+                                message_out = copy_file_to_dest(os.path.join(t2_ut.szulo, to_move), window['-Organize01-'].get())
                                 psg.popup_notify(message_out, title='PyFileManager')
                                 refresh_bool = True
                                 refresh_num = 12
@@ -1430,6 +1507,8 @@ while True:
                     else:
                         message_out = remove_to_recycle_bin(os.path.join(t2_ut.szulo, fajl))
                     psg.popup_ok(message_out, title='Asztal 1')
+                    refresh_bool = True
+                    refresh_num = 1
                 case False:
                     match is_active2:
                         case True:
@@ -1440,6 +1519,8 @@ while True:
                             else:
                                 message_out = remove_to_recycle_bin(os.path.join(t2_ut.szulo, fajl))
                             psg.popup_ok(message_out, title='Asztal 2')
+                            refresh_bool = True
+                            refresh_num = 2
                         case False:
                             continue
         case 'Edit_OUT':
@@ -1493,7 +1574,7 @@ while True:
     #         case 'Megnyitas':
     #             ...
         
-    # if event in ('Masolas', '&Utvonal masolasa...', 'Athelyezes::-FOLDER-', 'Athelyezes megadott mappaba...', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...' ,'Megnyitas a masik asztalon'):
+    # if event in ('Masolas', '&Utvonal masolasa...', 'Athelyezes::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...' ,'Megnyitas a masik asztalon'):
     #     ...
     
     # if event == 'Tulajdonsagok':
