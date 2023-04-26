@@ -99,26 +99,35 @@ def create_twoD_list(ut:str):
 
 
 def open_the_encoding(current_place) -> str:
-    with open(current_place, 'rb') as reader:
-        not_encoded = reader.read()
-        m = magic.Magic(mime_encoding=True)
-        encoded = m.from_buffer(not_encoded)
-        # print(encoded)
-    return encoded
+    try:
+        with open(current_place, 'rb') as reader:
+            not_encoded = reader.read()
+            m = magic.Magic(mime_encoding=True)
+            encoded = m.from_buffer(not_encoded)
+            # print(encoded)
+        return encoded
+    except:
+        return 'utf-8'
 
 def open_file(current_path):
     encoder = open_the_encoding(current_path)
     if encoder != 'binary':
-        with open(current_path, 'r', encoding=encoder ) as reader:
-            file_text = reader.read()
-            # print(file_text)
-            reader.close()
-            return file_text, encoder
+        try:
+            with open(current_path, 'r', encoding=encoder ) as reader:
+                file_text = reader.read()
+                # print(file_text)
+                reader.close()
+                return file_text, encoder
+        except:
+            return '', encoder
     else:
-        with open(current_path, 'rb') as reader:
-            binary_text = reader.read()
-            reader.close()
-            return binary_text
+        try:
+            with open(current_path, 'rb') as reader:
+                binary_text = reader.read()
+                reader.close()
+                return binary_text, 'utf-8'
+        except:
+            return '', 'utf-8'
     
 # def is_same_file_extension(val:str) -> bool:
 #     head,tail = os.path.splitext(val)

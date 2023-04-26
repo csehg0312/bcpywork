@@ -360,6 +360,7 @@ while True:
             
             for d in range(len(disk_nev)):
                disk_window[f'-DISK_WIN{d}-'].update_bar(disk_foglalt[d])
+               disk_window[f"-SZABAD{d}-"].update(f'{disk_teljes[d]} GB teljes - {disk_foglalt[d]} GB foglalt')
                
     #-----------------------------Meghajto kivalasztasanal betolti a kivant asztalra--------------------------------------------------
                
@@ -623,11 +624,11 @@ while True:
                 else:
                     
                     # ha a kijelolt sorban levo elem fajl -> figyelje az eventeket 
-                    # /// tovabba ha a kijelolt fajl '.txt', '.py', '.md', '.js', '.log' 
+                    # /// tovabba ha a kijelolt fajl '.txt', '.py', '.md', '.js', '.log', '.so', '.h', , '.html', '.c', '.cpp' 
                     # kiterjesztesu, valtoztasson jobb klikk menut
                     # a jobb klikk menubol meg lehet nyitni majd a Writerben a fajlt 
                     
-                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log'):
+                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log', '.so', '.h','.html', '.c', '.cpp'):
                         window['-TABLE01-'].set_right_click_menu(file_right_click)
                     else:
                          window['-TABLE01-'].set_right_click_menu(other_right_click)
@@ -1084,11 +1085,11 @@ while True:
                 else:
                     
                     # ha a kijelolt sorban levo elem fajl -> figyelje az eventeket 
-                    # /// tovabba ha a kijelolt fajl '.txt', '.py', '.md', '.js', '.log' 
+                    # /// tovabba ha a kijelolt fajl '.txt', '.py', '.md', '.js', '.log', '.so', '.h', , '.html', '.c', '.cpp' 
                     # kiterjesztesu, valtoztasson jobb klikk menut
                     # a jobb klikk menubol meg lehet nyitni majd a Writerben a fajlt 
                     
-                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log'):
+                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log', '.so', '.h','.html', '.c', '.cpp'):
                         window['-TABLE02-'].set_right_click_menu(file_right_click)
                     else:
                         window['-TABLE02-'].set_right_click_menu(other_right_click)
@@ -1420,14 +1421,19 @@ while True:
     if event in ('Back01', 'Back02'):
         match event:
             case 'Back01':
-                t1_ut.SzuloUtvonal()
-                window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
-                window.find_element('-Organize01-').update(t1_ut.szulo)
+                if t1_ut == '':   
+                    psg.popup_notify('Nics megnyitva utvonal', title='PyFileManager')
+                else:
+                    t1_ut.SzuloUtvonal()
+                    window['-TABLE01-'].Update(values=create_twoD_list(t1_ut.szulo))
+                    window.find_element('-Organize01-').update(t1_ut.szulo)
             case 'Back02':
-                t2_ut.SzuloUtvonal()
-                window['-TABLE02-'].Update(values=create_twoD_list(t2_ut.szulo))
-                window.find_element('-Organize02-').update(t2_ut.szulo)
-                
+                if t2_ut == '': 
+                    psg.popup_notify('Nics megnyitva utvonal', title='PyFileManager')
+                else:
+                    t2_ut.SzuloUtvonal()
+                    window['-TABLE02-'].Update(values=create_twoD_list(t2_ut.szulo))
+                    window.find_element('-Organize02-').update(t2_ut.szulo)
     if refresh_bool == True:
         match refresh_num:
             case 1: 

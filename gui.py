@@ -10,11 +10,11 @@ fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret bájtokban']
 writer_menu:list
 writer_menu = ['Fajl', ['Mentes', 'Mentes maskent', 'Megnyitas']], ['Szerkeszt', ['Masolas', 'Beillesztes']]
 disk_right_click = []
-disk_click = ['Disk', ['Megnyitas asztalon', ['Asztal1::-INT1-', 'Asztal2::-INT2-']]]
+disk_click = ['Disk', ['Asztal1::-INT1-', 'Asztal2::-INT2-']]
 folder_right_click:list
 folder_right_click = ['Folder', ['&Copy', '&Copy path...', 'Move', 'Move to...', 'Rename', 'Remove', 'Remove tree...', 'Open in new tab', 'Properties']]
 #a meretek igy [0]appwinx, [1]appwiny, [2]tablex, [3]tabley, [4]secondWindowx, [5]secondWindowy, [6]multilinex, [7]multilineY, [8]searchWinX, [9]searchWinY, [10]searchListX, [11]searchListY , [12]Disk selectorX, [13] Disk selectorY
-meretek:list = [1280,720,300,36,1000,800,85,45, 400, 700, 50, 50, 400, 400]
+meretek:list = [1280,720,300,36,1000,800,85,45, 400, 700, 50, 50, 400, 600]
 
 vals:list = []
 
@@ -55,12 +55,15 @@ def create_layout():
                           image_subsample=2, border_width=0,
                           mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
                psg.Push(),
+               psg.Text('Asztal1'),
+               psg.Push(),
                psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
                           image_filename=back_arrow, size=(10,10), key='Back02',
                           image_subsample=2, border_width=0,
                           mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
-               psg.Push()
-               ],
+               psg.Push(),
+               psg.Text('Asztal2'),
+               psg.Push()],
               [psg.Table(vals,
                          headings=fejlec, 
                          size=(meretek[2],meretek[3]), 
@@ -94,20 +97,22 @@ def create_ablak():
                         disable_minimize=False)
     return window
 
-def create_disk_layout(diszk_nev:str, diszk_key:str,diszk_max:int):
+# def create_disk_layout(diszk_nev:str, diszk_key:str,diszk_max:int):
     
-    disk_elolayout = [
-        [psg.Text(diszk_nev)],
-        [psg.ProgressBar(max_value=diszk_max,right_click_menu=any, key=diszk_key)]
-        ]
+#     disk_elolayout = [
+#         [psg.Text(diszk_nev)],
+#         [psg.ProgressBar(max_value=diszk_max,right_click_menu=any, key=diszk_key)],
+#         [psg.Text()]
+#         ]
     
-    return disk_elolayout
+#     return disk_elolayout
 
 def create_disk_window(number:int, diszk_lista, diszk_info):
     psg.theme('SystemDefault')
     window4 = psg.Window('Diszkek valasztasa',
                          [
-                             [psg.Frame('', [[psg.T('Csatlakozott diszkek', key='-TAROLOK-')]])]
+                             [psg.Frame('', [[psg.T('Csatlakozott diszkek', key='-TAROLOK-')]])],
+                             [psg.Text('Maximálisan 5 csatlakoztatott diszket támogatat!')]
                              ],
                          size=(meretek[12],meretek[13]),  
                          use_custom_titlebar=True,
@@ -118,11 +123,14 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
     for i in range(number):
         K:str = f'-DISK_WIN{i}-'
         V:str = f'-BM{i}-'
+        F:str = f'-SZABAD{i}-'
         tval:str = f'-TX{i}-'
-        window4.extend_layout(window4['-TAROLOK-'], [[psg.T(f'{diszk_lista[i]}', key=tval), psg.Push(), psg.ButtonMenu('Műveletek', menu_def=disk_click, key=V)],
-                                                     [psg.ProgressBar(max_value=diszk_info[i], key=K, size=(50,15))]])
+        window4.extend_layout(window4['-TAROLOK-'], [[psg.T(f'{diszk_lista[i]}', key=tval), psg.Push(), psg.ButtonMenu('Megnyitás', menu_def=disk_click, key=V)],
+                                                     [psg.ProgressBar(max_value=diszk_info[i], key=K, size=(50,15))],
+                                                     [psg.T('', key=F)]])
         K:str = ''
         V:str = ''
+        F:str = ''
         tval:str = ''
     
     return window4
