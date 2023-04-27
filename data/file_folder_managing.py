@@ -264,7 +264,7 @@ def copy_file_to_dest(file_folder_path, path_to_copy) -> str:
         case True:
             try:
                 copy_file(file_folder_path, path_to_copy, no_confirm=True)
-                return 'Athelyezve cel mappaba'
+                return 'Atmasolva a cel mappaba'
             except:
                 return 'Felhasznaloi megszakitas miatt nem lett athelyezve'
                 

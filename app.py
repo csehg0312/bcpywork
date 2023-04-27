@@ -201,8 +201,11 @@ while True:
                                 case '':
                                     psg.popup_ok('Nem lett mappa megadva!', title='Hiba')
                                 case other:
-                                    fajl, bov = os.path.splitext(used_file)
-                                    if fajl != '':
+                                    if used_file != '' and used_file != None:
+                                        fajl, bov = os.path.splitext(used_file)
+                                    else:
+                                        fajl, bov = "untitled", ".txt"
+                                    if (fajl != '') and (fajl != None):
                                         match bov:
                                             case '':
                                                 if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
@@ -513,17 +516,14 @@ while True:
                             t1_ut.SzuloUtvonal()
                             tmp.clear()
                     event_folder1, _ = window.read() 
-                    
-                    if event_folder1 == 'Utvonal masolasa...':
-                        mappa = kijelolt_sor[0]
-                        if os.path.exists(os.path.join(t1_ut.szulo, f'{mappa}')):
-                            pyperclip.copy(f'{os.path.normcase(os.path.join(t1_ut.szulo, mappa))}')
-                            psg.popup_notify('Copied to clipboard', title='Copied')
-                            mappa = ''
-                    else:
-                        continue
                             
                     match event_folder1:
+                        case 'Utvonal masolasa...':
+                            mappa = kijelolt_sor[0]
+                            if os.path.exists(os.path.join(t1_ut.szulo, f'{mappa}')):
+                                pyperclip.copy(f'{os.path.normcase(os.path.join(t1_ut.szulo, mappa))}')
+                                psg.popup_notify('Copied to clipboard', title='Copied')
+                                mappa = ''
                         case 'Uj fajl':
                             used_path:str = t1_ut.szulo
                             used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
@@ -531,35 +531,47 @@ while True:
                                 case '':
                                     psg.popup_ok('Nem lett mappa megadva!', title='Hiba')
                                 case other:
-                                    fajl, bov = os.path.splitext(used_file)
-                                    if fajl != '':
-                                        match bov:
-                                            case '':
-                                                if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
-                                                    out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
-                                                    psg.popup_ok(out_message)
-                                                    refresh_bool = True
-                                                    refresh_num = 1
-                                            case other:
-                                                if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
-                                                    out_message = creating_file_without_value(used_path, f'{used_file}{bov}', 'utf-8', '')
-                                                    psg.popup_ok(out_message, title='Letrehozas')
-                                                    refresh_bool = True
-                                                    refresh_num = 1
-                                    else:
-                                        psg.popup_ok('Nem lett megadva fajlnev')
+                                    
+                                        if used_file != '' and used_file != None:
+                                            fajl, bov = os.path.splitext(used_file)
+                                        else:
+                                            fajl, bov = "untitled", ".txt"
+                                        if (fajl != '') and (fajl != None):
+                                            match bov:
+                                                case '':
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                        psg.popup_ok(out_message)
+                                                        refresh_bool = True
+                                                        refresh_num = 1
+                                                case other:
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                        psg.popup_ok(out_message, title='Letrehozas')
+                                                        refresh_bool = True
+                                                        refresh_num = 1
+                                                    else:
+                                                        psg.popup_ok('A fajl mar letezik!')
+                                        else:
+                                            continue
                         case 'Uj mappa':
                             used_path = t1_ut.szulo
                             used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
-                            message_out = creating_folder(used_path, used_dir)
-                            psg.popup_notify(message_out, title='Letrehozas')
-                            refresh_bool = True
-                            refresh_num = 1
+                            if used_dir != '' and used_dir != None:
+                                    message_out = creating_folder(used_path, used_dir)
+                                    psg.popup_notify(message_out, title='Letrehozas')
+                                    refresh_bool = True
+                                    refresh_num = 1
+                            else:
+                                continue
                         case 'Uj mappa a mappan belul':
                             used_path = os.path.join(t1_ut.szulo, kijelolt_sor[0])
                             used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
-                            message_out = creating_folder(used_path, used_dir)
-                            psg.popup_notify(message_out, title='Letrehozas')
+                            if used_dir != '' and used_dir != None:
+                                    message_out = creating_folder(used_path, used_dir)
+                                    psg.popup_notify(message_out, title='Letrehozas')
+                            else:
+                                continue
                         case 'Athelyezes::-FOLDER-':
                             to_move = f'{kijelolt_sor[0]}'
                             if t2_ut != '' and t2_ut != t1_ut:
@@ -694,7 +706,7 @@ while True:
                                     tmp.clear()
                                 else:
                                     psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
-                    if eventT1 in ('Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Megnyitas alapertelmezett alkalmazasban'):
+                    if eventT1 in ('Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Megnyitas alapertelmezett alkalmazasban', 'Fajl', 'Mappa', 'Tulajdonsagok'):
                         match eventT1:
                             case 'Megnyitas Writerben':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
@@ -890,6 +902,7 @@ while True:
                                     writerup = False
                                     writer_window.close()
                                     fajl, bov = '', ''
+                                    
                             
                             case 'Eleresi ut masolasa':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
@@ -917,38 +930,80 @@ while True:
                                     fajl, bov = '', ''
                                 except OSError as e:
                                     psg.popup_notify( f'{bov} cannot be opened and exception {e}' ,title='No program to open') 
-                                    fajl, bov = '', ''    
+                                    fajl, bov = '', ''  
                                     
-                    if eventT1 == 'Tulajdonsagok':
-                        prop_win = file_properties_win(os.path.join(t1_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), kijelolt_sor[3], kijelolt_sor[2])
-                        to_rename = ''
-                        while True:
-                            prop_event, prop_val = prop_win.read()
-                            if prop_event == psg.WIN_CLOSED:
-                                break
-                            prop_win['-RENAMER-FILE-'].set_cursor()
-                            if prop_event == '-RENAMER-FILE-':
-                                to_rename = prop_win['-RENAMER-FILE-'].get()
-                        prop_win.close()
-                        if (to_rename != f'{kijelolt_sor[0]}') and (to_rename != ''):
-                            ev = psg.popup_yes_no('Szeretne atnevezni a mappat?')
-                            match ev:
-                                case 'Yes': 
-                                    renaming(os.path.join(t1_ut.szulo,f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t1_ut.szulo, f'{to_rename}{kijelolt_sor[1]}'))
-                                    psg.popup_notify('Atnevezes megtortent!')
+                            case 'Fajl':
+                                used_path:str = t1_ut.szulo
+                                used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
+                                match used_path:
+                                    case '':
+                                        psg.popup_ok('Nincs megadott mappa!', title='Hiba')
+                                    case other:
+                                            if used_file != '' and used_file != None:
+                                                fajl, bov = os.path.splitext(used_file)
+                                            else:
+                                                fajl, bov = "untitled", ".txt"
+                                            if (fajl != '') and (fajl != None):
+                                                match bov:
+                                                    case '':
+                                                        if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                            out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                            psg.popup_ok(out_message)
+                                                            refresh_bool = True
+                                                            refresh_num = 1
+                                                    case other:
+                                                        if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                            out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                            psg.popup_ok(out_message, title='Letrehozas')
+                                                            refresh_bool = True
+                                                            refresh_num = 1
+                                                        else:
+                                                            psg.popup_ok('A fajl mar letezik')
+                                            else:
+                                                continue
+                            
+                            case 'Mappa':
+                                used_path = t1_ut.szulo
+                                used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
+                                if used_dir != '' and used_dir != None:
+                                    message_out = creating_folder(used_path, used_dir)
+                                    psg.popup_notify(message_out, title='Letrehozas')
                                     refresh_bool = True
                                     refresh_num = 1
-                                    tmp:list = window['-TABLE01-'].get().copy()
-                                    kijelolt_sor = [tmp [row] for row in values[event]].pop()
-                                    tmp.clear()
+                                else:
+                                    continue
                                     
-                                case 'No':
-                                    psg.popup_notify('Nem lett atnevezve!')
-                    to_rename = '' 
-                    tmp.clear()
+                            case 'Tulajdonsagok':
+                                prop_win = file_properties_win(os.path.join(t1_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), kijelolt_sor[3], kijelolt_sor[2])
+                                to_rename = ''
+                                while True:
+                                    prop_event, prop_val = prop_win.read()
+                                    if prop_event == psg.WIN_CLOSED:
+                                        break
+                                    prop_win['-RENAMER-FILE-'].set_cursor()
+                                    if prop_event == '-RENAMER-FILE-':
+                                        to_rename = prop_win['-RENAMER-FILE-'].get()
+                                prop_win.close()
+                                if (to_rename != f'{kijelolt_sor[0]}') and (to_rename != ''):
+                                    ev = psg.popup_yes_no('Szeretne atnevezni a mappat?')
+                                    match ev:
+                                        case 'Yes': 
+                                            renaming(os.path.join(t1_ut.szulo,f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t1_ut.szulo, f'{to_rename}{kijelolt_sor[1]}'))
+                                            psg.popup_notify('Atnevezes megtortent!')
+                                            refresh_bool = True
+                                            refresh_num = 1
+                                            tmp:list = window['-TABLE01-'].get().copy()
+                                            kijelolt_sor = [tmp [row] for row in values[event]].pop()
+                                            tmp.clear()
+                                            
+                                        case 'No':
+                                            psg.popup_notify('Nem lett atnevezve!')
+                                        case None:
+                                            continue
+                        to_rename = '' 
+                        tmp.clear()
                     
                     
-
 # ████████╗░█████╗░██████╗░██╗░░░░░███████╗  ░█████╗░██████╗░  ███╗░░░███╗███████╗████████╗██╗░░██╗░█████╗░██████╗░
 # ╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░██╔════╝  ██╔══██╗╚════██╗  ████╗░████║██╔════╝╚══██╔══╝██║░░██║██╔══██╗██╔══██╗
 # ░░░██║░░░███████║██████╦╝██║░░░░░█████╗░░  ██║░░██║░░███╔═╝  ██╔████╔██║█████╗░░░░░██║░░░███████║██║░░██║██║░░██║
@@ -982,16 +1037,14 @@ while True:
                             tmp.clear()
                             
                     event_folder2, _ = window.read()
-                    if event_folder2 == 'Utvonal masolasa...':
-                        mappa = kijelolt_sor[0]
-                        if os.path.exists(os.path.join(t2_ut.szulo, f'{mappa}')):
-                            pyperclip.copy(f'{os.path.normcase(os.path.join(t2_ut.szulo, mappa))}')
-                            psg.popup_notify('Copied to clipboard', title='Copied')
-                            mappa = ''
-                    else:
-                        continue
                             
                     match event_folder2:
+                        case 'Utvonal masolasa...':
+                            mappa = kijelolt_sor[0]
+                            if os.path.exists(os.path.join(t2_ut.szulo, f'{mappa}')):
+                                pyperclip.copy(f'{os.path.normcase(os.path.join(t2_ut.szulo, mappa))}')
+                                psg.popup_notify('Copied to clipboard', title='Copied')
+                                mappa = ''
                         case 'Uj fajl':
                             used_path:str = t2_ut.szulo
                             used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
@@ -999,35 +1052,47 @@ while True:
                                 case '':
                                     psg.popup_ok('Nem lett mappa megadva!', title='Hiba')
                                 case other:
-                                    fajl, bov = os.path.splitext(used_file)
-                                    if fajl != '':
-                                        match bov:
-                                            case '':
-                                                if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
-                                                    out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
-                                                    psg.popup_ok(out_message)
-                                                    refresh_bool = True
-                                                    refresh_num = 1
-                                            case other:
-                                                if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
-                                                    out_message = creating_file_without_value(used_path, f'{used_file}{bov}', 'utf-8', '')
-                                                    psg.popup_ok(out_message, title='Letrehozas')
-                                                    refresh_bool = True
-                                                    refresh_num = 1
-                                    else:
-                                        psg.popup_ok('Nem lett megadva fajlnev')
+                                    
+                                        if used_file != '' and used_file != None:
+                                            fajl, bov = os.path.splitext(used_file)
+                                        else:
+                                            fajl, bov = "untitled", ".txt"
+                                        if (fajl != '') and (fajl != None):
+                                            match bov:
+                                                case '':
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                        psg.popup_ok(out_message)
+                                                        refresh_bool = True
+                                                        refresh_num = 2
+                                                case other:
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                        psg.popup_ok(out_message, title='Letrehozas')
+                                                        refresh_bool = True
+                                                        refresh_num = 2
+                                                    else:
+                                                        psg.popup_ok('Nem lett megadva fajlnev')
+                                        else:
+                                            continue
                         case 'Uj mappa':
                             used_path = t2_ut.szulo
                             used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
-                            message_out = creating_folder(used_path, used_dir)
-                            psg.popup_notify(message_out, title='Letrehozas')
-                            refresh_bool = True
-                            refresh_num = 1
+                            if used_dir != '' and used_dir != None:
+                                message_out = creating_folder(used_path, used_dir)
+                                psg.popup_notify(message_out, title='Letrehozas')
+                                refresh_bool = True
+                                refresh_num = 2
+                            else:
+                                    continue
                         case 'Uj mappa a mappan belul':
                             used_path = os.path.join(t2_ut.szulo, kijelolt_sor[0])
                             used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
-                            message_out = creating_folder(used_path, used_dir)
-                            psg.popup_notify(message_out, title='Letrehozas')
+                            if used_dir != '' and used_dir != None:
+                                message_out = creating_folder(used_path, used_dir)
+                                psg.popup_notify(message_out, title='Letrehozas')
+                            else:
+                                continue
                         case 'Athelyezes::-FOLDER-':
                             
                             to_move = f'{kijelolt_sor[0]}'
@@ -1097,9 +1162,8 @@ while True:
                     window['-TABLE02-'].set_tooltip('Jobb klikkel a lehetosegpanel')
                     eventT2, valuesT2 = window.read()
                     if eventT2 == 'Control_L:17':
-                        print(eventT2)
+                        
                         control_event, _ = window.read()
-                        print(control_event)
                         match control_event:
                             case 'o':
                                 try:
@@ -1139,22 +1203,15 @@ while True:
                                 else:
                                     psg.popup_ok('Nyissa meg az Asztal1 - n az uj mappat!', title='Asztal 2')
                             case 'Atnevezes::-FILE-':
-                                real_path, head, tail = t2_ut.szulo, kijelolt_sor[0], kijelolt_sor[1]
-                                val = psg.popup_get_text('A fajl atnevezese:', default_text=f'{head}{tail}', keep_on_top=True,)
-                                print(f'{val}')
-                                if val != f'{head}{tail}' and val != '' and val != None:
-                                    ...
-                                    message_out = renaming(os.path.join(real_path, f'{head}{tail}'), os.path.join(real_path, val))
-                                    print(message_out)
-                                    psg.popup_notify(message_out)
+                                named:str = psg.popup_get_text('Fajlnev modositasa!', title='PyFileManager', default_text=f'{kijelolt_sor[0]}')
+                                if (named == kijelolt_sor[0]) or (named == '') or (named == None):
+                                    psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
+                                else:
+                                    message_out = renaming(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t2_ut.szulo, f'{named}{kijelolt_sor[1]}'))
+                                    psg.popup_ok(message_out, title='PyFileManager')
                                     refresh_bool = True
                                     refresh_num = 2
-                                    tmp:list = window['-TABLE02-'].get().copy()
-                                    kijelolt_sor = [tmp [row] for row in values[event]].pop()
-                                    tmp.clear()
-                                else:
-                                    ...
-                    if eventT2 in ('Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Megnyitas alapertelmezett alkalmazasban'):
+                    if eventT2 in ('Megnyitas Writerben', 'Eleresi ut masolasa', 'Masolas', 'Megnyitas alapertelmezett alkalmazasban', 'Fajl', 'Mappa', 'Tulajdonsagok'):
                         match eventT2:
                             ############################################
                             case 'Megnyitas Writerben':
@@ -1379,42 +1436,76 @@ while True:
                                 except OSError as e:
                                     psg.popup_notify( f'{bov} cannot be opened and exception {e}' ,title='No program to open')
                                     fajl, bov = '', ''  
-                            # case 'Megnyitas Visual Studio Kodban':
-                            #     fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
-                            #     fajlnev = f'{fajl}{bov}'
-                            #     message_out = open_visual_studio(os.path.join(t2_ut.szulo, fajlnev))
-                            #     psg.popup_ok(message_out, title='Visual Studio Code')
-                            #     fajl, bov = '', ''
-                            #     fajlnev = ''
-                             
-                                    
-                    if eventT2 == 'Tulajdonsagok':
-                        to_rename = ''
-                        prop_win = file_properties_win(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), kijelolt_sor[3], kijelolt_sor[2])
-                        while True:
-                            prop_event, prop_val = prop_win.read()
-                            if prop_event == psg.WIN_CLOSED:
-                                break
-                            prop_win['-RENAMER-FILE-'].set_cursor()
-                            if prop_event == '-RENAMER-FILE-':
-                                to_rename = prop_win['-RENAMER-FILE-'].get()
-                        prop_win.close()
-                        if (to_rename != f'{kijelolt_sor[0]}') and (to_rename != ''):
-                            ev = psg.popup_yes_no('Szeretne atnevezni a mappat?')
-                            match ev:
-                                case 'Yes': 
-                                    message_out = renaming(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t2_ut.szulo, f'{to_rename}{kijelolt_sor[1]}'))
-                                    psg.popup_notify(message_out)
+                            case 'Fajl':
+                                used_path:str = t2_ut.szulo
+                                used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
+                                match used_path:
+                                    case '':
+                                        psg.popup_ok('Nincs megadott mappa!', title='Hiba')
+                                    case other:
+                                            if used_file != '' and used_file != None:
+                                                fajl, bov = os.path.splitext(used_file)
+                                            elif used_file == '':
+                                                fajl, bov = "untitled", ".txt"
+                                            else: 
+                                                continue
+                                            if (fajl != '') and (fajl != None):
+                                                match bov:
+                                                    case '':
+                                                        if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                            out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                            psg.popup_ok(out_message)
+                                                            refresh_bool = True
+                                                            refresh_num = 2
+                                                    case other:
+                                                        if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                            out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                            psg.popup_ok(out_message, title='Letrehozas')
+                                                            refresh_bool = True
+                                                            refresh_num = 2
+                                                        else:
+                                                            psg.popup_ok('A fajl mar letezik!')
+                                            else:
+                                                continue
+                            
+                            case 'Mappa':
+                                used_path = t2_ut.szulo
+                                used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
+                                if used_dir != '' and used_dir != None:
+                                    message_out = creating_folder(used_path, used_dir)
+                                    psg.popup_notify(message_out, title='Letrehozas')
                                     refresh_bool = True
                                     refresh_num = 2
-                                    tmp:list = window['-TABLE02-'].get().copy()
-                                    kijelolt_sor = [tmp [row] for row in values[event]].pop()
-                                    tmp.clear()
-                                    
-                                case 'No':
-                                    psg.popup_notify('Nem lett atnevezve!')
-                    to_rename = ''    
-                    tmp.clear()
+                                else:
+                                    continue
+                                
+                            case 'Tulajdonsagok':
+                                to_rename = ''
+                                prop_win = file_properties_win(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), kijelolt_sor[3], kijelolt_sor[2])
+                                while True:
+                                    prop_event, prop_val = prop_win.read()
+                                    if prop_event == psg.WIN_CLOSED:
+                                        break
+                                    prop_win['-RENAMER-FILE-'].set_cursor()
+                                    if prop_event == '-RENAMER-FILE-':
+                                        to_rename = prop_win['-RENAMER-FILE-'].get()
+                                prop_win.close()
+                                if (to_rename != f'{kijelolt_sor[0]}') and (to_rename != ''):
+                                    ev = psg.popup_yes_no('Szeretne atnevezni a mappat?')
+                                    match ev:
+                                        case 'Yes': 
+                                            message_out = renaming(os.path.join(t2_ut.szulo, f'{kijelolt_sor[0]}{kijelolt_sor[1]}'), os.path.join(t2_ut.szulo, f'{to_rename}{kijelolt_sor[1]}'))
+                                            psg.popup_notify(message_out)
+                                            refresh_bool = True
+                                            refresh_num = 2
+                                            tmp:list = window['-TABLE02-'].get().copy()
+                                            kijelolt_sor = [tmp [row] for row in values[event]].pop()
+                                            tmp.clear()
+                                            
+                                        case 'No':
+                                            psg.popup_notify('Nem lett atnevezve!')
+                                            to_rename = ''    
+                                            tmp.clear()
                     
     #---------------------------Az asztalon valo visszalepes kezelese---------------------------------------------------------- 
         
@@ -1447,10 +1538,23 @@ while True:
                 refresh_bool = False
                 refresh_num = 0
             case 12:
-                vals = create_twoD_list(t1_ut.szulo)
-                window['-TABLE01-'].Update(vals)
-                vals = create_twoD_list(t2_ut.szulo)
-                window['-TABLE02-'].Update(vals)
+                match t1_ut:
+                    case '':
+                        match t2_ut:
+                            case '':
+                                ...
+                            case other:
+                                vals = create_twoD_list(t2_ut.szulo)
+                                window['-TABLE02-'].Update(vals)
+                    case other:
+                        match t2_ut:
+                            case '':
+                                ...
+                            case other:  
+                                vals = create_twoD_list(t1_ut.szulo)
+                                window['-TABLE01-'].Update(vals)
+                                vals = create_twoD_list(t2_ut.szulo)
+                                window['-TABLE02-'].Update(vals)
                 refresh_bool = False
                 refresh_num = 0
                 
