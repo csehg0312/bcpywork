@@ -15,7 +15,7 @@ file_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas Writerben','Megny
 other_right_click:list = []*2
 other_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas mint...',['Megnyitas alapertelmezett alkalmazasban'], 'Eleresi ut masolasa', 'Masolas','Athelyezes::-FILE-', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
 folder_right_click:list = []*2
-folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa', 'Uj mappa a mappan belul'], 'Athelyezes::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
+folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa','Uj fajl a mappan belul', 'Uj mappa a mappan belul'], 'Athelyezes::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
 new_menu:list
 new_menu = [['Uj fajl', ['Txt fajl', 'Egyeb fajl']], ['Mappa']]
 writerup:bool = False
@@ -564,6 +564,38 @@ while True:
                                     refresh_num = 1
                             else:
                                 continue
+                            
+                        case 'Uj fajl a mappan belul':
+                            used_path = os.path.join(t1_ut.szulo, kijelolt_sor[0])
+                            used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
+                            match used_path:
+                                case '':
+                                    psg.popup_ok('Nincs megadott mappa!', title='Hiba')
+                                case other:
+                                        if used_file != '' and used_file != None:
+                                            fajl, bov = os.path.splitext(used_file)
+                                        elif used_file == '':
+                                            fajl, bov = "untitled", ".txt"
+                                        else: 
+                                            continue
+                                        if (fajl != '') and (fajl != None):
+                                            match bov:
+                                                case '':
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                        psg.popup_ok(out_message)
+                                                        refresh_bool = True
+                                                        refresh_num = 1
+                                                case other:
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                        psg.popup_ok(out_message, title='Letrehozas')
+                                                        refresh_bool = True
+                                                        refresh_num = 1
+                                                    else:
+                                                        psg.popup_ok('A fajl mar letezik!')
+                                        else:
+                                            continue
                         case 'Uj mappa a mappan belul':
                             used_path = os.path.join(t1_ut.szulo, kijelolt_sor[0])
                             used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
@@ -1050,13 +1082,14 @@ while True:
                             used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
                             match used_path:
                                 case '':
-                                    psg.popup_ok('Nem lett mappa megadva!', title='Hiba')
+                                    psg.popup_ok('Nincs megadott mappa!', title='Hiba')
                                 case other:
-                                    
                                         if used_file != '' and used_file != None:
                                             fajl, bov = os.path.splitext(used_file)
-                                        else:
+                                        elif used_file == '':
                                             fajl, bov = "untitled", ".txt"
+                                        else: 
+                                            continue
                                         if (fajl != '') and (fajl != None):
                                             match bov:
                                                 case '':
@@ -1066,13 +1099,13 @@ while True:
                                                         refresh_bool = True
                                                         refresh_num = 2
                                                 case other:
-                                                    if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
                                                         out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
                                                         psg.popup_ok(out_message, title='Letrehozas')
                                                         refresh_bool = True
                                                         refresh_num = 2
                                                     else:
-                                                        psg.popup_ok('Nem lett megadva fajlnev')
+                                                        psg.popup_ok('A fajl mar letezik!')
                                         else:
                                             continue
                         case 'Uj mappa':
@@ -1085,6 +1118,38 @@ while True:
                                 refresh_num = 2
                             else:
                                     continue
+                                
+                        case 'Uj fajl a mappan belul':
+                            used_path = os.path.join(t2_ut.szulo, kijelolt_sor[0])
+                            used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
+                            match used_path:
+                                case '':
+                                    psg.popup_ok('Nincs megadott mappa!', title='Hiba')
+                                case other:
+                                        if used_file != '' and used_file != None:
+                                            fajl, bov = os.path.splitext(used_file)
+                                        elif used_file == '':
+                                            fajl, bov = "untitled", ".txt"
+                                        else: 
+                                            continue
+                                        if (fajl != '') and (fajl != None):
+                                            match bov:
+                                                case '':
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                        psg.popup_ok(out_message)
+                                                        refresh_bool = True
+                                                        refresh_num = 2
+                                                case other:
+                                                    if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                        out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                        psg.popup_ok(out_message, title='Letrehozas')
+                                                        refresh_bool = True
+                                                        refresh_num = 2
+                                                    else:
+                                                        psg.popup_ok('A fajl mar letezik!')
+                                        else:
+                                            continue
                         case 'Uj mappa a mappan belul':
                             used_path = os.path.join(t2_ut.szulo, kijelolt_sor[0])
                             used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')

@@ -235,7 +235,7 @@ def renaming(from_file, to_file:str) -> str:
 
 def remove_to_recycle_bin(path_file_folder) -> str:
     try:
-        print(delete_file(path_file_folder))
+        delete_file(path_file_folder)
         return 'A fajl eltavolitasa sikeres!'
     except:
         return 'Felhasznaloi megszakitas vegett nem lett eltavolitva!'

@@ -236,9 +236,7 @@ def folder_properties_window(utv:str):
 
 
 def file_or_folder_szita(utv:str, meret:int = 0):
-    print(utv)
     if os.path.exists(utv):
-        print(os.path.isfile(utv))
         match os.path.isdir(utv):
             case False:
                 PropWindow = file_properties_win(utv, meret)
