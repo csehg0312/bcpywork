@@ -1,6 +1,5 @@
 import os
 import shutil
-import subprocess
 from winshell import copy_file, delete_file, move_file, rename_file
 from collections import deque
 from data.dataclass_file_manager import File
@@ -205,7 +204,7 @@ def creating_file_with_value(current_folder, file_to_create, encoded:str, value_
         return 'A fajl kodolasa nem megfelelo!'
 
 def create_file(current_folder, file_to_create, encoded:str, value_in:str) -> str:
-    if value_in == '':
+    if (value_in == '') or (value_in == b''):
         message:str
         message = creating_file_without_value(current_folder, file_to_create, encoded)
         return message

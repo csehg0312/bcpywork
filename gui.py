@@ -24,12 +24,53 @@ def calcdate(linux_time):
 
 
 def create_layout():
-    back_arrow = "C:/Users/csehg/pywork/bcpywork/back-arrow.png"
-    copy_it = "C:/Users/csehg/pywork/bcpywork/copy_it.png"
-    delete_it = "C:/Users/csehg/pywork/bcpywork/delete_it.png"
-    edit_it = "C:/Users/csehg/pywork/bcpywork/edit_it.png"
+    back_arrow = "C:/Users/csehg/pywork/bcpywork/icon/back-arrow.png"
+    copy_it = "C:/Users/csehg/pywork/bcpywork/icon/copy_it.png"
+    delete_it = "C:/Users/csehg/pywork/bcpywork/icon/delete_it.png"
+    edit_it = "C:/Users/csehg/pywork/bcpywork/icon/edit_it.png"
     psg.theme('SystemDefault')
-    frame_layout = [[psg.Button('Writer')],
+    frame_first_table:list = [[psg.Input('', key="-Organize01-", disabled=True), 
+            #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
+               psg.Push()],
+                           [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+                          image_filename=back_arrow, size=(10,10), key='Back01',
+                          image_subsample=2, border_width=0,
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+               psg.Push(),
+               psg.Text('Asztal1'),
+               psg.Push()],
+                              [psg.Table(vals,
+                         headings=fejlec, 
+                         size=(meretek[2],meretek[3]), 
+                         expand_x=True,
+                         expand_y=True,
+                         key='-TABLE01-', 
+                         enable_events=True,
+                         bind_return_key=True,
+                         enable_click_events=True
+                         )]
+                              ]
+    frame_second_table:list = [[psg.Input('', key="-Organize02-", disabled=True), 
+            #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
+               psg.Push()],
+                               [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+                          image_filename=back_arrow, size=(10,10), key='Back02',
+                          image_subsample=2, border_width=0,
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+               psg.Push(),
+               psg.Text('Asztal2'),
+               psg.Push()],
+                           [psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
+                         key='-TABLE02-',
+                         expand_x=True,
+                         expand_y=True,
+                         enable_events=True,
+                         bind_return_key=True,
+                         enable_click_events=True)
+               ]    
+                               ]
+    frame_layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True)],
+                    [psg.Button('Writer')],
                     [psg.Button('Refresh')],
                     [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
                           image_filename=copy_it, size=(10,10), key='Copy_OUT',
@@ -43,58 +84,60 @@ def create_layout():
                           image_filename=edit_it, size=(10,10), key='Edit_OUT',
                           image_subsample=2, border_width=0,
                           mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae"))]]
-    layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True) ,
-               psg.Input('', enable_events=True, key="-Organize01-", ), 
-            #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
-               psg.Push(),
-               psg.Input('', enable_events=True, key="-Organize02-"), 
-            #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
-               psg.Push()],
-              [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
-                          image_filename=back_arrow, size=(10,10), key='Back01',
-                          image_subsample=2, border_width=0,
-                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
-               psg.Push(),
-               psg.Text('Asztal1'),
-               psg.Push(),
-               psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
-                          image_filename=back_arrow, size=(10,10), key='Back02',
-                          image_subsample=2, border_width=0,
-                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
-               psg.Push(),
-               psg.Text('Asztal2'),
-               psg.Push()],
-              [psg.Table(vals,
-                         headings=fejlec, 
-                         size=(meretek[2],meretek[3]), 
-                         expand_x=True,
-                         expand_y=True,
-                         key='-TABLE01-', 
-                         enable_events=True,
-                         bind_return_key=True,
-                         enable_click_events=True
-                         ),
-               psg.Frame('', frame_layout, element_justification='center'),
-               psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
-                         key='-TABLE02-',
-                         expand_x=True,
-                         expand_y=True,
-                         enable_events=True,
-                         bind_return_key=True,
-                         enable_click_events=True), 
-               ]
-              ]
+    # layout_old = [[psg.Input('', enable_events=True, key="-Organize01-", ), 
+    #         #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
+    #            psg.Push(),
+    #            psg.Input('', enable_events=True, key="-Organize02-"), 
+    #         #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
+    #            psg.Push()],
+    #           [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+    #                       image_filename=back_arrow, size=(10,10), key='Back01',
+    #                       image_subsample=2, border_width=0,
+    #                       mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+    #            psg.Push(),
+    #            psg.Text('Asztal1'),
+    #            psg.Push(),
+    #            psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
+    #                       image_filename=back_arrow, size=(10,10), key='Back02',
+    #                       image_subsample=2, border_width=0,
+    #                       mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+    #            psg.Push(),
+    #            psg.Text('Asztal2'),
+    #            psg.Push()],
+    #           [psg.Table(vals,
+    #                      headings=fejlec, 
+    #                      size=(meretek[2],meretek[3]), 
+    #                      expand_x=True,
+    #                      expand_y=True,
+    #                      key='-TABLE01-', 
+    #                      enable_events=True,
+    #                      bind_return_key=True,
+    #                      enable_click_events=True
+    #                      ),
+    #            psg.Frame('', frame_layout, element_justification='center'),
+    #            psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
+    #                      key='-TABLE02-',
+    #                      expand_x=True,
+    #                      expand_y=True,
+    #                      enable_events=True,
+    #                      bind_return_key=True,
+    #                      enable_click_events=True), 
+    #            ]
+    #           ]
+    layout = [[psg.Frame('', frame_first_table, expand_x=True, expand_y=True), psg.Frame('', frame_layout, element_justification='center'), psg.Frame('', frame_second_table, expand_x=True, expand_y=True)]]
     
     return layout
 
 def create_ablak():
+    iconUse = "C:/Users/csehg/pywork/bcpywork/icon/icov1.png" 
     window = psg.Window('Py File Manager', create_layout(), 
                         size=(meretek[0],meretek[1]), 
                         right_click_menu=[],
                         resizable=True, 
                         return_keyboard_events=True, 
                         location=(0,0),
-                        disable_minimize=False)
+                        disable_minimize=False,
+                        icon=iconUse)
     return window
 
 # def create_disk_layout(diszk_nev:str, diszk_key:str,diszk_max:int):
@@ -172,10 +215,10 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
 #     ...
     
 def create_writer(multi_input:str = ''):
-    frame_layout = [[psg.Text('untitled.txt', key='-WRITER-NAME-'), psg.Button('Atnevezes', key='-ATNEVEZ-WRITER-')],
+    frame_layout = [[psg.Text('untitled.txt', key='-WRITER-NAME-')],
                     [psg.Text('Kodolas:'), 
                      psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8', key='-ENCODED-VAL-')],
-                    [psg.ButtonMenu('Mentes', menu_def=['Mentes', ['Mentes', 'Mentes mint', ['.txt', '.py', '.html', '.js', 'Mentes maskeppen']]], key='-SELECT-SAVE-')]
+                    [psg.ButtonMenu('Mentes', menu_def=['Mentes', ['Mentes', 'Mentes maskeppen']], key='-SELECT-SAVE-')]
                     ]
     layout2 = [[psg.Text('Writer'),psg.Push(), psg.Text('X', enable_events=True)],
                [psg.Menu(menu_definition=writer_menu, visible=True)],

@@ -5,7 +5,7 @@ from dataclasses import dataclass,field
 from collections import deque
 
 def calculateSize(num:int):
-    return int(num // (2**30))
+    return round(num / (2**30), 1)
 
 start = time.perf_counter()
 
