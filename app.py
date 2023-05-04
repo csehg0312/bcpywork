@@ -290,7 +290,7 @@ while True:
 # ██║░░██║██║░╚═══██╗██╔═██╗░  ░╚═══██╗██╔══╝░░██║░░░░░██╔══╝░░██║░░██╗░░░██║░░░██║░░██║██╔══██╗
 # ██████╔╝██║██████╔╝██║░╚██╗  ██████╔╝███████╗███████╗███████╗╚█████╔╝░░░██║░░░╚█████╔╝██║░░██║
 # ╚═════╝░╚═╝╚═════╝░╚═╝░░╚═╝  ╚═════╝░╚══════╝╚══════╝╚══════╝░╚════╝░░░░╚═╝░░░░╚════╝░╚═╝░░╚═╝
-    eventlist.append(0)
+    
     if (event == '-DISK_WIN-' and disk_selectorup == False) or (event == 'd' and eventlist[0] == 17 and disk_selectorup == False ):
         eventlist.clear()
         disk_selectorup = True
@@ -1296,10 +1296,6 @@ while True:
                                                     is_saved = True
                                                 else:
                                                     continue
-                                            if key_event == 'v':
-                                                pyperclip.paste()
-                                            if key_event == 'c':
-                                                pyperclip.copy()
                                         
                                         writer_window['-WRITER-NAME-'].update(f'{fajl}{bov}')
                                         writer_window['-ENCODED-VAL-'].update(encoded_var)

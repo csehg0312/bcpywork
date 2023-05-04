@@ -88,11 +88,13 @@ def create_twoD_list(ut:str):
     mappasor = deque([x for x in mappaMap])
     fajlsor = deque([x for x in fajlMap])
     tomb:list = []*hossz
-    for m in mappasor:
-        tomb.append(m)
+    tomb.extend(list(mappasor))
+    tomb.extend(list(fajlsor))
+    # for m in mappasor:
+    #     tomb.append(m)
         
-    for f in fajlsor:
-        tomb.append(f)
+    # for f in fajlsor:
+    #     tomb.append(f)
     
     return tomb
 

@@ -33,7 +33,7 @@ class Drive:
 
 def kinyeres():
     dl = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    drives = ['%s:' % d for d in dl if os.path.exists('%s:' % d)]
+    drives = ['{}:'.format(d) for d in dl if os.path.exists('{}:'.format(d))]
     # if diferencia(drives_saved, drives):
     #     drives_saved.extend(drives)
     # elif diferencia(drives_saved, drives):

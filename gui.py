@@ -29,7 +29,7 @@ def create_layout():
     delete_it = "C:/Users/csehg/pywork/bcpywork/icon/delete_it.png"
     edit_it = "C:/Users/csehg/pywork/bcpywork/icon/edit_it.png"
     psg.theme('SystemDefault')
-    frame_first_table:list = [[psg.Input('', key="-Organize01-", disabled=True), 
+    frame_first_table:list = [[psg.Input('', key="-Organize01-", readonly=True, expand_x=True), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
                psg.Push()],
                            [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
@@ -50,7 +50,7 @@ def create_layout():
                          enable_click_events=True
                          )]
                               ]
-    frame_second_table:list = [[psg.Input('', key="-Organize02-", disabled=True), 
+    frame_second_table:list = [[psg.Input('', key="-Organize02-", readonly=True,expand_x=True), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH02-'),
                psg.Push()],
                                [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
