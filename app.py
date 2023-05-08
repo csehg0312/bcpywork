@@ -175,7 +175,7 @@ while True:
                                             used_path, used_file = os.path.split(opening_file)
                                             writer_window['-MULTI-'].Update(fajl_text)
                                             writer_window['-ENCODED-VAL-'].Update(encoding)
-                                            writer_window['-WRITER-NAME-'].Update(used_file)
+                                            writer_window['-WRITER-NAME-'].update(opening_file)
                                             is_saved = True
                                         case False:
                                             psg.popup_ok('Nem fajlt adott meg!')
@@ -190,7 +190,7 @@ while True:
                 case '-MULTI-':
                     is_saved = False
                 case 'Mentes':
-                    if (used_path != '') or (writer_window['-WRITER-NAME-'].get() != 'untitled.txt'):
+                    if (writer_window['-WRITER-NAME-'].get() != 'untitled.txt'):
                         if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
                             out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                             psg.popup_ok(out_message)
@@ -216,11 +216,19 @@ while True:
                                                 out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                                                 psg.popup_ok(out_message)
                                                 is_saved = True
+                                            else:
+                                                out_message = creating_file_with_value(used_path, f'{fajl}.txt', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                writer_window['-WRITER-NAME-'].update(f'{fajl}.txt')
+                                                psg.popup_ok(out_message)
                                         case other:
                                             if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
                                                 out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                                                 psg.popup_ok(out_message)
                                                 is_saved = True
+                                            else:
+                                                out_message = creating_file_with_value(used_path, f'{fajl}{bov}', writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                writer_window['-WRITER-NAME-'].update(f'{fajl}{bov}')
+                                                psg.popup_ok(out_message)
                                 else:
                                     psg.popup_ok('Nem lett megadva fajlnev')   
                 case 'Mentes maskeppen':

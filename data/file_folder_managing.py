@@ -113,8 +113,6 @@ def create_twoD_list(ut:str):
     mappaobj:deque = deque([])
     mappaobj = mappa_osztaly(ut)
     mappaMap = map(get_data_folder, mappaobj)
-    
-    
 
     fajlobj:deque = deque([])
     fajlobj = fajl_osztaly(ut)
