@@ -163,20 +163,24 @@ while True:
                         
                 case 'Megnyitas':
                     opening_file = psg.popup_get_file('Kerem adja meg a fajl eleresi utjat!')
-                    match os.path.exists(opening_file):
-                        case True:
-                            match os.path.isfile(opening_file):
+                    match opening_file:
+                        case None:
+                            continue
+                        case other:
+                            match os.path.exists(opening_file):
                                 case True:
-                                    fajl_text, encoding = open_file(opening_file)
-                                    used_path, used_file = os.path.split(opening_file)
-                                    writer_window['-MULTI-'].Update(fajl_text)
-                                    writer_window['-ENCODED-VAL-'].Update(encoding)
-                                    writer_window['-WRITER-NAME-'].Update(used_file)
-                                    is_saved = True
+                                    match os.path.isfile(opening_file):
+                                        case True:
+                                            fajl_text, encoding = open_file(opening_file)
+                                            used_path, used_file = os.path.split(opening_file)
+                                            writer_window['-MULTI-'].Update(fajl_text)
+                                            writer_window['-ENCODED-VAL-'].Update(encoding)
+                                            writer_window['-WRITER-NAME-'].Update(used_file)
+                                            is_saved = True
+                                        case False:
+                                            psg.popup_ok('Nem fajlt adott meg!')
                                 case False:
-                                    psg.popup_ok('Nem fajlt adott meg!')
-                        case False:
-                            psg.popup_ok('Nem letezo eleresi ut!')
+                                    psg.popup_ok('Nem letezo eleresi ut!')
                 case 'Beillesztes':
                     w_val = writer_window['-MULTI-'].get()
                     writer_window['-MULTI-'].update(f'{w_val} {pyperclip.paste()}')
@@ -757,10 +761,6 @@ while True:
                                                     is_saved = True
                                                 else:
                                                     continue
-                                            if key_event == 'v':
-                                                pyperclip.paste()
-                                            if key_event == 'c':
-                                                pyperclip.copy()
                                         
                                         writer_window['-WRITER-NAME-'].update(f'{fajl}{bov}')
                                         writer_window['-ENCODED-VAL-'].update(encoded_var)

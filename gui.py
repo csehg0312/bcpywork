@@ -24,10 +24,10 @@ def calcdate(linux_time):
 
 
 def create_layout():
-    back_arrow = "C:/Users/csehg/pywork/bcpywork/icon/back-arrow.png"
-    copy_it = "C:/Users/csehg/pywork/bcpywork/icon/copy_it.png"
+    back_arrow = "C:/Users/csehg/pywork/bcpywork/icon/back-arrow-mod.png"
+    copy_it = "C:/Users/csehg/pywork/bcpywork/icon/copy_it-mod.png"
     delete_it = "C:/Users/csehg/pywork/bcpywork/icon/delete_it.png"
-    edit_it = "C:/Users/csehg/pywork/bcpywork/icon/edit_it.png"
+    edit_it = "C:/Users/csehg/pywork/bcpywork/icon/edit_it-mod.png"
     psg.theme('SystemDefault')
     frame_first_table:list = [[psg.Input('', key="-Organize01-", readonly=True, expand_x=True), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
