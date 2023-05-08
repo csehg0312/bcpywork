@@ -6,21 +6,61 @@ from data.dataclass_file_manager import File
 from data.dataclass_folder_manager import Folder
 import magic
 
-def simple_data(ut:str):
+def simple_data(ut:str, numID:int):
     try:
-        filebase:dict
-        filebase = {'Path':str, 'Parent':str, "Folders":deque([]), "Files":deque([])}
+        match numID:
+            case 1: 
+                filebase:dict
+                filebase = {'Path':str, 'Parent':str, "Folders":deque([])}
+                filebase.update({'Path':ut})
+                parent:str
+                parent, _ = os.path.split(ut)
+                filebase.update({'Parent':parent})
+                #print(filebase.values())
+                filebase.update({"Folders": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x))])})
+                #filebase.update({"FilePath": deque([os.path.join(ut,x) for x in filebase.get('Files')])})
+                #print(filebase.values())
+                return filebase
+                
+            case 2:
+                filebase:dict
+                filebase = {'Path':str, 'Parent':str, "Files":deque([])}
+                filebase.update({'Path':ut})
+                parent:str
+                parent, _ = os.path.split(ut)
+                filebase.update({'Parent':parent})
+                #print(filebase.values())
+                filebase.update({"Files": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x)) == False and os.path.ismount(os.path.join(ut,x)) == False])})
+                #filebase.update({"FilePath": deque([os.path.join(ut,x) for x in filebase.get('Files')])})
+                #print(filebase.values())
+                return filebase
+            
+            case other:
+                filebase:dict
+                filebase = {'Path':str, 'Parent':str, "Folders":deque([])}
+                filebase.update({'Path':ut})
+                parent:str
+                filebase.update({'Path':ut})
+                parent:str
+                parent, _ = os.path.split(ut)
+                filebase.update({'Parent':parent})
+                #print(filebase.values())
+                filebase.update({"Folders": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x))])})
+                filebase.update({"Files": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x)) == False and os.path.ismount(os.path.join(ut,x)) == False])})
+                #filebase.update({"FilePath": deque([os.path.join(ut,x) for x in filebase.get('Files')])})
+                #print(filebase.values())
+                return filebase
 
-        filebase.update({'Path':ut})
-        parent:str
-        parent, _ = os.path.split(ut)
-        filebase.update({'Parent':parent})
-        #print(filebase.values())
-        filebase.update({"Folders": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x))])})
-        filebase.update({"Files": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x)) == False and os.path.ismount(os.path.join(ut,x)) == False])})
-        #filebase.update({"FilePath": deque([os.path.join(ut,x) for x in filebase.get('Files')])})
-        #print(filebase.values())
-        return filebase
+        # filebase.update({'Path':ut})
+        # parent:str
+        # parent, _ = os.path.split(ut)
+        # filebase.update({'Parent':parent})
+        # #print(filebase.values())
+        # filebase.update({"Folders": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x))])})
+        # filebase.update({"Files": deque([x for x in os.listdir(ut) if os.path.isdir(os.path.join(ut,x)) == False and os.path.ismount(os.path.join(ut,x)) == False])})
+        # #filebase.update({"FilePath": deque([os.path.join(ut,x) for x in filebase.get('Files')])})
+        # #print(filebase.values())
+        # return filebase
     except (OSError, PermissionError):
         return {}
     
@@ -38,7 +78,7 @@ def mappa_osztaly(ut:str):
     bazis = {}
     mappa:deque
     mappa = deque([])
-    bazis=simple_data(ut)
+    bazis=simple_data(ut, 1)
     mappa = bazis.get('Folders')
     sor:deque
     sor = deque([Folder(ut,x) for x in mappa])
@@ -51,7 +91,7 @@ def fajl_osztaly(ut:str):
     base = {}
     fajls:deque
     fajls = deque([])
-    base = simple_data(ut)
+    base = simple_data(ut, 2)
     fajls = base.get('Files')
     sor:deque
     sor = deque([File(ut, x) for x in fajls])

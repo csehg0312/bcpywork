@@ -613,7 +613,7 @@ while True:
                     # kiterjesztesu, valtoztasson jobb klikk menut
                     # a jobb klikk menubol meg lehet nyitni majd a Writerben a fajlt 
                     
-                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log', '.so', '.h','.html', '.c', '.cpp'):
+                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log', '.so', '.h','.html', '.c', '.cpp', '.asm', '.pl'):
                         window['-TABLE01-'].set_right_click_menu(file_right_click)
                     else:
                          window['-TABLE01-'].set_right_click_menu(other_right_click)
@@ -1160,7 +1160,7 @@ while True:
                     # kiterjesztesu, valtoztasson jobb klikk menut
                     # a jobb klikk menubol meg lehet nyitni majd a Writerben a fajlt 
                     
-                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log', '.so', '.h','.html', '.c', '.cpp'):
+                    if kijelolt_sor[1] in ('.txt', '.py', '.md', '.js', '.log', '.so', '.h','.html', '.c', '.cpp', '.asm', '.pl'):
                         window['-TABLE02-'].set_right_click_menu(file_right_click)
                     else:
                         window['-TABLE02-'].set_right_click_menu(other_right_click)
