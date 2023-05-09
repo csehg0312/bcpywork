@@ -12,7 +12,7 @@
 ## Telepítési instrukciók:
 
 
-> 1. Python 3.10 verziójának a telepítése: https://www.python.org/downloads/windows/
+> 1. Python 3.10 verziójának a telepítése: https://www.python.org/downloads/windows/ vagy https://apps.microsoft.com/store/detail/python-311/9NRWMJP3717K
 > ### Telepítés után:
 >> 1. Windows + R gomb kombinációval megnyitni a Futtatás Ablakot. 
 >> 2. Szövegdobozba *cmd* és Enter gomb. 
@@ -41,14 +41,36 @@
 >> *python -m pip install collections*
 >>    - PySimpleGUI
 >> *python -m pip install PySimpleGUI*
->>    - pyperclip
+>>  - cffi
+>>  *python -m pip install cffi*
+>>  - pyperclip
 >> *python -m pip install pyperclip*
->>    - keyboard
+>>  - keyboard
 >> *python -m pip install keyboard*
->>    - winshell
+>>  - winshell
 >> *python -m pip install winshell*
->>    - python-magic
+>>  - python-magic
 >> *python -m pip install python-magic*
->>
+>>  - python-libmagic
+>>*pip install python_magic_bin-0.4.14-py2.py3-none-win_amd64.whl* vagy *pip install python-magic-bin*
+>>  - pathlib
+>>  *python -m pip install pathlib*
+>>  - Tk
+>>  *python -m pip install tk*
+>>  - pywin32-stubs
+>>  *python -m pip install pywin32-stubs*
+>>  - pywin32 
+>> *python -m pip install pywin32*
+>>  - win32api
+>>  *python -m pip install win32api*
 
+## Sikeres elindításnál a Diszkek ablakkal lehet megnyitni a meghajtók listáját!
+
+# Csatlakoztatott meghajtó esetén szükséges mégegyszer megnyitni a Diszkek ablakát!
+
+## A maghajtó betöltése után kilistázott fájlok és mappák láthatóak az adott Asztalon
+
+# A mappák megnyitása két kattintás után és egy Enter billentyű lenyomása után fog megnyitni.
+
+## Továbbá lehetőség van az egyik Asztalról való megnyitására a Másik Asztalra a Jobb klikk menüből kiválasztva.
 
