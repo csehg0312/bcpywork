@@ -3,9 +3,15 @@
 program:
     version: 1.0.0
     user: csehg0
-    passw: admin
-    page: szm.gabiiii.sk
 
-device:
-    os: os.name()
-    version: os.version()
+dependencies:
+    - shutil
+    - os
+    - time
+    - dataclasses
+    - collections
+    - PySimpleGUI
+    - pyperclip
+    - keyboard
+    - winshell
+    - python-magic
