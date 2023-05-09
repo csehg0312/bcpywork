@@ -1,4 +1,8 @@
-from distutils.core import setup
-import py2exe
+import yaml
+import subprocess
 
-setup(console=['app.py'])
+
+cmdCommand = "pip install --upgrade pip"   #specify your cmd command
+process = subprocess.Popen(cmdCommand.split(), stdout=subprocess.PIPE)
+output, error = process.communicate()
+print(output)
