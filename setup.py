@@ -1,8 +1,10 @@
-import yaml
 import subprocess
 
+dependencies = ["--upgrade pip","shutil", "os","time","dataclasses","collections","PySimpleGUI","pyperclip","keyboard","winshell","python-magic", "pathlib"]
 
-cmdCommand = "pip install --upgrade pip"   #specify your cmd command
-process = subprocess.Popen(cmdCommand.split(), stdout=subprocess.PIPE)
-output, error = process.communicate()
-print(output)
+for i in range(len(dependencies)):
+    cmdCommand = f"pip install {dependencies[i]}"
+    process = subprocess.Popen(cmdCommand.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    print(output)
+

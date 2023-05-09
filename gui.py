@@ -3,6 +3,7 @@ import PySimpleGUI as psg
 #from data.file_folder_managing import create_twoD_list
 from data.disk_manager import kinyeres
 from time import strftime, gmtime
+import pathlib
 
 fejlec:list = []*4
 fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret bájtokban']
@@ -24,8 +25,7 @@ def calcdate(linux_time):
 
 
 def create_layout():
-    icon_path = os.getcwd()
-    icon_path = os.path.join(icon_path, 'pywork/bcpywork')
+    icon_path = pathlib.Path(__file__).parent.resolve()
     back_arrow = f"{icon_path}/icon/back-arrow-mod.png"
     copy_it = f"{icon_path}/icon/copy_it-mod.png"
     delete_it = f"{icon_path}/icon/delete_it.png"
