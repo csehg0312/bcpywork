@@ -12,13 +12,20 @@
 ## Telepítési instrukciók:
 
 
->> Python 3.10 verziójának a telepítése: https://www.python.org/downloads/windows/
+>> 1. Python 3.10 verziójának a telepítése: https://www.python.org/downloads/windows/
 >> ### Telepítés után:
 >>> 1. Windows + R gomb kombinációval megnyitni a Futtatás Ablakot. 
 >>> 2. Szövegdobozba *cmd* és Enter gomb. 
->>> 3. *python* szöveggel tesztelhetjük sikerült-e telepíteni a csomagot
+>>> 3. *python -V* szöveggel tesztelhetjük sikerült-e telepíteni a csomagot.
+>>>
+>>> *pip 23.0.1*
 >>
->> Python pip telepítő könyvtárának telepítése: 
->>
+>> 2. Python pip telepítő könyvtárának telepítése: https://pip.pypa.io/en/stable/installation/ vagy a *python get-pip.py* parancssal a terminálban. 
+>> ### Telepítés utáni teendő:
+>>> 1. Windows + R gomb kombinációval megnyitni a Futtatás Ablakot. 
+>>> 2. Szövegdobozba *cmd* és Enter gomb. 
+>>> 3. *pip -V* szöveggel tesztelhetjük sikerült-e telepíteni a csomagot
+>>>
+>>> *Python 3.10.11*
 >>
 >>
