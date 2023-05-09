@@ -24,10 +24,12 @@ def calcdate(linux_time):
 
 
 def create_layout():
-    back_arrow = "./icon/back-arrow-mod.png"
-    copy_it = "./icon/copy_it-mod.png"
-    delete_it = "./icon/delete_it.png"
-    edit_it = "./icon/edit_it-mod.png"
+    icon_path = os.getcwd()
+    icon_path = os.path.join(icon_path, 'pywork/bcpywork')
+    back_arrow = f"{icon_path}/icon/back-arrow-mod.png"
+    copy_it = f"{icon_path}/icon/copy_it-mod.png"
+    delete_it = f"{icon_path}/icon/delete_it.png"
+    edit_it = f"{icon_path}/icon/edit_it-mod.png"
     psg.theme('SystemDefault')
     frame_first_table:list = [[psg.Input('', key="-Organize01-", readonly=True, expand_x=True), 
             #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
