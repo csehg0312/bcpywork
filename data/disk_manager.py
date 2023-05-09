@@ -14,12 +14,10 @@ class Drive:
     DSZK:str
     TeliBit:int
     FoglaltBit:int
-    SzabadBit:int
     
     def __post_init__(self):
         self.Teljes: int = field(default_factory=calculateSize(self.TeliBit))
         self.Foglalt: int = field(default_factory=calculateSize(self.FoglaltBit))
-        self.Szabad: int = field(default_factory=calculateSize(self.SzabadBit))
 
 # def diferencia(ls1,ls2):
 #     ls_diferencia = [item for item in ls1 if item not in ls2]
@@ -42,8 +40,8 @@ def kinyeres():
     d_teljes:deque = deque([])
     d_foglalt:deque = deque([])
     for d in range(len(drives)):
-        teli, foglalt, szabad = shutil.disk_usage(drives[d])
-        D:Drive = Drive(drives[d], teli, foglalt, szabad)
+        teli, foglalt, _ = shutil.disk_usage(drives[d])
+        D:Drive = Drive(drives[d], teli, foglalt)
         
         d_nev.append(D.DSZK)
         
