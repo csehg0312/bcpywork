@@ -161,7 +161,7 @@ while True:
                     if key_event == 'c':
                         pyperclip.copy()      
                         
-                case 'Megnyitas':
+                case 'Megnyitás':
                     opening_file = psg.popup_get_file('Kerem adja meg a Fájl eleresi utjat!')
                     match opening_file:
                         case None:
@@ -778,13 +778,39 @@ while True:
                                             writer_window['-ENABLE-MODIFY-'].update(visible = False)
                                             writer_window['-SELECT-SAVE-'].Update(['Mentés', ['Mentés', 'Mentés mint']])
                                             
-                                        if eventw in ('Mentés','-MULTI-'):
+                                        if eventw in ('Mentés','-MULTI-', "Megnyitás"):
                                             match eventw:
                                                 case 'Mentés':
                                                     if os.path.exists(os.path.join(t1_ut.szulo,f'{fajl}{bov}')):
                                                         out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                                                         psg.popup_ok(out_message)
                                                         is_saved = True
+                                                case 'Megnyitás':
+                                                    want_to_close:str = psg.popup_yes_no('Biztos benne hogy méntes nélkül szeretné bezárni?') 
+                                                    match want_to_close:
+                                                        case 'No':
+                                                            continue
+                                                        case 'Yes':
+                                                            opening_file = psg.popup_get_file('Kerem adja meg a Fájl eleresi utjat!')
+                                                            match opening_file:
+                                                                case None:
+                                                                    continue
+                                                                case other:
+                                                                    match os.path.exists(opening_file):
+                                                                        case True:
+                                                                            match os.path.isfile(opening_file):
+                                                                                case True:
+                                                                                    fajl_text, encoding = open_file(opening_file)
+                                                                                    used_path, used_file = os.path.split(opening_file)
+                                                                                    writer_window['-MULTI-'].Update(fajl_text)
+                                                                                    writer_window['-ENCODED-VAL-'].Update(encoding)
+                                                                                    writer_window['-WRITER-NAME-'].update(opening_file)
+                                                                                    is_saved = True
+                                                                                case False:
+                                                                                    psg.popup_ok('Nem Fájlt adott meg!')
+                                                                        case False:
+                                                                            psg.popup_ok('Nem letezo eleresi ut!')
+                                                
                                                 # case '.txt':
                                                 #     save_place = psg.popup_get_folder('Válassza ki a menteni kivánt Fájl helyét!')
                                                 #     save_name = psg.popup_get_text('Írja be a fájl nevét! (fajl.txt)')
@@ -1333,13 +1359,39 @@ while True:
                                             writer_window['-ENABLE-MODIFY-'].update(visible = False)
                                             writer_window['-SELECT-SAVE-'].Update(['Mentés', ['Mentés', 'Mentés mint']])
                                             
-                                        if eventw in ('Mentés', '.txt', '.py', '.html', '.js','-MULTI-'):
+                                        if eventw in ('Mentés','-MULTI-', "Megnyitás"):
                                             match eventw:
                                                 case 'Mentés':
                                                     if os.path.exists(os.path.join(t2_ut.szulo,f'{fajl}{bov}')):
                                                         out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                                                         psg.popup_ok(out_message)
                                                         is_saved = True
+                                                case 'Megnyitás':
+                                                    want_to_close:str = psg.popup_yes_no('Biztos benne hogy méntes nélkül szeretné bezárni?') 
+                                                    match want_to_close:
+                                                        case 'No':
+                                                            continue
+                                                        case 'Yes':
+                                                            opening_file = psg.popup_get_file('Kerem adja meg a Fájl eleresi utjat!')
+                                                            match opening_file:
+                                                                case None:
+                                                                    continue
+                                                                case other:
+                                                                    match os.path.exists(opening_file):
+                                                                        case True:
+                                                                            match os.path.isfile(opening_file):
+                                                                                case True:
+                                                                                    fajl_text, encoding = open_file(opening_file)
+                                                                                    used_path, used_file = os.path.split(opening_file)
+                                                                                    writer_window['-MULTI-'].Update(fajl_text)
+                                                                                    writer_window['-ENCODED-VAL-'].Update(encoding)
+                                                                                    writer_window['-WRITER-NAME-'].update(opening_file)
+                                                                                    is_saved = True
+                                                                                case False:
+                                                                                    psg.popup_ok('Nem Fájlt adott meg!')
+                                                                        case False:
+                                                                            psg.popup_ok('Nem letezo eleresi ut!')
+                                                
                                                 # case '.txt':
                                                 #     save_place = psg.popup_get_folder('Válassza ki a menteni kivánt fájl helyét!')
                                                 #     save_name = psg.popup_get_text('Írja be a fájl nevét! (fajl.txt)')
