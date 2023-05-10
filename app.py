@@ -1466,7 +1466,7 @@ while True:
                                 except OSError as e:
                                     psg.popup_notify( f'{bov} cannot be opened and exception {e}' ,title='No program to open')
                                     fajl, bov = '', ''  
-                            case 'Fajl':
+                            case 'Fájl':
                                 used_path:str = t2_ut.szulo
                                 used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant fajl nevet es bovitmenyet! (fajl.txt)')
                                 match used_path:
@@ -1667,7 +1667,7 @@ while True:
             match is_active1:
                 case True:
                     # fajl:str = str(kijelolt_sor[0])
-                    named:str = psg.popup_get_text('Fajlnev modositasa!', title='PyFileManager', default_text=f'{kijelolt_sor[0]}')
+                    named:str = psg.popup_get_text('Fájlnev módosítása!', title='PyFileManager', default_text=f'{kijelolt_sor[0]}')
                     if (named == kijelolt_sor[0]) or (named == '') or (named == None):
                         continue
                     else:
