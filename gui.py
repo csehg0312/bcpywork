@@ -39,7 +39,7 @@ def create_layout():
                           image_subsample=2, border_width=0,
                           mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
                psg.Push(),
-               psg.Text('Asztal1'),
+               psg.Text('Asztal 1'),
                psg.Push()],
                               [psg.Table(vals,
                          headings=fejlec, 
@@ -60,7 +60,7 @@ def create_layout():
                           image_subsample=2, border_width=0,
                           mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
                psg.Push(),
-               psg.Text('Asztal2'),
+               psg.Text('Asztal 2'),
                psg.Push()],
                            [psg.Table(vals,headings=fejlec, size=(meretek[2],meretek[3]), 
                          key='-TABLE02-',
@@ -155,7 +155,7 @@ def create_ablak():
 
 def create_disk_window(number:int, diszk_lista, diszk_info):
     psg.theme('SystemDefault')
-    window4 = psg.Window('Diszkek valasztasa',
+    window4 = psg.Window('Diszkek választasa',
                          [
                              [psg.Frame('', [[psg.T('Csatlakozott diszkek', key='-TAROLOK-')]])],
                              [psg.Text('Maximálisan 5 csatlakoztatott diszket támogatat!')]
@@ -219,13 +219,13 @@ def create_disk_window(number:int, diszk_lista, diszk_info):
     
 def create_writer(multi_input:str = ''):
     frame_layout = [[psg.Text('untitled.txt', key='-WRITER-NAME-')],
-                    [psg.Text('Kodolas:'), 
+                    [psg.Text('Kódolás:'), 
                      psg.Combo(values=['utf-8', 'utf-16', 'ansi'], default_value='utf-8', key='-ENCODED-VAL-')],
-                    [psg.ButtonMenu('Mentes', menu_def=['Mentes', ['Mentes', 'Mentes maskeppen']], key='-SELECT-SAVE-')]
+                    [psg.ButtonMenu('Mentés', menu_def=['Mentes', ['Mentés', 'Mentés máskeppen']], key='-SELECT-SAVE-')]
                     ]
     layout2 = [[psg.Text('Writer'),psg.Push(), psg.Text('X', enable_events=True)],
                [psg.Menu(menu_definition=writer_menu, visible=True)],
-               [psg.Push(), psg.Button('Modositas engedelyezese', key='-ENABLE-MODIFY-', visible=True), psg.Push()],
+               [psg.Push(), psg.Button('Módositás engedélyezése', key='-ENABLE-MODIFY-', visible=True), psg.Push()],
                [psg.Multiline(multi_input, key='-MULTI-', size=(meretek[6],meretek[7]), disabled=True, enable_events=True, expand_x=True),
                psg.Frame(title='', border_width=0, layout=frame_layout)]
                ]
@@ -246,18 +246,18 @@ def file_properties_lay(utv:str, meret: int, modositas) -> list:
     nev, bov = os.path.splitext(fajl)
     mod_date = calcdate(os.path.getctime(utv))
     layout = [[psg.Input(nev, enable_events=True, key='-RENAMER-FILE-')],
-              [psg.Text('Bovitmeny:'), psg.Text(bov)],
+              [psg.Text('Bővitmény:'), psg.Text(bov)],
               [psg.Text('Hely:'), psg.Text(szulo)],
               [psg.HorizontalSeparator()],
-              [psg.Text('Meret:'), psg.Text(f'{round(meret/1024, 2)} kB')],
-              [psg.Text('Modositas datuma:'), psg.Text(modositas)],
-              [psg.Text('Letrehozas datuma: '), psg.Text(mod_date)]
+              [psg.Text('Méret:'), psg.Text(f'{round(meret/1024, 2)} kB')],
+              [psg.Text('Módositás dátuma:'), psg.Text(modositas)],
+              [psg.Text('Létrehozás dátuma: '), psg.Text(mod_date)]
               ]
     
     return layout
 
 def file_properties_win(utv:str, meret:int,  modositas):
-    prop_window = psg.Window('Tulajdonsagok', 
+    prop_window = psg.Window('Tulajdonságok', 
                              file_properties_lay(utv, meret, modositas), 
                              disable_minimize=True, 
                              use_custom_titlebar=True, 
@@ -273,7 +273,7 @@ def folder_properties_layout(utv:str):
     return layout
 
 def folder_properties_window(utv:str):
-    prop_window = psg.Window('Tulajdonsagok', 
+    prop_window = psg.Window('Tulajdonságok', 
                              folder_properties_layout(utv), 
                              disable_minimize=True, 
                              use_custom_titlebar=True,

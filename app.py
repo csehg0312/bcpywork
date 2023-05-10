@@ -9,13 +9,13 @@ import pyperclip
 from data.path_manager import Jelen_EleresiUt
 #import logging
 original_right_click:list = []*2
-original_right_click = ['Mappa', ['Uj', ['Fajl', 'Mappa']]]
+original_right_click = ['Mappa', ['Új', ['Fájl', 'Mappa']]]
 file_right_click:list = []*2
-file_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas Writerben','Megnyitas alapertelmezett alkalmazasban', 'Eleresi ut masolasa', 'Masolas','Athelyezes::-FILE-', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+file_right_click = ['Fajl', ['Új',['Fájl', 'Mappa'],'Megnyitás Writerben','Megnyitás alapértelmezett alkalmazásban', 'Elérési út másolása', 'Másolas','Áthelyezés::-FILE-', 'Átnevezés::-FILE-','---' ,'Tulajdonságok']]
 other_right_click:list = []*2
-other_right_click = ['Fajl', ['Uj',['Fajl', 'Mappa'],'Megnyitas mint...',['Megnyitas alapertelmezett alkalmazasban'], 'Eleresi ut masolasa', 'Masolas','Athelyezes::-FILE-', 'Atnevezes::-FILE-','---' ,'Tulajdonsagok']]
+other_right_click = ['Fajl', ['Új',['Fájl', 'Mappa'],'Megnyitás mint...',['Megnyitás alapértelmezett alkalmazásban'], 'Elérési út másolása', 'Másolas','Áthelyezés::-FILE-', 'Átnevezes::-FILE-','---' ,'Tulajdonságok']]
 folder_right_click:list = []*2
-folder_right_click = ['Folder', ['Utvonal masolasa...','Uj', ['Uj fajl', 'Uj mappa','Uj fajl a mappan belul', 'Uj mappa a mappan belul'], 'Athelyezes::-FOLDER-', 'Atnevezes::-FOLDER-', 'Eltavolitas', 'Konyvtar fa eltavolitasa...', '---' ,'Megnyitas a masik asztalon','---' , 'Tulajdonsagok']]
+folder_right_click = ['Folder', ['Útvonal másolasa...','Új', ['Új fájl', 'Új mappa','Új fájl a mappán belül', 'Új mappa a mappán belül'], 'Áthelyezés::-FOLDER-', 'Átnevezés::-FOLDER-', 'Eltávolitás', 'Könyvtár fa eltávolítása...', '---' ,'Megnyitás a másik asztalon','---' , 'Tulajdonságok']]
 new_menu:list
 new_menu = [['Uj fajl', ['Txt fajl', 'Egyeb fajl']], ['Mappa']]
 writerup:bool = False
