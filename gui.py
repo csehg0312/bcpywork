@@ -9,7 +9,7 @@ fejlec:list = []*4
 fejlec = ['Név', 'Bővítmény','Utolsó módosítás','Méret bájtokban']
 
 writer_menu:list
-writer_menu = ['Fajl', ['Mentes', 'Mentes maskent', 'Megnyitas']], ['Szerkeszt', ['Masolas', 'Beillesztes']]
+writer_menu = ['Fájl', ['Mentés', 'Mentés másként', 'Megnyitás']], ['Szerkeszt', ['Másolás', 'Beillesztés']]
 disk_right_click = []
 disk_click = ['Disk', ['Asztal1::-INT1-', 'Asztal2::-INT2-']]
 folder_right_click:list
