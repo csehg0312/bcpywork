@@ -13,7 +13,7 @@ original_right_click = ['Mappa', ['Új', ['Fájl', 'Mappa']]]
 file_right_click:list = []*2
 file_right_click = ['Fájl', ['Új',['Fájl', 'Mappa'],'Megnyitás Writerben','Megnyitás alapértelmezett alkalmazásban', 'Elérési út másolása', 'Másolas','Áthelyezés::-FILE-', 'Átnevezés::-FILE-','---' ,'Tulajdonságok']]
 other_right_click:list = []*2
-other_right_click = ['Fájl', ['Új',['Fájl', 'Mappa'],'Megnyitás mint...',['Megnyitás alapértelmezett alkalmazásban'], 'Elérési út másolása', 'Másolas','Áthelyezés::-FILE-', 'Átnevezes::-FILE-','---' ,'Tulajdonságok']]
+other_right_click = ['Fájl', ['Új',['Fájl', 'Mappa'],'Megnyitás mint...',['Megnyitás alapértelmezett alkalmazásban'], 'Elérési út másolása', 'Másolas','Áthelyezés::-FILE-','---' ,'Tulajdonságok']]
 folder_right_click:list = []*2
 folder_right_click = ['Folder', ['Útvonal másolása...','Új', ['Új fájl', 'Új mappa','Új fájl a mappán belül', 'Új mappa a mappán belül'], 'Áthelyezés::-FOLDER-', 'Átnevezés::-FOLDER-', 'Eltávolitás', 'Könyvtár fa eltávolítása...', '---' ,'Megnyitás a másik asztalon','---' , 'Tulajdonságok']]
 new_menu:list
@@ -231,7 +231,7 @@ while True:
                                                 psg.popup_ok(out_message)
                                 else:
                                     psg.popup_ok('Nem lett megadva Fájlnev')   
-                case 'Mentés másképpen':
+                case 'Mentés másként':
                     if (used_path != '') or (writer_window['-WRITER-NAME-'].get() != 'untitled.txt'):
                         if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')):
                             out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
@@ -691,7 +691,7 @@ while True:
                                     tmp.clear()
                                 else:
                                     psg.popup_notify('Atnevezes nem tortent!', title='Atnevezes')
-                    if eventT1 in ('Megnyitás Writerben', 'Elérési út másolása', 'Másolás', 'Megnyitás alapértelmezett alkalmazásban', 'Fajl', 'Mappa', 'Tulajdonságok'):
+                    if eventT1 in ('Megnyitás Writerben', 'Elérési út másolása', 'Másolás', 'Megnyitás alapértelmezett alkalmazásban', 'Fájl', 'Mappa', 'Tulajdonságok'):
                         match eventT1:
                             case 'Megnyitás Writerben':
                                 fajl, bov = kijelolt_sor[0], kijelolt_sor[1]
@@ -778,13 +778,87 @@ while True:
                                             writer_window['-ENABLE-MODIFY-'].update(visible = False)
                                             writer_window['-SELECT-SAVE-'].Update(['Mentés', ['Mentés', 'Mentés mint']])
                                             
-                                        if eventw in ('Mentés','-MULTI-', "Megnyitás"):
+                                        if eventw in ('Mentés','-MULTI-', "Megnyitás", "Mentés másként"):
                                             match eventw:
                                                 case 'Mentés':
                                                     if os.path.exists(os.path.join(t1_ut.szulo,f'{fajl}{bov}')):
                                                         out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                                                         psg.popup_ok(out_message)
                                                         is_saved = True
+                                                case "Mentés másként":
+                                                    used_path = t1_ut.szulo
+                                                    match used_path:
+                                                        case '':
+                                                            used_path:str = psg.popup_get_folder('Kerem adja meg a mappat ahova menteni szeretne!', title='Mappa!')
+                                                            match used_path:
+                                                                case None:
+                                                                    continue
+                                                                case "":
+                                                                    continue
+                                                                case other:
+                                                                    
+                                                                    used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant Fájl nevet es bovitmenyet! (fajl.txt)')
+                                                                    if used_file != '' and used_file != None:
+                                                                        fajl, bov = os.path.splitext(used_file)
+                                                                    else:
+                                                                        fajl, bov = "untitled", ".txt"
+                                                                    if (fajl != '') and (fajl != None):
+                                                                        match bov:
+                                                                            case '':
+                                                                                
+                                                                                if os.path.exists(os.path.join(used_path,f'{fajl}.txt')) == False:
+                                                                                    if writer_window['-MULTI-'].get() == "":
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                                    else:
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                            case other:
+                                                                                if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                                                    if writer_window['-MULTI-'].get() == "":
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                                    else:
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                    else:
+                                                                        psg.popup_ok('Nem lett megadva Fájlnev')             
+                                                        case other:
+                                                            used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant Fájl nevet es bovitmenyet! (fajl.txt)')
+                                                            if used_file != '' and used_file != None:
+                                                                fajl, bov = os.path.splitext(used_file)
+                                                            else:
+                                                                fajl, bov = "untitled", ".txt"
+                                                            if (fajl != '') and (fajl != None):
+                                                                match bov:
+                                                                    case '':
+                                                                        
+                                                                        if os.path.exists(os.path.join(used_path,f'{fajl}.txt')) == False:
+                                                                            if writer_window['-MULTI-'].get() == "":
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                                            else:
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                                    case other:
+                                                                        if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                                            if writer_window['-MULTI-'].get() == "":
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                                            else:
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                            else:
+                                                                psg.popup_ok('Nem lett megadva Fájlnev')             
+                                
                                                 case 'Megnyitás':
                                                     want_to_close:str = psg.popup_yes_no('Biztos benne hogy méntes nélkül szeretné bezárni?') 
                                                     match want_to_close:
@@ -804,7 +878,7 @@ while True:
                                                                                     used_path, used_file = os.path.split(opening_file)
                                                                                     writer_window['-MULTI-'].Update(fajl_text)
                                                                                     writer_window['-ENCODED-VAL-'].Update(encoding)
-                                                                                    writer_window['-WRITER-NAME-'].update(opening_file)
+                                                                                    writer_window['-WRITER-NAME-'].update(used_file)
                                                                                     is_saved = True
                                                                                 case False:
                                                                                     psg.popup_ok('Nem Fájlt adott meg!')
@@ -946,29 +1020,32 @@ while True:
                                     case '':
                                         psg.popup_ok('Nincs megadott mappa!', title='Hiba')
                                     case other:
-                                            if used_file != '' and used_file != None:
-                                                fajl, bov = os.path.splitext(used_file)
-                                            else:
-                                                fajl, bov = "untitled", ".txt"
-                                            if (fajl != '') and (fajl != None):
-                                                match bov:
-                                                    case '':
-                                                        if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
-                                                            out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
-                                                            psg.popup_ok(out_message)
-                                                            refresh_bool = True
-                                                            refresh_num = 1
-                                                    case other:
-                                                        if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
-                                                            out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
-                                                            psg.popup_ok(out_message, title='Letrehozas')
-                                                            refresh_bool = True
-                                                            refresh_num = 1
-                                                        else:
-                                                            psg.popup_ok('A fajl mar letezik')
-                                            else:
+                                        match used_file:
+                                            case None:
                                                 continue
-                            
+                                            case "":
+                                                psg.popup_ok("Nincs név megadva")
+                                            case other:
+                                                fajl, bov = os.path.splitext(used_file)
+                                                if (fajl != '') and (fajl != None):
+                                                    match bov:
+                                                        case '':
+                                                            if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                                out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                                psg.popup_ok(out_message)
+                                                                refresh_bool = True
+                                                                refresh_num = 2
+                                                        case other:
+                                                            if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                                out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                                psg.popup_ok(out_message, title='Letrehozas')
+                                                                refresh_bool = True
+                                                                refresh_num = 1
+                                                            else:
+                                                                psg.popup_ok('A fajl mar letezik!')
+                                                else:
+                                                    continue
+       
                             case 'Mappa':
                                 used_path = t1_ut.szulo
                                 used_dir = psg.popup_get_text('Kerem adja meg a menteni kivant mappa megnevezeset!')
@@ -1366,6 +1443,81 @@ while True:
                                                         out_message = overwriting_existing_file(used_path, writer_window['-WRITER-NAME-'].get(), writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
                                                         psg.popup_ok(out_message)
                                                         is_saved = True
+                                                case "Mentés másként":
+                                                    used_path = t2_ut.szulo
+                                                    match used_path:
+                                                        case '':
+                                                            used_path:str = psg.popup_get_folder('Kerem adja meg a mappat ahova menteni szeretne!', title='Mappa!')
+                                                            match used_path:
+                                                                case None:
+                                                                    continue
+                                                                case "":
+                                                                    continue
+                                                                case other:
+                                                                    
+                                                                    used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant Fájl nevet es bovitmenyet! (fajl.txt)')
+                                                                    if used_file != '' and used_file != None:
+                                                                        fajl, bov = os.path.splitext(used_file)
+                                                                    else:
+                                                                        fajl, bov = "untitled", ".txt"
+                                                                    if (fajl != '') and (fajl != None):
+                                                                        match bov:
+                                                                            case '':
+                                                                                
+                                                                                if os.path.exists(os.path.join(used_path,f'{fajl}.txt')) == False:
+                                                                                    if writer_window['-MULTI-'].get() == "":
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                                    else:
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                            case other:
+                                                                                if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                                                    if writer_window['-MULTI-'].get() == "":
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                                    else:
+                                                                                        out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                        psg.popup_ok(out_message)
+                                                                                        is_saved = True
+                                                                    else:
+                                                                        psg.popup_ok('Nem lett megadva Fájlnev')             
+                                                        case other:
+                                                            used_file:str = psg.popup_get_text('Kerem adja meg a menteni kivant Fájl nevet es bovitmenyet! (fajl.txt)')
+                                                            if used_file != '' and used_file != None:
+                                                                fajl, bov = os.path.splitext(used_file)
+                                                            else:
+                                                                fajl, bov = "untitled", ".txt"
+                                                            if (fajl != '') and (fajl != None):
+                                                                match bov:
+                                                                    case '':
+                                                                        
+                                                                        if os.path.exists(os.path.join(used_path,f'{fajl}.txt')) == False:
+                                                                            if writer_window['-MULTI-'].get() == "":
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                                            else:
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}.txt", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                                    case other:
+                                                                        if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                                            if writer_window['-MULTI-'].get() == "":
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), "b++")
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                                            else:
+                                                                                out_message = creating_file_with_value(used_path, f"{fajl}{bov}", writer_window['-ENCODED-VAL-'].get(), writer_window['-MULTI-'].get().expandtabs(4))
+                                                                                psg.popup_ok(out_message)
+                                                                                is_saved = True
+                                                            else:
+                                                                psg.popup_ok('Nem lett megadva Fájlnev')             
+                                        
+
                                                 case 'Megnyitás':
                                                     want_to_close:str = psg.popup_yes_no('Biztos benne hogy méntes nélkül szeretné bezárni?') 
                                                     match want_to_close:
@@ -1525,30 +1677,31 @@ while True:
                                     case '':
                                         psg.popup_ok('Nincs megadott mappa!', title='Hiba')
                                     case other:
-                                            if used_file != '' and used_file != None:
+                                        match used_file:
+                                            case None:
+                                                continue
+                                            case "":
+                                                psg.popup_ok("Nincs név megadva")
+                                            case other:
                                                 fajl, bov = os.path.splitext(used_file)
-                                            elif used_file == '':
-                                                fajl, bov = "untitled", ".txt"
-                                            else: 
-                                                continue
-                                            if (fajl != '') and (fajl != None):
-                                                match bov:
-                                                    case '':
-                                                        if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
-                                                            out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
-                                                            psg.popup_ok(out_message)
-                                                            refresh_bool = True
-                                                            refresh_num = 2
-                                                    case other:
-                                                        if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
-                                                            out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
-                                                            psg.popup_ok(out_message, title='Letrehozas')
-                                                            refresh_bool = True
-                                                            refresh_num = 2
-                                                        else:
-                                                            psg.popup_ok('A fajl mar letezik!')
-                                            else:
-                                                continue
+                                                if (fajl != '') and (fajl != None):
+                                                    match bov:
+                                                        case '':
+                                                            if os.path.exists(os.path.join(used_path,f'{fajl}.txt')):
+                                                                out_message = creating_file_without_value(used_path, f'{used_file}.txt', 'utf-8')
+                                                                psg.popup_ok(out_message)
+                                                                refresh_bool = True
+                                                                refresh_num = 2
+                                                        case other:
+                                                            if os.path.exists(os.path.join(used_path,f'{fajl}{bov}')) == False:
+                                                                out_message = creating_file_without_value(used_path, f'{used_file}', 'utf-8')
+                                                                psg.popup_ok(out_message, title='Letrehozas')
+                                                                refresh_bool = True
+                                                                refresh_num = 2
+                                                            else:
+                                                                psg.popup_ok('A fajl mar letezik!')
+                                                else:
+                                                    continue
                             
                             case 'Mappa':
                                 used_path = t2_ut.szulo

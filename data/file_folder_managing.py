@@ -143,7 +143,7 @@ def open_the_encoding(current_place) -> str:
             not_encoded = reader.read()
             m = magic.Magic(mime_encoding=True)
             encoded = m.from_buffer(not_encoded)
-            # print(encoded)
+            ## print(encoded)
         return encoded
     except:
         return 'utf-8'
@@ -232,7 +232,7 @@ def overwriting_existing_file(current_folder, existing_file:str, encoded:str, va
 def creating_file_with_value(current_folder, file_to_create, encoded:str, value_in:str) -> str:
     file_created = os.path.join(current_folder, file_to_create)
     encodes = ['utf-8', 'utf-16', 'ansi']
-    if encoded in encodes:
+    if (encoded in encodes) or (encoded.count("ascii") > 0) :
         match is_exists(file_created):
             case False:
                 with open(file_created, 'w', encoding=encoded) as f_write:

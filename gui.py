@@ -73,19 +73,18 @@ def create_layout():
                                ]
     frame_layout = [[psg.Button('Diszkek', key='-DISK_WIN-', enable_events=True)],
                     [psg.Button('Writer')],
-                    [psg.Button('Refresh')],
                     [psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
                           image_filename=copy_it, size=(10,10), key='Copy_OUT',
                           image_subsample=2, border_width=0,
-                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae"), tooltip="Kijelölt elem Másolása másik Asztal!"),
                      psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
                           image_filename=delete_it, size=(10,10), key='Delete_OUT',
                           image_subsample=2, border_width=0,
-                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae")),
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae"), tooltip="Kijelölt elem törlése!"),
                      psg.Button('', button_color=(psg.theme_background_color(), psg.theme_background_color()), 
                           image_filename=edit_it, size=(10,10), key='Edit_OUT',
                           image_subsample=2, border_width=0,
-                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae"))]]
+                          mouseover_colors=("#507197", "#697dae"), highlight_colors=("#507197", "#697dae"), tooltip="Kijelölt elem Átnevezése!")]]
     # layout_old = [[psg.Input('', enable_events=True, key="-Organize01-", ), 
     #         #    psg.Button('Kereses ablak', enable_events=True, key='-SEARCH01-'),
     #            psg.Push(),
@@ -127,7 +126,7 @@ def create_layout():
     #            ]
     #           ]
     layout = [[psg.Frame('', frame_first_table, expand_x=True, expand_y=True), psg.Frame('', frame_layout, element_justification='center'), psg.Frame('', frame_second_table, expand_x=True, expand_y=True)],
-              [psg.Text('Copyright 2023'), psg.Text('Cseh Gábor')]]
+              [psg.Text('Copyright 2023 ©'), psg.Text('Cseh Gábor')]]
     
     return layout
 
