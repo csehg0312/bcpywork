@@ -11,9 +11,9 @@ from data.path_manager import Jelen_EleresiUt
 original_right_click:list = []*2
 original_right_click = ['Mappa', ['Új', ['Fájl', 'Mappa']]]
 file_right_click:list = []*2
-file_right_click = ['Fájl', ['Új',['Fájl', 'Mappa'],'Megnyitás Writerben','Megnyitás alapértelmezett alkalmazásban', 'Elérési út másolása', 'Másolas','Áthelyezés::-FILE-', 'Átnevezés::-FILE-','---' ,'Tulajdonságok']]
+file_right_click = ['Fájl', ['Új',['Fájl', 'Mappa'],'Megnyitás Writerben','Megnyitás alapértelmezett alkalmazásban', 'Elérési út másolása','Áthelyezés::-FILE-', 'Átnevezés::-FILE-','---' ,'Tulajdonságok']]
 other_right_click:list = []*2
-other_right_click = ['Fájl', ['Új',['Fájl', 'Mappa'],'Megnyitás mint...',['Megnyitás alapértelmezett alkalmazásban'], 'Elérési út másolása', 'Másolas','Áthelyezés::-FILE-','---' ,'Tulajdonságok']]
+other_right_click = ['Fájl', ['Új',['Fájl', 'Mappa'],'Megnyitás mint...',['Megnyitás alapértelmezett alkalmazásban'], 'Elérési út másolása','Áthelyezés::-FILE-','---' ,'Tulajdonságok']]
 folder_right_click:list = []*2
 folder_right_click = ['Folder', ['Útvonal másolása...','Új', ['Új fájl', 'Új mappa','Új fájl a mappán belül', 'Új mappa a mappán belül'], 'Áthelyezés::-FOLDER-', 'Átnevezés::-FOLDER-', 'Eltávolitás', 'Könyvtár fa eltávolítása...', '---' ,'Megnyitás a másik asztalon','---' , 'Tulajdonságok']]
 new_menu:list
@@ -630,7 +630,7 @@ while True:
                     else:
                          window['-TABLE01-'].set_right_click_menu(other_right_click)
                     window['-TABLE01-'].set_tooltip('Jobb klikkel a lehetosegpanel')
-                    eventT1, _ = window.read()
+                    eventT1, valT1 = window.read()
                     
                         # kiegesziteskent hozzaadtunk billentyukombinaciokat 
                         # az egyszerubb elereshez
@@ -996,7 +996,7 @@ while True:
                                     to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
                                 else:
                                     to_move = f'{kijelolt_sor[0]}'
-                                if t2_ut != '' and t2_ut != t1_ut:
+                                if t2_ut != '' and t1_ut != t2_ut:
                                     message_out = copy_file_to_dest(os.path.join(t1_ut.szulo, to_move), window['-Organize02-'].get())
                                     psg.popup_notify(message_out, title='PyFileManager')
                                     refresh_bool = True
@@ -1332,7 +1332,7 @@ while True:
                             case 'Áthelyezés::-FILE-':
                                 to_move = f'{kijelolt_sor[0]}{kijelolt_sor[1]}'
                             
-                                if t1_ut != '' and t2_ut != t1_ut:
+                                if t1_ut != '' and t1_ut != t2_ut:
                                     message_out = moving_file_to_dest(os.path.join(t2_ut.szulo, to_move), window['-Organize01-'].get())
                                     psg.popup_notify(message_out, title='PyFileManager')
                                     refresh_bool = True
