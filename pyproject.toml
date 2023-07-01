@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "pyfilemanager"
+version = "1.0"
+description = "A graphical file manager for windows operating systems using PySimpleGUI package."
+authors = ["csehg0312 <62523554+csehg0312@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
