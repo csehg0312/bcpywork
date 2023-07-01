@@ -126,7 +126,7 @@ def create_layout():
     #            ]
     #           ]
     layout = [[psg.Frame('', frame_first_table, expand_x=True, expand_y=True), psg.Frame('', frame_layout, element_justification='center'), psg.Frame('', frame_second_table, expand_x=True, expand_y=True)],
-              [psg.Text('Copyright 2023 ©'), psg.Text('Cseh Gábor')]]
+              [psg.Text('Copyright 2023 ©')]]
     
     return layout
 
