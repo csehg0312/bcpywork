@@ -14,7 +14,7 @@ poetry.lock
 pyproject.toml
 
 #ignore vscode files
-/.vscode
+.vscode
 
 #ignore not used data folder files
 /data/binaris_search.py
