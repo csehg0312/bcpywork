@@ -1,0 +1,32 @@
+#ignore all pycaches
+*.pyc
+
+#ignore these folders
+/__pycache__
+/data/__pycache__
+
+#ignore the presentation
+~$prezentacio.pptx
+
+#for now ignore poetry files
+poetry.lock
+pyproject.toml
+
+#ignore vscode files
+/.vscode
+
+#ignore not used data folder files
+/data/binaris_search.py
+/data/config.yaml
+/data/data_to_interface.py
+/data/dataclass_drive_manager.py
+/data/disk_util.py
+/data/dspace_manager.py
+/data/event_handler.py
+/data/lister.py
+/data/os_identifier.py
+
+#ignore not used in interface 
+/interface
+
+#thats all for now lets see

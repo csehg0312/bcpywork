@@ -132,7 +132,6 @@ def create_layout():
 
 def create_ablak():
     iconUse = f"{pathlib.Path(__file__).parent.resolve()}\icon\icov1.png"
-    print(iconUse)
     window = psg.Window('Py File Manager', create_layout(), 
                         size=(meretek[0],meretek[1]), 
                         right_click_menu=[],
