@@ -2,6 +2,7 @@
 *.pyc
 
 #ignore these folders
+pycache
 /__pycache__
 /data/__pycache__
 
